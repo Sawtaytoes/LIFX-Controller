@@ -49,6 +49,11 @@ const setScene = scene => {
 		.map(state => lights.get(convertSelectorToId(state.selector)))
 	)
 
+	scene.states = (
+		scene.states
+		.map(state => Object.assign(state, { id: convertSelectorToId(state.selector) }))
+	)
+
 	scenes.set(name, scene)
 	scenes.set(uuid, scene)
 }
