@@ -114,4 +114,5 @@ module.exports = sceneName => {
 	]))
 	.then(toggleScene)
 	.catch(err => logger(`Error: ${err}`))
+	.then(() => logger())
 }
