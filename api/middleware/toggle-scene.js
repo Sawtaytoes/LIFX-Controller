@@ -79,12 +79,14 @@ const toggleScene = (lifxClient, scene) => {
 module.exports = (lifxClient, lifxConfig) => sceneName => {
 	logger(`Command: Toggle Scene => ${sceneName}`)
 
+	lifxClient.update()
+
 	const scene = lifxConfig.scenes.get(sceneName)
 
-	toggleScene(lifxClient, scene)
+	setTimeout(() => toggleScene(lifxClient, scene), 250)
 
 	setTimeout(() => {
 		lifxClient.update()
 		lifxConfig.update()
-	}, DURATION)
+	}, DURATION + 250)
 }

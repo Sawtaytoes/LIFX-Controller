@@ -4,9 +4,7 @@ const logger = require(`${dir.api}/logger`)
 const POWERED_ON = 1
 const DURATION = 500
 
-module.exports = (lifxClient, lifxConfig) => groupName => {
-	logger(`Command: Toggle Light => ${groupName}`)
-
+const toggleGroup = (lifxClient, lifxConfig, groupName) => {
 	const lightsInGroup = (
 		lifxConfig.groups
 		.get(groupName).lights
@@ -18,9 +16,17 @@ module.exports = (lifxClient, lifxConfig) => groupName => {
 	isLightOnInGroup
 	? lightsInGroup.forEach(light => light.off(DURATION))
 	: lightsInGroup.forEach(light => light.on(DURATION))
+}
+
+module.exports = (lifxClient, lifxConfig) => groupName => {
+	logger(`Command: Toggle Light => ${groupName}`)
+
+	lifxClient.update()
+
+	setTimeout(() => toggleGroup(lifxClient, lifxConfig, groupName), 250)
 
 	setTimeout(() => {
 		lifxClient.update()
 		lifxConfig.update()
-	}, DURATION)
+	}, DURATION + 250)
 }
