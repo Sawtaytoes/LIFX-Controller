@@ -38,10 +38,11 @@ const turnOnScene = lifxClient => sceneAndLightSettings => (
 				saturation = 0,
 				kelvin
 			},
+			power,
 		},
 	}) => {
 		light.color(hue, saturation * 100, brightness * 100, kelvin, DURATION)
-		light.on(DURATION)
+		light[power](DURATION)
 	})
 )
 
