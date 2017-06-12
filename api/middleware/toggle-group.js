@@ -4,7 +4,7 @@ const logger = require(`${dir.api}/logger`)
 const POWERED_ON = 1
 const DURATION = 1000
 
-module.exports = lifxConfig => lifxClient => groupName => {
+module.exports = (lifxClient, lifxConfig) => groupName => {
 	logger(`Command: Toggle Light => ${groupName}`)
 
 	const lightsInGroup = (

@@ -74,7 +74,7 @@ const toggleScene = (scene, lights, { turnOnScene, turnOffScene }) => {
 	}
 }
 
-module.exports = lifxConfig => lifxClient => sceneName => {
+module.exports = (lifxClient, lifxConfig) => sceneName => {
 	logger(`Command: Toggle Scene => ${sceneName}`)
 
 	const scene = lifxConfig.scenes.get(sceneName)

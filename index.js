@@ -16,7 +16,7 @@ lifxClient.init()
 lifxConfig.init()
 
 const lifxMiddleware = {
-	get: action => (req, res) => res.send(action(lifxConfig)(lifxClient)(req.params.name))
+	get: action => (req, res) => res.send(action(lifxClient, lifxConfig)(req.params.name))
 }
 
 const serverSettings = setupServer()
