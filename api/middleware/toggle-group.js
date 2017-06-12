@@ -2,7 +2,7 @@ const dir = require(`${global.baseDir}/global-dirs`)
 const logger = require(`${dir.api}/logger`)
 
 const POWERED_ON = 1
-const DURATION = 1000
+const DURATION = 500
 
 module.exports = (lifxClient, lifxConfig) => groupName => {
 	logger(`Command: Toggle Light => ${groupName}`)
