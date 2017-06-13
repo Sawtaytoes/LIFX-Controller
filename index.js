@@ -9,8 +9,9 @@ const setupServer = require(`${dir.server}setup-server`)
 const startServer = require(`${dir.server}start-server`)
 
 // Load Middleware
-const toggleScene = require(`${dir.middleware}toggle-scene`)
+const discoverDevices = require(`${dir.middleware}discover-devices`)
 const toggleGroup = require(`${dir.middleware}toggle-group`)
+const toggleScene = require(`${dir.middleware}toggle-scene`)
 
 lifxClient.init()
 lifxConfig.init()
@@ -29,8 +30,8 @@ serverSettings.get(
 )
 
 serverSettings.get(
-	'/toggle-scene/:name',
-	lifxMiddleware.get(toggleScene)
+	'/discover-devices',
+	lifxMiddleware.get(discoverDevices)
 )
 
 serverSettings.get(
@@ -38,6 +39,9 @@ serverSettings.get(
 	lifxMiddleware.get(toggleGroup)
 )
 
-// setTimeout(() => toggleGroup(lifxConfig)(lifxClient)('Living Room'), 2000)
+serverSettings.get(
+	'/toggle-scene/:name',
+	lifxMiddleware.get(toggleScene)
+)
 
 startServer(serverSettings)
