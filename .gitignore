@@ -1,6 +1,9 @@
 ## Project Files ##
 ~res
 
+## Cache ##
+.cache
+
 ## Configs ##
 .env
 server/configs/config.js
