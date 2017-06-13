@@ -4,8 +4,6 @@ const logger = require(`${dir.api}/logger`)
 const POWERED_ON = 1
 const DURATION = 1000
 
-const isSceneActive = sceneAndLightSettings => sceneAndLightSettings.every(lightMatchesScene)
-
 const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 	// Power
 	(settings.power ? 'on' : 'off') === sceneLightSettings.power
@@ -13,7 +11,7 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 	// Brightness only if lights are ON
 	&& (
 		settings.power === POWERED_ON
-		? settings.brightness === sceneLightSettings.brightness / 100
+		? settings.brightness === sceneLightSettings.brightness * 100
 		: true
 	)
 
@@ -24,6 +22,8 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 )
 
 const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
+
+const isSceneActive = sceneAndLightSettings => sceneAndLightSettings.every(lightMatchesScene)
 
 const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
 	new Promise((resolve, reject) => (
