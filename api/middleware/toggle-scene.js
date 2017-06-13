@@ -4,7 +4,9 @@ const logger = require(`${dir.api}/logger`)
 const POWERED_ON = 1
 const DURATION = 1000
 
-const lightSettingsMatch = ({ light: { settings }, sceneLightSettings }) => (
+const isSceneActive = sceneAndLightSettings => sceneAndLightSettings.every(lightMatchesScene)
+
+const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 	// Power
 	(settings.power ? 'on' : 'off') === sceneLightSettings.power
 
@@ -21,17 +23,30 @@ const lightSettingsMatch = ({ light: { settings }, sceneLightSettings }) => (
 	)
 )
 
-// const lightSettingsDoNotMatch = settings => !lightSettingsMatch(settings)
-const lightSettingsDoNotMatch = ({ light, sceneLightSettings }) => {
-	logger(light.label, lightSettingsMatch({ light, sceneLightSettings }))
+const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
 
-	return !lightSettingsMatch({ light, sceneLightSettings })
-}
+const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
+	new Promise((resolve, reject) => (
+		light.color(
+			hue, saturation, brightness, kelvin,
+			DURATION,
+			err => err ? reject(err) : resolve()
+		)
+	))
+)
+
+const changeLightPower = powerFuncName => light => (
+	new Promise((resolve, reject) => (
+		light[powerFuncName](DURATION, err => err ? reject(err) : resolve())
+	))
+)
+
+const turnOffLight = changeLightPower('off')
 
 const turnOnScene = sceneAndLightSettings => (
 	sceneAndLightSettings
-	.filter(lightSettingsDoNotMatch)
-	.forEach(({
+	.filter(lightDoesNotMatchScene)
+	.map(({
 		light,
 		sceneLightSettings: {
 			brightness,
@@ -42,51 +57,46 @@ const turnOnScene = sceneAndLightSettings => (
 			},
 			power,
 		},
-	}) => {
-		light.color(hue, saturation * 100, brightness * 100, kelvin, DURATION)
-		light[power](DURATION)
-	})
+	}) => (
+		Promise.all([
+			changeLightColor(hue, saturation * 100, brightness * 100, kelvin)(light),
+			changeLightPower(power)(light),
+		])
+	))
 )
 
 const turnOffScene = sceneAndLightSettings => (
 	sceneAndLightSettings
 	.map(({ light }) => light)
 	.filter(({ settings: { power } }) => power === POWERED_ON)
-	.forEach(light => light.off(DURATION))
+	.map(turnOffLight)
 )
 
-const toggleScene = (lifxClient, scene) => {
-	const sceneAndLightSettings = (
-		scene.states
-		.map(sceneLightSettings => ({
-			light: lifxClient.light(sceneLightSettings.id),
-			sceneLightSettings,
-		}))
+const toggleScene = sceneAndLightSettings => (
+	Promise.all(
+		isSceneActive(sceneAndLightSettings)
+		? turnOffScene(sceneAndLightSettings)
+		: turnOnScene(sceneAndLightSettings)
 	)
+)
 
-	const isSceneActive = sceneAndLightSettings.every(lightSettingsMatch)
-
-	if (isSceneActive) {
-		logger('Action: Turned-Off Lights')
-		turnOffScene(sceneAndLightSettings)
-
-	} else {
-		logger('Action: Turned-On Scene')
-		turnOnScene(sceneAndLightSettings)
-	}
-}
+const getSceneAndLightSettings = scene => lights => (
+	scene.states
+	.map(sceneLightSettings => ({
+		light: lights.find(({ id }) => id === sceneLightSettings.id),
+		sceneLightSettings,
+	}))
+)
 
 module.exports = (lifxClient, lifxConfig) => sceneName => {
 	logger(`Command: Toggle Scene => ${sceneName}`)
 
-	lifxClient.update()
-
 	const scene = lifxConfig.scenes.get(sceneName)
+	const lightsInScene = scene.lights.map(({ id }) => lifxClient.light(id))
 
-	setTimeout(() => toggleScene(lifxClient, scene), 250)
-
-	setTimeout(() => {
-		lifxClient.update()
-		lifxConfig.update()
-	}, DURATION + 250)
+	lifxClient.update(lightsInScene)
+	.then(getSceneAndLightSettings(scene))
+	.then(toggleScene)
+	.then(lifxConfig.update)
+	.catch(err => console.error(err))
 }
