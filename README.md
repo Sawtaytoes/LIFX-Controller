@@ -1,7 +1,18 @@
-# LIFX Controller
+# HTTP LIFX LAN Controller
 
 Allows toggling lights by scenes using the HTTP API. This allows Logitech POP buttons to act as 6-function, instead of 3-function, devices. A single button-press can now both turn on and turn off a scene or group depending on if lights are on or off in the scene.
 
+## Example Usage
+
+### Toggle or switch to a LIFX Scene
+```
+[YOUR_SERVER_ADDRESS]/toggle-scene/Bright Living Room
+```
+
+### Toggle or switch to a LIFX Group
+```
+[YOUR_SERVER_ADDRESS]/toggle-group/Living Room
+```
 
 ## Setup
 
