@@ -10,17 +10,17 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 	// Power
 	(settings.power ? 'on' : 'off') === sceneLightSettings.power
 
-	// Color
-	&& settings.color.hue === (sceneLightSettings.color.hue || 0)
-	&& settings.color.saturation === (sceneLightSettings.color.saturation || 0)
-	&& settings.color.kelvin === (sceneLightSettings.color.kelvin || 0)
-
 	// Brightness only if lights are ON
 	&& (
 		settings.power === POWERED_ON
 		? settings.brightness === sceneLightSettings.brightness / 100
 		: true
 	)
+
+	// Color
+	&& settings.color.hue === (sceneLightSettings.color.hue || 0)
+	&& settings.color.saturation === (sceneLightSettings.color.saturation || 0)
+	&& settings.color.kelvin === (sceneLightSettings.color.kelvin || 0)
 )
 
 const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
