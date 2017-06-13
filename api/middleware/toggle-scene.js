@@ -4,6 +4,10 @@ const logger = require(`${dir.api}/logger`)
 const POWERED_ON = 1
 const DURATION = 1000
 
+const relativeEquals = (value1 = 0, value2 = 0) => (
+	value1 - 1 <= value2 && value1 + 1 >= value2
+)
+
 const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 	// Power
 	(settings.power ? 'on' : 'off') === sceneLightSettings.power
@@ -11,14 +15,14 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 	// Brightness only if lights are ON
 	&& (
 		settings.power === POWERED_ON
-		? settings.brightness === sceneLightSettings.brightness * 100
+		? relativeEquals(settings.brightness, sceneLightSettings.brightness * 100)
 		: true
 	)
 
 	// Color
-	&& settings.color.hue === (sceneLightSettings.color.hue || 0)
-	&& settings.color.saturation === (sceneLightSettings.color.saturation || 0)
-	&& settings.color.kelvin === (sceneLightSettings.color.kelvin || 0)
+	&& relativeEquals(settings.color.hue, sceneLightSettings.color.hue)
+	&& relativeEquals(settings.color.saturation, sceneLightSettings.color.saturation)
+	&& relativeEquals(settings.color.kelvin, sceneLightSettings.color.kelvin)
 )
 
 const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
