@@ -14,6 +14,25 @@ Allows toggling lights by scenes using the HTTP API. This allows Logitech POP bu
 [YOUR_SERVER_ADDRESS]/toggle-group/Living Room
 ```
 
+
+## How to Run
+
+### Start server
+```shell
+npm start
+```
+
+### Run with reload on file save
+```shell
+npm run api-mon
+```
+
+### Run with the Node.js debugger
+```shell
+npm run api-debug
+```
+
+
 ## Setup
 
 ### Configuration Customization
@@ -22,16 +41,24 @@ Allows toggling lights by scenes using the HTTP API. This allows Logitech POP bu
 Default configs are `config-settings.js`. Here's an example of what defaults might look like:
 
 ```js
-env: 'production',                            // Can be 'development' or 'production'.
+module.exports = {
+	env: 'production',                            // Can be 'development' or 'production'.
 
-//- Server
-protocol: 'http',                             // Using `https` requires valid certificates.
-hostname: '0.0.0.0',                          // Can be 0.0.0.0 for binding to all ports.
-port: 3000,                                   // Port of webserver.
-// proxyPort: 3001,                           // Optional. Will be `port + 1` if not defined.
+	//- Server
+	protocol: 'http',                             // Using `https` requires valid certificates.
+	hostname: '0.0.0.0',                          // Can be 0.0.0.0 for binding to all ports.
+	port: 3000,                                   // Port of webserver.
+	// proxyPort: 3001,                           // Optional. Will be `port + 1` if not defined.
+
+	apiKey: '',                                   // API key from your LIFX Cloud account: https://cloud.lifx.com/settings
+}
 ```
 
-To override these configs, either setup Node env vars such as: `NODE_ENV`, `PROTOCOL`, `HOSTNAME`, `PORT`, etc or create a `./server/configs/config.js` file and have it return an object with overrides like so:
+> *NOTE:* `apiKey` is required to cache groups and scenes from LIFX's HTTP API.
+
+#### Override Default Config
+
+To override these configs, create a `./server/configs/config.js` file and have it return an object with overrides like so:
 
 ```js
 module.exports = {
@@ -41,32 +68,21 @@ module.exports = {
 }
 ```
 
+You can also set these env vars:
 
-## Web Server Setup
+- `NODE_ENV`,
+- `PROTOCOL`,
+- `HOSTNAME`,
+- `PORT`
+- `API_KEY`
 
-### Development: Local
-```shell
-npm start
-npm run api
-```
 
-OR
+# Web Server Setup
+Using [PM2](http://pm2.keymetrics.io/)
 
-```shell
-bash local.sh
-```
+> *NOTE:* These can be run on any Linux device such as a Raspberry Pi
 
-OR
-
-```shell
-node index.js
-node api.js
-```
-
-### Production: Hosted VPS
-[Using PM2](http://pm2.keymetrics.io/)
-
-#### Start the Server
+## Start the Server
 Start a single server for testing:
 
 ```shell
@@ -81,76 +97,30 @@ bash server.sh 3
 
 The number `3` can be replaced with any number. The default is `0`: equal to the number of CPU cores.
 
-#### Update from Git and Restart
+## Update from Git and Restart
 ```shell
 bash update.sh
 ```
 
 If you update the update.sh file, make sure to run `git pull` prior to running the update script.
 
-#### Stop the Server
+## Stop the Server
 ```shell
 bash stop-server.sh
 ```
 
-### Create SSL Cert
-Make sure to run this command to upgrade pip before starting:
 
-```shell
-pip install --upgrade pip
-```
+# Create & Update Dev SSL Certs
+Using [ZeroSSL](https://zerossl.com/free-ssl)
 
-Optionally, you can upgrade Let's Encrypt:
+> These certs allow you to use HTTPS in Node.js without having to proxy to a secured NGINX or Apache server.
 
-```shell
-cd /usr/share/letsencrypt/
-git pull
-```
+Files will reside in `conf/`:
 
-_Replace `SERVER_NAME` with the website address._
-
-```shell
-service nginx stop
-
-/usr/share/letsencrypt/letsencrypt-auto certonly \
--a standalone \
--d www.SERVER_NAME \
--d SERVER_NAME \
---server https://acme-v01.api.letsencrypt.org/directory
-
-service nginx start
-```
-
-Or try this experimental approach:
-
-```shell
-/usr/share/letsencrypt/letsencrypt-auto certonly \
--a nginx \
--d www.SERVER_NAME \
--d SERVER_NAME \
---server https://acme-v01.api.letsencrypt.org/directory
-```
-
-When running the Let's Encrypt with, it requires installing the NGINX plugin:
-
-```shell
-cd /usr/share/letsencrypt/
-~/.local/share/letsencrypt/bin/pip install -U letsencrypt-nginx
-```
-
-Let's Encrypt allows renewing using:
-
-```shell
-/usr/share/letsencrypt/letsencrypt-auto renew
-```
-
-### Create & Update Dev SSL Certs
-> For ServiceWorker compatibility, update or use these certs along with `https` in `network-protocol`.
-
-Using [ZeroSSL](https://zerossl.com/free-ssl):
-
-- Account ID is 2400598
-- Files are located in `conf/`
+- account-key.txt
+- domain-crt.txt
+- domain-csr.txt
+- key.pem
 
 ### Linting
 Install packages globally for Sublime Text's `SublimeLinter-contrib-eslint` plugin.
