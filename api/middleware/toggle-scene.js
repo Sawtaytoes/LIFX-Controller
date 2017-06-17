@@ -1,5 +1,7 @@
+const Promise = require('bluebird')
+
 const dir = require(`${global.baseDir}/global-dirs`)
-const logger = require(`${dir.api}/logger`)
+const logger = require(`${dir.utils}/logger`)
 
 const POWERED_ON = 1
 const DURATION = 1000
@@ -30,19 +32,17 @@ const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
 const isSceneActive = sceneAndLightSettings => sceneAndLightSettings.every(lightMatchesScene)
 
 const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
-	new Promise((resolve, reject) => (
-		light.color(
-			hue, saturation, brightness, kelvin,
-			DURATION,
-			err => err ? reject(err) : resolve()
-		)
-	))
+	Promise.promisify(light.color, { context: light })(
+		hue,
+		saturation,
+		brightness,
+		kelvin,
+		DURATION
+	)
 )
 
 const changeLightPower = powerFuncName => light => (
-	new Promise((resolve, reject) => (
-		light[powerFuncName](DURATION, err => err ? reject(err) : resolve())
-	))
+	Promise.promisify(light[powerFuncName], { context: light })(DURATION)
 )
 
 const turnOffLight = changeLightPower('off')
@@ -93,7 +93,7 @@ const getSceneAndLightSettings = scene => lights => (
 )
 
 module.exports = (lifxClient, lifxConfig) => sceneName => {
-	logger(`Command: Toggle Scene => ${sceneName}`)
+	logger.log(`Command: Toggle Scene => ${sceneName}`)
 
 	const scene = lifxConfig.scenes.get(sceneName)
 	const lightsInScene = scene.lights.map(({ id }) => lifxClient.light(id))

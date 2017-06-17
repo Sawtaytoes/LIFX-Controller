@@ -50,11 +50,11 @@ module.exports = {
 	port: 3000,                                   // Port of webserver.
 	// proxyPort: 3001,                           // Optional. Will be `port + 1` if not defined.
 
-	apiKey: '',                                   // API key from your LIFX Cloud account: https://cloud.lifx.com/settings
+	apiToken: '',                                   // API key from your LIFX Cloud account: https://cloud.lifx.com/settings
 }
 ```
 
-> *NOTE:* `apiKey` is required to cache groups and scenes from LIFX's HTTP API.
+> *NOTE:* `apiToken` is required to cache groups and scenes from LIFX's HTTP API.
 
 #### Override Default Config
 
@@ -74,7 +74,7 @@ You can also set these env vars:
 - `PROTOCOL`,
 - `HOSTNAME`,
 - `PORT`
-- `API_KEY`
+- `API_TOKEN`
 
 
 # Web Server Setup

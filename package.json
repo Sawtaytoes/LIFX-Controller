@@ -13,10 +13,10 @@
     "npm": "4.0.3"
   },
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "^1.15.0",
     "compression": "^1.6.2",
     "cors": "^2.8.1",
-    "eslint": "^3.12.2",
     "express": "^4.14.0",
     "express-sslify": "^1.1.0",
     "helmet": "^3.1.0",
