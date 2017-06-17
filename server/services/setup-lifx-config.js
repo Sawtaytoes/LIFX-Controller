@@ -60,7 +60,8 @@ const setScene = scene => {
 }
 
 const headers = {
-	Authorization: `Basic ${config.getApiKey()}`
+	'Accept-Encoding': 'gzip, deflate',
+	Authorization: `Bearer ${config.getApiToken()}`,
 }
 const handleResponse = response => response.json()
 
@@ -85,7 +86,11 @@ const storeJsonDataInCache = fileName => jsonData => {
 	return jsonData
 }
 
-const storeJsonDataInMemory = action => jsonData => jsonData.forEach(action)
+const storeJsonDataInMemory = action => jsonData => (
+	jsonData.error
+	? console.error('Error: LIFX HTTP API =>', jsonData.error)
+	: jsonData.forEach(action)
+)
 
 const clear = () => {
 	lights.clear()
