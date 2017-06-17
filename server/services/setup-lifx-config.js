@@ -5,8 +5,9 @@ const dir = require(`${global.baseDir}/global-dirs`)
 const config = require(`${dir.configs}config-settings`)
 const logger = require(`${dir.utils}/logger`)
 
-const API_GET_LIGHTS = 'https://api.lifx.com/v1/lights'
-const API_GET_SCENES = 'https://api.lifx.com/v1/scenes'
+const LIFX_API_ADDRESS = 'https://api.lifx.com/v1/'
+const API_GET_LIGHTS = `${LIFX_API_ADDRESS}lights`
+const API_GET_SCENES = `${LIFX_API_ADDRESS}scenes`
 
 const FILE_ENCODING_SCHEME = 'utf8'
 const CACHE_FILENAME = {
