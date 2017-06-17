@@ -1,3 +1,5 @@
+const Promise = require('bluebird')
+
 const dir = require(`${global.baseDir}/global-dirs`)
 const logger = require(`${dir.utils}/logger`)
 
@@ -9,9 +11,7 @@ const isLightOnInGroup = lightsInGroup => (
 )
 
 const changeLightPower = powerFuncName => light => (
-	new Promise((resolve, reject) => (
-		light[powerFuncName](DURATION, err => err ? reject(err) : resolve())
-	))
+	Promise.promisify(light[powerFuncName], { context: light })(DURATION)
 )
 
 const turnOffLight = changeLightPower('off')
@@ -33,6 +33,8 @@ module.exports = (lifxClient, lifxConfig) => groupName => {
 		.get(groupName).lights
 		.map(({ id }) => lifxClient.light(id))
 	)
+
+	console.log('lightsInGroup', lightsInGroup.map(({ settings: { power } }) => power));
 
 	lifxClient.update(lightsInGroup)
 	.then(toggleGroup)

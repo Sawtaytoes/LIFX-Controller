@@ -1,3 +1,5 @@
+const Promise = require('bluebird')
+
 const dir = require(`${global.baseDir}/global-dirs`)
 const logger = require(`${dir.utils}/logger`)
 
@@ -30,19 +32,17 @@ const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
 const isSceneActive = sceneAndLightSettings => sceneAndLightSettings.every(lightMatchesScene)
 
 const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
-	new Promise((resolve, reject) => (
-		light.color(
-			hue, saturation, brightness, kelvin,
-			DURATION,
-			err => err ? reject(err) : resolve()
-		)
-	))
+	Promise.promisify(light.color, { context: light })(
+		hue,
+		saturation,
+		brightness,
+		kelvin,
+		DURATION
+	)
 )
 
 const changeLightPower = powerFuncName => light => (
-	new Promise((resolve, reject) => (
-		light[powerFuncName](DURATION, err => err ? reject(err) : resolve())
-	))
+	Promise.promisify(light[powerFuncName], { context: light })(DURATION)
 )
 
 const turnOffLight = changeLightPower('off')
