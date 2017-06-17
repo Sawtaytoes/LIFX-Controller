@@ -1,13 +1,19 @@
+const dir = require(`${global.baseDir}/global-dirs`)
+const logger = require(`${dir.utils}/logger`)
+
 const spreadPromiseArgs = (promise, func) => (
 	promise
 	.then(args => Promise.all(args))
 	.then(args => func.apply(promise, args))
+	.catch(logger.logError)
 )
 
 const spreadablePromise = promise => ({
 	catch: promise.catch.bind(promise),
 	then: func => (
-		promise.then(spreadPromiseArgs(promise, func))
+		promise
+		.then(spreadPromiseArgs(promise, func))
+		.catch(logger.logError)
 	),
 })
 
