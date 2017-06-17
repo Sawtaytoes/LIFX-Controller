@@ -17,13 +17,13 @@ const changeLightPower = powerFuncName => light => (
 const turnOffLight = changeLightPower('off')
 const turnOnLight = changeLightPower('on')
 
-const toggleGroup = lightsInGroup => {
+const toggleGroup = lightsInGroup => (
 	Promise.all(
 		isLightOnInGroup(lightsInGroup)
 		? lightsInGroup.map(turnOffLight)
 		: lightsInGroup.map(turnOnLight)
 	)
-}
+)
 
 module.exports = (lifxClient, lifxConfig) => groupName => {
 	logger(`Command: Toggle Light => ${groupName}`)
