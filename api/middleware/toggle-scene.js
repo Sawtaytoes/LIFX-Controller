@@ -1,5 +1,5 @@
 const dir = require(`${global.baseDir}/global-dirs`)
-const logger = require(`${dir.api}/logger`)
+const logger = require(`${dir.utils}/logger`)
 
 const POWERED_ON = 1
 const DURATION = 1000

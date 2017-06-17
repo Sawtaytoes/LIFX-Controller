@@ -3,7 +3,7 @@ const fs = require('fs')
 
 const dir = require(`${global.baseDir}/global-dirs`)
 const config = require(`${dir.configs}config-settings`)
-const logger = require(`${dir.api}/logger`)
+const logger = require(`${dir.utils}/logger`)
 
 const API_GET_LIGHTS = 'https://api.lifx.com/v1/lights'
 const API_GET_SCENES = 'https://api.lifx.com/v1/scenes'

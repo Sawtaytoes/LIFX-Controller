@@ -6,6 +6,7 @@ const cache = `${base}.cache/`
 const server = `${base}server/`
 
 const middleware = `${api}middleware/`
+const utils = `${api}utils/`
 
 const configs = `${server}configs/`
 const services = `${server}services/`
@@ -18,4 +19,5 @@ module.exports = {
 	middleware,
 	server,
 	services,
+	utils,
 }
