@@ -110,7 +110,7 @@ const init = () => {
 	.then(storeJsonDataInCache(CACHE_FILENAME.SCENES))
 	.then(storeJsonDataInMemory(setScene))
 
-	.catch(err => logger(`Error: ${err}`))
+	.catch(err => logger.log(`Error: ${err}`))
 }
 
 const update = init
