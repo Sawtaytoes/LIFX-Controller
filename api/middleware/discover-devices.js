@@ -1,16 +1,18 @@
+const Promise = require('bluebird')
+
 const dir = require(`${global.baseDir}/global-dirs`)
-const logger = require(`${dir.api}/logger`)
+const logger = require(`${dir.utils}/logger`)
 
 const DURATION = 30000
 
 module.exports = (lifxClient, lifxConfig) => _ => {
-	logger('Command: Discover Devices')
+	logger.log('Command: Discover Devices')
 
 	lifxConfig.update()
 	lifxClient.startDiscovery()
 
-	new Promise(resolve => setTimeout(resolve, DURATION))
+	Promise.delay(DURATION)
 	.then(() => lifxClient.stopDiscovery())
-	.then(() => logger('Discover Devices: Complete'))
+	.then(() => logger.log('Discover Devices: Complete'))
 	.catch(err => console.error('Discover Devices:', err))
 }

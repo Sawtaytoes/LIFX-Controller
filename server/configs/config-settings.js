@@ -14,7 +14,7 @@ const configDefaults = {
 	hostname: '0.0.0.0',      // Can be 0.0.0.0 for binding to all ports.
 	port: 3000,               // Port of webserver.
 
-	apiKey: '',               // LIFX HTTP API Key (https://api.developer.lifx.com/)
+	apiToken: '',               // LIFX HTTP API Key (https://api.developer.lifx.com/)
 }
 
 const configEnv = {
@@ -24,7 +24,7 @@ const configEnv = {
 	hostname: process.env.HOSTNAME,
 	port: process.env.PORT,
 
-	apiKey: process.env.API_KEY,
+	apiToken: process.env.API_TOKEN,
 }
 
 Object.keys(configEnv)
@@ -47,5 +47,5 @@ module.exports = {
 	getSafeUrl: portFunc => portFunc().replace('0.0.0.0', 'localhost'),
 	getServerUrl: () => `${config.protocol}://${config.hostname}:${config.port}`,
 
-	getApiKey: () => config.apiKey,
+	getApiToken: () => config.apiToken,
 }

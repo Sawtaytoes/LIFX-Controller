@@ -1,8 +1,9 @@
 const LifxClient = require('node-lifx').Client
+const Promise = require('bluebird')
 
 const lifxClient = new LifxClient()
 
-const addLightSettings = (light, state) => {
+const addLightSettings = light => state => {
 	const {
 		color: {
 			hue,
@@ -27,11 +28,8 @@ const addLightSettings = (light, state) => {
 }
 
 const updateLightConfig = light => (
-	new Promise((resolve, reject) => (
-		light.getState((err, state) => (
-			err ? reject(err) : resolve(addLightSettings(light, state))
-		))
-	))
+	Promise.promisify(light.getState, { context: light })()
+	.then(addLightSettings(light))
 )
 
 const update = lights => (

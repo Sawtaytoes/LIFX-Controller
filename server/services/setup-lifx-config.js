@@ -3,10 +3,11 @@ const fs = require('fs')
 
 const dir = require(`${global.baseDir}/global-dirs`)
 const config = require(`${dir.configs}config-settings`)
-const logger = require(`${dir.api}/logger`)
+const logger = require(`${dir.utils}/logger`)
 
-const API_GET_LIGHTS = 'https://api.lifx.com/v1/lights'
-const API_GET_SCENES = 'https://api.lifx.com/v1/scenes'
+const LIFX_API_ADDRESS = 'https://api.lifx.com/v1/'
+const API_GET_LIGHTS = `${LIFX_API_ADDRESS}lights`
+const API_GET_SCENES = `${LIFX_API_ADDRESS}scenes`
 
 const FILE_ENCODING_SCHEME = 'utf8'
 const CACHE_FILENAME = {
@@ -59,7 +60,8 @@ const setScene = scene => {
 }
 
 const headers = {
-	Authorization: `Basic ${config.getApiKey()}`
+	'Accept-Encoding': 'gzip, deflate',
+	Authorization: `Bearer ${config.getApiToken()}`,
 }
 const handleResponse = response => response.json()
 
@@ -84,7 +86,11 @@ const storeJsonDataInCache = fileName => jsonData => {
 	return jsonData
 }
 
-const storeJsonDataInMemory = action => jsonData => jsonData.forEach(action)
+const storeJsonDataInMemory = action => jsonData => (
+	jsonData.error
+	? console.error('Error: LIFX HTTP API =>', jsonData.error)
+	: jsonData.forEach(action)
+)
 
 const clear = () => {
 	lights.clear()
@@ -104,7 +110,7 @@ const init = () => {
 	.then(storeJsonDataInCache(CACHE_FILENAME.SCENES))
 	.then(storeJsonDataInMemory(setScene))
 
-	.catch(err => logger(`Error: ${err}`))
+	.catch(err => logger.log(`Error: ${err}`))
 }
 
 const update = init
