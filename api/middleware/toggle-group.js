@@ -34,8 +34,6 @@ module.exports = (lifxClient, lifxConfig) => groupName => {
 		.map(({ id }) => lifxClient.light(id))
 	)
 
-	console.log('lightsInGroup', lightsInGroup.map(({ settings: { power } }) => power));
-
 	lifxClient.update(lightsInGroup)
 	.then(toggleGroup)
 	.then(lifxConfig.update)
