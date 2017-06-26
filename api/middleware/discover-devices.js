@@ -5,7 +5,7 @@ const logger = require(`${dir.utils}/logger`)
 
 const DURATION = 30000
 
-module.exports = (lifxClient, lifxConfig) => _ => {
+module.exports = (lifxClient, lifxConfig) => () => {
 	logger.log('Command: Discover Devices')
 
 	lifxConfig.update()
