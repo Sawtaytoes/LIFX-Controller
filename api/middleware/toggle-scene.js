@@ -3,7 +3,7 @@ const Promise = require('bluebird')
 const dir = require(`${global.baseDir}/global-dirs`)
 const logger = require(`${dir.utils}/logger`)
 
-const POWERED_ON = 1
+const POWERED_OFF = 0
 const DURATION = 1000
 
 const relativeEquals = (value1 = 0, value2 = 0) => (
@@ -11,20 +11,18 @@ const relativeEquals = (value1 = 0, value2 = 0) => (
 )
 
 const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
-	// Power
 	(settings.power ? 'on' : 'off') === sceneLightSettings.power
 
-	// Brightness only if lights are ON
+	// Check against 0ther settings only if lights are powered on
 	&& (
-		settings.power === POWERED_ON
-		? relativeEquals(settings.brightness, sceneLightSettings.brightness * 100)
-		: true
+		settings.power === POWERED_OFF
+		|| (
+			relativeEquals(settings.brightness, sceneLightSettings.brightness * 100)
+			&& relativeEquals(settings.color.hue, sceneLightSettings.color.hue)
+			&& relativeEquals(settings.color.saturation, sceneLightSettings.color.saturation)
+			&& relativeEquals(settings.color.kelvin, sceneLightSettings.color.kelvin)
+		)
 	)
-
-	// Color
-	&& relativeEquals(settings.color.hue, sceneLightSettings.color.hue)
-	&& relativeEquals(settings.color.saturation, sceneLightSettings.color.saturation)
-	&& relativeEquals(settings.color.kelvin, sceneLightSettings.color.kelvin)
 )
 
 const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
