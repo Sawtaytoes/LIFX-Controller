@@ -20,7 +20,7 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 		|| (
 			relativeEquals(settings.brightness, sceneLightSettings.brightness * 100)
 			&& relativeEquals(settings.color.hue, sceneLightSettings.color.hue)
-			&& relativeEquals(settings.color.saturation, sceneLightSettings.color.saturation * 100)
+			&& relativeEquals(settings.color.saturation, (sceneLightSettings.color.saturation || 0) * 100)
 			&& relativeEquals(settings.color.kelvin, sceneLightSettings.color.kelvin)
 		)
 	)
