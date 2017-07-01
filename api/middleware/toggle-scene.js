@@ -95,7 +95,13 @@ module.exports = (lifxClient, lifxConfig) => sceneName => {
 	logger.log(`Command: Toggle Scene => ${sceneName}`)
 
 	const scene = lifxConfig.scenes.get(sceneName)
-	const lightsInScene = scene.lights.map(({ id }) => lifxClient.light(id))
+
+	if (!scene) return 'Scene does not exist.'
+
+	const lightsInScene = (
+		scene.lights
+		.map(({ id }) => lifxClient.light(id))
+	)
 
 	lifxClient.update(lightsInScene)
 	.then(getSceneAndLightSettings(scene))
