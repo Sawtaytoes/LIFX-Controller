@@ -100,6 +100,5 @@ module.exports = (lifxClient, lifxConfig) => sceneName => {
 	lifxClient.update(lightsInScene)
 	.then(getSceneAndLightSettings(scene))
 	.then(toggleScene)
-	.then(lifxConfig.update)
 	.catch(err => console.error(err))
 }
