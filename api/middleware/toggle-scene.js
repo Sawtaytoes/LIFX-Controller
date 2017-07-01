@@ -20,7 +20,7 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 		|| (
 			relativeEquals(settings.brightness, sceneLightSettings.brightness * 100)
 			&& relativeEquals(settings.color.hue, sceneLightSettings.color.hue)
-			&& relativeEquals(settings.color.saturation, sceneLightSettings.color.saturation * 100)
+			&& relativeEquals(settings.color.saturation, (sceneLightSettings.color.saturation || 0) * 100)
 			&& relativeEquals(settings.color.kelvin, sceneLightSettings.color.kelvin)
 		)
 	)
@@ -95,11 +95,16 @@ module.exports = (lifxClient, lifxConfig) => sceneName => {
 	logger.log(`Command: Toggle Scene => ${sceneName}`)
 
 	const scene = lifxConfig.scenes.get(sceneName)
-	const lightsInScene = scene.lights.map(({ id }) => lifxClient.light(id))
+
+	if (!scene) return 'Scene does not exist.'
+
+	const lightsInScene = (
+		scene.lights
+		.map(({ id }) => lifxClient.light(id))
+	)
 
 	lifxClient.update(lightsInScene)
 	.then(getSceneAndLightSettings(scene))
 	.then(toggleScene)
-	.then(lifxConfig.update)
 	.catch(err => console.error(err))
 }

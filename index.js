@@ -45,3 +45,10 @@ serverSettings.get(
 )
 
 startServer(serverSettings)
+
+const DEVICE_DISCOVERY_INTERVAL = 3600
+
+setInterval(
+	discoverDevices(lifxClient, lifxConfig),
+	DEVICE_DISCOVERY_INTERVAL
+)
