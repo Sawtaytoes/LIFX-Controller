@@ -7,6 +7,9 @@ const POWERED_ON = 1
 const POWERED_OFF = 0
 const DURATION = 1000
 
+const isLightOnline = light => light
+const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
+
 const relativeEquals = (value1 = 0, value2 = 0) => (
 	value1 - 1 <= value2 && value1 + 1 >= value2
 )
@@ -89,6 +92,7 @@ const getSceneAndLightSettings = scene => lights => (
 		light: lights.find(({ id }) => id === sceneLightSettings.id),
 		sceneLightSettings,
 	}))
+	.filter(({ light }) => light)
 )
 
 module.exports = (lifxClient, lifxConfig) => sceneName => {
@@ -100,11 +104,13 @@ module.exports = (lifxClient, lifxConfig) => sceneName => {
 
 	const lightsInScene = (
 		scene.lights
-		.map(({ id }) => lifxClient.light(id))
+		.map(getLightById(lifxClient))
+		.filter(isLightOnline)
 	)
 
 	lifxClient.update(lightsInScene)
 	.then(getSceneAndLightSettings(scene))
 	.then(toggleScene)
+	.then(lifxClient.update)
 	.catch(err => console.error(err))
 }

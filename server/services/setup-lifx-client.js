@@ -3,6 +3,8 @@ const Promise = require('bluebird')
 
 const lifxClient = new LifxClient()
 
+const isLightOnline = light => light
+
 const addLightSettings = light => state => {
 	const {
 		color: {
@@ -33,7 +35,11 @@ const updateLightConfig = light => (
 )
 
 const update = lights => (
-	Promise.all(lights.map(updateLightConfig))
+	Promise.all(
+		lights
+		.filter(isLightOnline)
+		.map(updateLightConfig)
+	)
 )
 
 lifxClient.on('light-new', updateLightConfig)
