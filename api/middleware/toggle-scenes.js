@@ -95,21 +95,36 @@ const getSceneAndLightsSettings = scene => lights => (
 	.filter(({ light }) => light)
 )
 
-module.exports = (lifxClient, lifxConfig) => sceneName => {
-	logger.log(`Command: Toggle Scene => ${sceneName}`)
+const combineLightsInScenes = lightsInScenes => (
+	lightsInScenes.reduce((combined, lightsInScene) => combined.concat(lightsInScene), [])
+)
 
-	const scene = lifxConfig.scenes.get(sceneName)
+const getLightsInScene = lifxClient => scene => (
+	scene.lights
+	.map(getLightById(lifxClient))
+	.filter(isLightOnline)
+)
 
-	if (!scene) return 'Scene does not exist.'
+module.exports = (lifxClient, lifxConfig) => sceneNames => {
+	logger.log(`Command: Toggle Scenes => ${sceneNames}`)
 
-	const lightsInScene = (
-		scene.lights
-		.map(getLightById(lifxClient))
-		.filter(isLightOnline)
+	const scenes = (
+		sceneNames
+		.map(sceneName => lifxConfig.scenes.get(sceneName))
+		.filter(scene => scene)
 	)
 
-	lifxClient.update(lightsInScene)
-	.then(getSceneAndLightsSettings(scene))
+	// if (scenes.length !== sceneNames.length) return 'One or many of the scenes does not exist.'
+
+	Promise.all(
+		scenes
+		.map(getLightsInScene(lifxClient))
+		.map(lifxClient.update)
+		.map((promise, index) => (
+			promise.then(getSceneAndLightsSettings(scenes[index]))
+		))
+	)
+	.then(combineLightsInScenes)
 	.then(toggleScene)
 	.then(lifxConfig.update)
 	.catch(err => console.error(err))

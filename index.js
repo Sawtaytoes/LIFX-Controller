@@ -12,15 +12,10 @@ const startServer = require(`${dir.server}start-server`)
 const discoverDevices = require(`${dir.middleware}discover-devices`)
 const toggleGroup = require(`${dir.middleware}toggle-group`)
 const toggleScene = require(`${dir.middleware}toggle-scene`)
+const toggleScenes = require(`${dir.middleware}toggle-scenes`)
 
 lifxClient.init()
 lifxConfig.init()
-
-const lifxMiddleware = {
-	get: action => (req, res) => res.send(
-		action(lifxClient, lifxConfig)(req.params.name)
-	)
-}
 
 const serverSettings = setupServer()
 
@@ -31,17 +26,30 @@ serverSettings.get(
 
 serverSettings.get(
 	'/discover-devices',
-	lifxMiddleware.get(discoverDevices)
+	(req, res) => res.send(
+		discoverDevices(lifxClient, lifxConfig)
+	)
 )
 
 serverSettings.get(
-	'/toggle-group/:name',
-	lifxMiddleware.get(toggleGroup)
+	'/toggle-group/:groupName',
+	(req, res) => res.send(
+		toggleGroup(lifxClient, lifxConfig)(req.params.groupName)
+	)
 )
 
 serverSettings.get(
-	'/toggle-scene/:name',
-	lifxMiddleware.get(toggleScene)
+	'/toggle-scene/:sceneName',
+	(req, res) => res.send(
+		toggleScene(lifxClient, lifxConfig)(req.params.sceneName)
+	)
+)
+
+serverSettings.put(
+	'/toggle-scenes',
+	(req, res) => res.send(
+		toggleScenes(lifxClient, lifxConfig)(req.body.sceneNames)
+	)
 )
 
 startServer(serverSettings)
@@ -49,6 +57,6 @@ startServer(serverSettings)
 const DEVICE_DISCOVERY_INTERVAL = 3600
 
 setInterval(
-	discoverDevices(lifxClient, lifxConfig),
+	() => discoverDevices(lifxClient, lifxConfig),
 	DEVICE_DISCOVERY_INTERVAL
 )
