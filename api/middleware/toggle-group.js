@@ -44,5 +44,5 @@ module.exports = (lifxClient, lifxConfig) => groupName => {
 	lifxClient.update(lightsInGroup)
 	.then(toggleGroup)
 	.then(lifxClient.update)
-	.catch(err => console.error(err))
+	.catch(err => logger.logError(err))
 }

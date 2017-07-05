@@ -14,5 +14,5 @@ module.exports = (lifxClient, lifxConfig) => {
 	Promise.delay(DURATION)
 	.then(() => lifxClient.stopDiscovery())
 	.then(() => logger.log('Discover Devices: Complete'))
-	.catch(err => console.error('Discover Devices:', err))
+	.catch(err => logger.logError('Discover Devices:', err))
 }
