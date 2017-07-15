@@ -8,8 +8,8 @@
     "start": "npm run api"
   },
   "engines": {
-    "node": "7.2.0",
-    "npm": "4.0.3"
+    "node": "8.1.4",
+    "npm": "5.0.3"
   },
   "dependencies": {
     "bluebird": "^3.5.0",
