@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "api": "node index.js",
-    "api:debug": "node --inspect --debug-brk index.js",
+    "api:debug": "node --inspect index.js",
+    "api:mon:debug": "nodemon --inspect index.js",
     "api:mon": "nodemon index.js",
     "api:test": "tape-watch index.test.js -p tap-spec",
     "start": "npm run api"
