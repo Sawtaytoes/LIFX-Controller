@@ -7,7 +7,7 @@ const POWERED_ON = 1
 const POWERED_OFF = 0
 const DURATION = 1000
 
-const isLightOnline = light => light
+const isLightOnline = Boolean
 const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
 
 const relativeEquals = (value1 = 0, value2 = 0) => (

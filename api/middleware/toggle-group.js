@@ -6,7 +6,7 @@ const logger = require(`${dir.utils}/logger`)
 const POWERED_ON = 1
 const DURATION = 500
 
-const isLightOnline = light => light
+const isLightOnline = Boolean
 const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
 
 const isLightOnInGroup = lightsInGroup => (
