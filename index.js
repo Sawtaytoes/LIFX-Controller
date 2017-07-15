@@ -41,7 +41,7 @@ serverSettings.get(
 serverSettings.get(
 	'/toggle-scene/:sceneName',
 	(req, res) => res.send(
-		toggleScene(lifxClient, lifxConfig)(req.params.sceneName)
+		toggleScenes(lifxClient, lifxConfig)([req.params.sceneName])
 	)
 )
 
