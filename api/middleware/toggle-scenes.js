@@ -111,10 +111,10 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 	const scenes = (
 		sceneNames
 		.map(sceneName => lifxConfig.scenes.get(sceneName))
-		.filter(scene => scene)
+		.filter(Boolean)
 	)
 
-	// if (scenes.length !== sceneNames.length) return 'One or many of the scenes does not exist.'
+	if (!scenes.length) return 'Scenes do not exist.'
 
 	Promise.all(
 		scenes
