@@ -11,7 +11,6 @@ const startServer = require(`${dir.server}start-server`)
 // Load Middleware
 const discoverDevices = require(`${dir.middleware}discover-devices`)
 const toggleGroup = require(`${dir.middleware}toggle-group`)
-const toggleLights = require(`${dir.middleware}toggle-lights`)
 const toggleScenes = require(`${dir.middleware}toggle-scenes`)
 
 lifxClient.init()
