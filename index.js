@@ -11,16 +11,11 @@ const startServer = require(`${dir.server}start-server`)
 // Load Middleware
 const discoverDevices = require(`${dir.middleware}discover-devices`)
 const toggleGroup = require(`${dir.middleware}toggle-group`)
-const toggleScene = require(`${dir.middleware}toggle-scene`)
+const toggleLights = require(`${dir.middleware}toggle-lights`)
+const toggleScenes = require(`${dir.middleware}toggle-scenes`)
 
 lifxClient.init()
 lifxConfig.init()
-
-const lifxMiddleware = {
-	get: action => (req, res) => res.send(
-		action(lifxClient, lifxConfig)(req.params.name)
-	)
-}
 
 const serverSettings = setupServer()
 
@@ -31,24 +26,51 @@ serverSettings.get(
 
 serverSettings.get(
 	'/discover-devices',
-	lifxMiddleware.get(discoverDevices)
+	(req, res) => res.send(
+		discoverDevices(lifxClient, lifxConfig)
+	)
 )
 
 serverSettings.get(
-	'/toggle-group/:name',
-	lifxMiddleware.get(toggleGroup)
+	'/toggle-group/:groupName',
+	(req, res) => res.send(
+		toggleGroup(lifxClient, lifxConfig)(req.params.groupName)
+	)
 )
 
 serverSettings.get(
-	'/toggle-scene/:name',
-	lifxMiddleware.get(toggleScene)
+	'/toggle-light/:lightName',
+	(req, res) => res.send(
+		toggleLights(lifxClient, lifxConfig)([req.params.lightName])
+	)
+)
+
+serverSettings.put(
+	'/toggle-lights',
+	(req, res) => res.send(
+		toggleLights(lifxClient, lifxConfig)(req.body.lightNames)
+	)
+)
+
+serverSettings.get(
+	'/toggle-scene/:sceneName',
+	(req, res) => res.send(
+		toggleScenes(lifxClient, lifxConfig)([req.params.sceneName])
+	)
+)
+
+serverSettings.put(
+	'/toggle-scenes',
+	(req, res) => res.send(
+		toggleScenes(lifxClient, lifxConfig)(req.body.sceneNames)
+	)
 )
 
 startServer(serverSettings)
 
-const DEVICE_DISCOVERY_INTERVAL = 3600
+const DEVICE_DISCOVERY_INTERVAL = 600000 // 10 minutes
 
 setInterval(
-	discoverDevices(lifxClient, lifxConfig),
+	() => discoverDevices(lifxClient, lifxConfig),
 	DEVICE_DISCOVERY_INTERVAL
 )

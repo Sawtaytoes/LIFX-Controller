@@ -7,7 +7,7 @@ const POWERED_ON = 1
 const POWERED_OFF = 0
 const DURATION = 1000
 
-const isLightOnline = light => light
+const isLightOnline = Boolean
 const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
 
 const relativeEquals = (value1 = 0, value2 = 0) => (
@@ -86,7 +86,7 @@ const toggleScene = sceneAndLightSettings => (
 	)
 )
 
-const getSceneAndLightSettings = scene => lights => (
+const getSceneAndLightsSettings = scene => lights => (
 	scene.states
 	.map(sceneLightSettings => ({
 		light: lights.find(({ id }) => id === sceneLightSettings.id),
@@ -95,22 +95,37 @@ const getSceneAndLightSettings = scene => lights => (
 	.filter(({ light }) => light)
 )
 
-module.exports = (lifxClient, lifxConfig) => sceneName => {
-	logger.log(`Command: Toggle Scene => ${sceneName}`)
+const combineLightsInScenes = lightsInScenes => (
+	lightsInScenes.reduce((combined, lightsInScene) => combined.concat(lightsInScene), [])
+)
 
-	const scene = lifxConfig.scenes.get(sceneName)
+const getLightsInScene = lifxClient => scene => (
+	scene.lights
+	.map(getLightById(lifxClient))
+	.filter(isLightOnline)
+)
 
-	if (!scene) return 'Scene does not exist.'
+module.exports = (lifxClient, lifxConfig) => sceneNames => {
+	logger.log(`Command: Toggle Scenes => ${sceneNames}`)
 
-	const lightsInScene = (
-		scene.lights
-		.map(getLightById(lifxClient))
-		.filter(isLightOnline)
+	const scenes = (
+		sceneNames
+		.map(sceneName => lifxConfig.scenes.get(sceneName))
+		.filter(Boolean)
 	)
 
-	lifxClient.update(lightsInScene)
-	.then(getSceneAndLightSettings(scene))
+	if (!scenes.length) return 'Scenes do not exist.'
+
+	Promise.all(
+		scenes
+		.map(getLightsInScene(lifxClient))
+		.map(lifxClient.update)
+		.map((promise, index) => (
+			promise.then(getSceneAndLightsSettings(scenes[index]))
+		))
+	)
+	.then(combineLightsInScenes)
 	.then(toggleScene)
-	.then(lifxClient.update)
-	.catch(err => console.error(err))
+	.then(lifxConfig.update)
+	.catch(err => logger.logError(err))
 }

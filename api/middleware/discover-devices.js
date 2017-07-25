@@ -5,7 +5,7 @@ const logger = require(`${dir.utils}/logger`)
 
 const DURATION = 30000
 
-module.exports = (lifxClient, lifxConfig) => () => {
+module.exports = (lifxClient, lifxConfig) => {
 	logger.log('Command: Discover Devices')
 
 	lifxConfig.update()
@@ -14,5 +14,5 @@ module.exports = (lifxClient, lifxConfig) => () => {
 	Promise.delay(DURATION)
 	.then(() => lifxClient.stopDiscovery())
 	.then(() => logger.log('Discover Devices: Complete'))
-	.catch(err => console.error('Discover Devices:', err))
+	.catch(err => logger.logError('Discover Devices:', err))
 }

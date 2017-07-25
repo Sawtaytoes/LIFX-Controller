@@ -3,7 +3,7 @@ const Promise = require('bluebird')
 
 const lifxClient = new LifxClient()
 
-const isLightOnline = light => light
+const isLightOnline = Boolean
 
 const addLightSettings = light => state => {
 	const {
