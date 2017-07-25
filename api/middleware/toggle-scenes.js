@@ -17,7 +17,7 @@ const relativeEquals = (value1 = 0, value2 = 0) => (
 const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 	(settings.power ? 'on' : 'off') === sceneLightSettings.power
 
-	// Check against 0ther settings only if lights are powered on
+	// Check against other settings only if lights are powered on
 	&& (
 		settings.power === POWERED_OFF
 		|| (
@@ -31,7 +31,9 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 
 const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
 
-const isSceneActive = sceneAndLightSettings => sceneAndLightSettings.every(lightMatchesScene)
+const isSceneActive = sceneAndLightSettings => (
+	sceneAndLightSettings.every(lightMatchesScene)
+)
 
 const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
 	Promise.promisify(light.color, { context: light })(
@@ -96,7 +98,10 @@ const getSceneAndLightsSettings = scene => lights => (
 )
 
 const combineLightsInScenes = lightsInScenes => (
-	lightsInScenes.reduce((combined, lightsInScene) => combined.concat(lightsInScene), [])
+	lightsInScenes.reduce(
+		(combined, lightsInScene) => combined.concat(lightsInScene),
+		[]
+	)
 )
 
 const getLightsInScene = lifxClient => scene => (
