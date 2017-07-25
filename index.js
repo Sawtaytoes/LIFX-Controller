@@ -68,7 +68,7 @@ serverSettings.put(
 
 startServer(serverSettings)
 
-const DEVICE_DISCOVERY_INTERVAL = 3600
+const DEVICE_DISCOVERY_INTERVAL = 600000 // 10 minutes
 
 setInterval(
 	() => discoverDevices(lifxClient, lifxConfig),
