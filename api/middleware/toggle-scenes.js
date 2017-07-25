@@ -106,7 +106,7 @@ const getLightsInScene = lifxClient => scene => (
 )
 
 module.exports = (lifxClient, lifxConfig) => sceneNames => {
-	logger.log(`Command: Toggle Scenes => ${sceneNames}`)
+	logger.log(`Command: Toggle Scenes => ${sceneNames.join(', ')}`)
 
 	const scenes = (
 		sceneNames

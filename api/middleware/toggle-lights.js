@@ -29,7 +29,7 @@ const toggleLights = lights => (
 )
 
 module.exports = (lifxClient, lifxConfig) => lightNames => {
-	logger.log(`Command: Toggle Light => ${lightNames}`)
+	logger.log(`Command: Toggle Light => ${lightNames.join(', ')}`)
 
 	const lights = (
 		lightNames
