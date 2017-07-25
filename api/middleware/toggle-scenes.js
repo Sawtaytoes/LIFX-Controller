@@ -6,12 +6,14 @@ const logger = require(`${dir.utils}/logger`)
 const POWERED_ON = 1
 const POWERED_OFF = 0
 const DURATION = 1000
+const MARGIN_OF_ERROR = 2
 
 const isLightOnline = Boolean
 const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
 
 const relativeEquals = (value1 = 0, value2 = 0) => (
-	value1 - 1 <= value2 && value1 + 1 >= value2
+	value1 - MARGIN_OF_ERROR <= value2
+	&& value1 + MARGIN_OF_ERROR >= value2
 )
 
 const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
