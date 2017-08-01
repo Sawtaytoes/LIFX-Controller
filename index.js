@@ -48,36 +48,36 @@ serverSettings.put(
 
 serverSettings.get(
 	'/toggle-group/:groupName',
-	({ params }, res) => res.send(
-		toggleGroup(lifxClient, lifxConfig)(params.groupName)
+	({ params: { groupName } }, res) => res.send(
+		toggleGroup(lifxClient, lifxConfig)(groupName)
 	)
 )
 
 serverSettings.get(
 	'/toggle-light/:lightName',
-	({ params }, res) => res.send(
-		toggleLights(lifxClient, lifxConfig)([params.lightName])
+	({ params: { lightName } }, res) => res.send(
+		toggleLights(lifxClient, lifxConfig)([lightName])
 	)
 )
 
 serverSettings.put(
 	'/toggle-lights',
-	({ body }, res) => res.send(
-		toggleLights(lifxClient, lifxConfig)(body.lightNames)
+	({ body: { lightNames } }, res) => res.send(
+		toggleLights(lifxClient, lifxConfig)(lightNames)
 	)
 )
 
 serverSettings.get(
 	'/toggle-scene/:sceneName',
-	({ params }, res) => res.send(
-		toggleScenes(lifxClient, lifxConfig)([params.sceneName])
+	({ params: { sceneName } }, res) => res.send(
+		toggleScenes(lifxClient, lifxConfig)([sceneName])
 	)
 )
 
 serverSettings.put(
 	'/toggle-scenes',
-	({ body }, res) => res.send(
-		toggleScenes(lifxClient, lifxConfig)(body.sceneNames)
+	({ body: { sceneNames } }, res) => res.send(
+		toggleScenes(lifxClient, lifxConfig)(sceneNames)
 	)
 )
 
