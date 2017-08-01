@@ -9,7 +9,7 @@ const DURATION = 500
 const isLightOnline = Boolean
 const getLightByName = lifxClient => name => lifxClient.light(name)
 
-const isLightOn = lights => (
+const isOneOrMoreLightsOn = lights => (
 	lights.some(({ settings: { power } }) => power === POWERED_ON)
 )
 
@@ -22,7 +22,7 @@ const turnOnLight = changeLightPower('on')
 
 const toggleLights = lights => (
 	Promise.all(
-		isLightOn(lights)
+		isOneOrMoreLightsOn(lights)
 		? lights.map(turnOffLight)
 		: lights.map(turnOnLight)
 	)
