@@ -10,6 +10,7 @@ const startServer = require(`${dir.server}start-server`)
 
 // Load Middleware
 const discoverDevices = require(`${dir.middleware}discover-devices`)
+const setLightsBrightness = require(`${dir.middleware}set-lights-brightness`)
 const toggleGroup = require(`${dir.middleware}toggle-group`)
 const toggleLights = require(`${dir.middleware}toggle-lights`)
 const toggleScenes = require(`${dir.middleware}toggle-scenes`)
@@ -32,37 +33,51 @@ serverSettings.get(
 )
 
 serverSettings.get(
+	'/set-light-brightness/:lightName/:brightness',
+	({ params: { brightness, lightName } }, res) => res.send(
+		setLightsBrightness(lifxClient, lifxConfig)([{ brightness, lightName }])
+	)
+)
+
+serverSettings.put(
+	'/set-lights-brightness',
+	({ body: { lightConfigs } }, res) => res.send(
+		setLightsBrightness(lifxClient, lifxConfig)(lightConfigs)
+	)
+)
+
+serverSettings.get(
 	'/toggle-group/:groupName',
-	(req, res) => res.send(
-		toggleGroup(lifxClient, lifxConfig)(req.params.groupName)
+	({ params: { groupName } }, res) => res.send(
+		toggleGroup(lifxClient, lifxConfig)(groupName)
 	)
 )
 
 serverSettings.get(
 	'/toggle-light/:lightName',
-	(req, res) => res.send(
-		toggleLights(lifxClient, lifxConfig)([req.params.lightName])
+	({ params: { lightName } }, res) => res.send(
+		toggleLights(lifxClient, lifxConfig)([lightName])
 	)
 )
 
 serverSettings.put(
 	'/toggle-lights',
-	(req, res) => res.send(
-		toggleLights(lifxClient, lifxConfig)(req.body.lightNames)
+	({ body: { lightNames } }, res) => res.send(
+		toggleLights(lifxClient, lifxConfig)(lightNames)
 	)
 )
 
 serverSettings.get(
 	'/toggle-scene/:sceneName',
-	(req, res) => res.send(
-		toggleScenes(lifxClient, lifxConfig)([req.params.sceneName])
+	({ params: { sceneName } }, res) => res.send(
+		toggleScenes(lifxClient, lifxConfig)([sceneName])
 	)
 )
 
 serverSettings.put(
 	'/toggle-scenes',
-	(req, res) => res.send(
-		toggleScenes(lifxClient, lifxConfig)(req.body.sceneNames)
+	({ body: { sceneNames } }, res) => res.send(
+		toggleScenes(lifxClient, lifxConfig)(sceneNames)
 	)
 )
 

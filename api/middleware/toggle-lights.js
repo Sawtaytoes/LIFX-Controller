@@ -9,7 +9,7 @@ const DURATION = 500
 const isLightOnline = Boolean
 const getLightByName = lifxClient => name => lifxClient.light(name)
 
-const isLightOn = lights => (
+const isOneOrMoreLightsOn = lights => (
 	lights.some(({ settings: { power } }) => power === POWERED_ON)
 )
 
@@ -22,14 +22,14 @@ const turnOnLight = changeLightPower('on')
 
 const toggleLights = lights => (
 	Promise.all(
-		isLightOn(lights)
+		isOneOrMoreLightsOn(lights)
 		? lights.map(turnOffLight)
 		: lights.map(turnOnLight)
 	)
 )
 
 module.exports = (lifxClient, lifxConfig) => lightNames => {
-	logger.log(`Command: Toggle Light => ${lightNames}`)
+	logger.log(`Command: Toggle Light => ${lightNames.join(', ')}`)
 
 	const lights = (
 		lightNames
@@ -41,6 +41,6 @@ module.exports = (lifxClient, lifxConfig) => lightNames => {
 
 	lifxClient.update(lights)
 	.then(toggleLights)
-	.then(lifxClient.update)
-	.catch(err => logger.logError(err))
+	.then(lifxConfig.update)
+	.catch(logger.logError)
 }

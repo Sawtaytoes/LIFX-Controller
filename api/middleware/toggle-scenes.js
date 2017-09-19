@@ -6,18 +6,20 @@ const logger = require(`${dir.utils}/logger`)
 const POWERED_ON = 1
 const POWERED_OFF = 0
 const DURATION = 1000
+const MARGIN_OF_ERROR = 2
 
 const isLightOnline = Boolean
 const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
 
 const relativeEquals = (value1 = 0, value2 = 0) => (
-	value1 - 1 <= value2 && value1 + 1 >= value2
+	value1 - MARGIN_OF_ERROR <= value2
+	&& value1 + MARGIN_OF_ERROR >= value2
 )
 
 const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 	(settings.power ? 'on' : 'off') === sceneLightSettings.power
 
-	// Check against 0ther settings only if lights are powered on
+	// Check against other settings only if lights are powered on
 	&& (
 		settings.power === POWERED_OFF
 		|| (
@@ -31,7 +33,9 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 
 const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
 
-const isSceneActive = sceneAndLightSettings => sceneAndLightSettings.every(lightMatchesScene)
+const isSceneActive = sceneAndLightSettings => (
+	sceneAndLightSettings.every(lightMatchesScene)
+)
 
 const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
 	Promise.promisify(light.color, { context: light })(
@@ -96,7 +100,10 @@ const getSceneAndLightsSettings = scene => lights => (
 )
 
 const combineLightsInScenes = lightsInScenes => (
-	lightsInScenes.reduce((combined, lightsInScene) => combined.concat(lightsInScene), [])
+	lightsInScenes.reduce(
+		(combined, lightsInScene) => combined.concat(lightsInScene),
+		[]
+	)
 )
 
 const getLightsInScene = lifxClient => scene => (
@@ -106,7 +113,7 @@ const getLightsInScene = lifxClient => scene => (
 )
 
 module.exports = (lifxClient, lifxConfig) => sceneNames => {
-	logger.log(`Command: Toggle Scenes => ${sceneNames}`)
+	logger.log(`Command: Toggle Scenes => ${sceneNames.join(', ')}`)
 
 	const scenes = (
 		sceneNames
@@ -127,5 +134,5 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 	.then(combineLightsInScenes)
 	.then(toggleScene)
 	.then(lifxConfig.update)
-	.catch(err => logger.logError(err))
+	.catch(logger.logError)
 }
