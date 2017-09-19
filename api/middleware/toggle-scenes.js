@@ -134,5 +134,5 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 	.then(combineLightsInScenes)
 	.then(toggleScene)
 	.then(lifxConfig.update)
-	.catch(err => logger.logError(err))
+	.catch(logger.logError)
 }

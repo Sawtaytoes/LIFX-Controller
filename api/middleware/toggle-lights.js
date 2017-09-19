@@ -42,5 +42,5 @@ module.exports = (lifxClient, lifxConfig) => lightNames => {
 	lifxClient.update(lights)
 	.then(toggleLights)
 	.then(lifxConfig.update)
-	.catch(err => logger.logError(err))
+	.catch(logger.logError)
 }

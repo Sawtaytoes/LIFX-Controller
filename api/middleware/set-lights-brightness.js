@@ -65,5 +65,5 @@ module.exports = (lifxClient, lifxConfig) => lightsConfig => {
 	.then(getNewBrightnessValuesForLights(lightsConfig))
 	.then(setLightsBrightness)
 	.then(lifxConfig.update)
-	.catch(err => logger.logError(err))
+	.catch(logger.logError)
 }
