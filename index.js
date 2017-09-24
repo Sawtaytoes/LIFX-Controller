@@ -54,6 +54,13 @@ serverSettings.get(
 	)
 )
 
+serverSettings.put(
+	'/toggle-groups',
+	({ body: { names } }, res) => res.send(
+		toggleLights(lifxClient, lifxConfig)(names)
+	)
+)
+
 serverSettings.get(
 	'/toggle-light/:lightName',
 	({ params: { lightName } }, res) => res.send(
