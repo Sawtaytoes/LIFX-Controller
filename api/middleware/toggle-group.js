@@ -29,7 +29,7 @@ const toggleGroup = lightsInGroup => (
 )
 
 module.exports = (lifxClient, lifxConfig) => groupName => {
-	logger.log(`Command: Toggle Light => ${groupName}`)
+	logger.log(`Command: Toggle Group => ${groupName}`)
 
 	const group = lifxConfig.groups.get(groupName)
 
