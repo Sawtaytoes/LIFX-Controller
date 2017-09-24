@@ -28,21 +28,30 @@ const toggleGroup = lightsInGroup => (
 	)
 )
 
-module.exports = (lifxClient, lifxConfig) => groupName => {
-	logger.log(`Command: Toggle Group => ${groupName}`)
+module.exports = (lifxClient, lifxConfig) => groupNames => {
+	logger.log(`Command: Toggle Group => ${groupNames.join(', ')}`)
 
-	const group = lifxConfig.groups.get(groupName)
-
-	if (!group) return 'Group does not exist.'
-
-	const lightsInGroup = (
-		group.lights
-		.map(getLightById(lifxClient))
-		.filter(isLightOnline)
+	const groups = (
+		groupNames
+		.map(groupName => lifxConfig.groups.get(groupName))
 	)
 
-	lifxClient.update(lightsInGroup)
+	if (!groups || !groups.length) return 'Group does not exist.'
+
+	const lightsInGroups = (
+		groups
+		.map(group => (
+			group.lights
+			.map(getLightById(lifxClient))
+			.filter(isLightOnline)
+		))
+		.reduce((acc, lightsInGroup) => (
+			acc.concat(lightsInGroup)
+		))
+	)
+
+	lifxClient.update(lightsInGroups)
 	.then(toggleGroup)
-	.then(lifxClient.update)
+	.then(lifxConfig.update)
 	.catch(logger.logError)
 }

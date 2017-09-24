@@ -33,7 +33,7 @@ const turnOffGroup = lightsInGroup => (
 )
 
 module.exports = (lifxClient, lifxConfig) => groupNames => {
-	logger.log(`Command: Turn Off Group => ${groupNames.join(' ')}`)
+	logger.log(`Command: Turn Off Group => ${groupNames.join(', ')}`)
 
 	const groups = (
 		groupNames
@@ -56,6 +56,6 @@ module.exports = (lifxClient, lifxConfig) => groupNames => {
 
 	lifxClient.update(lightsInGroups)
 	.then(turnOffGroup)
-	.then(lifxClient.update)
+	.then(lifxConfig.update)
 	.catch(logger.logError)
 }
