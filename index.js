@@ -11,7 +11,7 @@ const startServer = require(`${dir.server}start-server`)
 // Load Middleware
 const discoverDevices = require(`${dir.middleware}discover-devices`)
 const setLightsBrightness = require(`${dir.middleware}set-lights-brightness`)
-const toggleGroup = require(`${dir.middleware}toggle-group`)
+const toggleGroups = require(`${dir.middleware}toggle-groups`)
 const toggleLights = require(`${dir.middleware}toggle-lights`)
 const toggleScenes = require(`${dir.middleware}toggle-scenes`)
 const turnOffGroup = require(`${dir.middleware}turn-off-group`)
@@ -50,14 +50,14 @@ serverSettings.put(
 serverSettings.get(
 	'/toggle-group/:groupName',
 	({ params: { groupName } }, res) => res.send(
-		toggleGroup(lifxClient, lifxConfig)([groupName])
+		toggleGroups(lifxClient, lifxConfig)([groupName])
 	)
 )
 
 serverSettings.put(
 	'/toggle-groups',
 	({ body: { names } }, res) => res.send(
-		toggleLights(lifxClient, lifxConfig)(names)
+		toggleGroups(lifxClient, lifxConfig)(names)
 	)
 )
 
