@@ -50,7 +50,7 @@ serverSettings.put(
 serverSettings.get(
 	'/toggle-group/:groupName',
 	({ params: { groupName } }, res) => res.send(
-		toggleGroup(lifxClient, lifxConfig)(groupName)
+		toggleGroup(lifxClient, lifxConfig)([groupName])
 	)
 )
 
