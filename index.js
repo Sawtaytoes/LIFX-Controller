@@ -55,7 +55,7 @@ serverSettings.get(
 )
 
 serverSettings.put(
-	'/toggle-groups',
+	'/toggle-group',
 	({ body: { names } }, res) => res.send(
 		toggleGroups(lifxClient, lifxConfig)(names)
 	)
@@ -69,7 +69,7 @@ serverSettings.get(
 )
 
 serverSettings.put(
-	'/toggle-lights',
+	'/toggle-light',
 	({ body: { names } }, res) => res.send(
 		toggleLights(lifxClient, lifxConfig)(names)
 	)
@@ -83,7 +83,7 @@ serverSettings.get(
 )
 
 serverSettings.put(
-	'/toggle-scenes',
+	'/toggle-scene',
 	({ body: { names } }, res) => res.send(
 		toggleScenes(lifxClient, lifxConfig)(names)
 	)
@@ -97,7 +97,7 @@ serverSettings.get(
 )
 
 serverSettings.put(
-	'/turn-off-groups',
+	'/turn-off-group',
 	({ body: { names } }, res) => res.send(
 		turnOffGroup(lifxClient, lifxConfig)(names)
 	)
