@@ -14,7 +14,7 @@ const setLightsBrightness = require(`${dir.middleware}set-lights-brightness`)
 const toggleGroups = require(`${dir.middleware}toggle-groups`)
 const toggleLights = require(`${dir.middleware}toggle-lights`)
 const toggleScenes = require(`${dir.middleware}toggle-scenes`)
-const turnOffGroup = require(`${dir.middleware}turn-off-group`)
+const turnOffGroups = require(`${dir.middleware}turn-off-groups`)
 
 lifxClient.init()
 lifxConfig.init()
@@ -92,14 +92,14 @@ serverSettings.put(
 serverSettings.get(
 	'/turn-off-group/:groupName',
 	({ params: { groupName } }, res) => res.send(
-		turnOffGroup(lifxClient, lifxConfig)([groupName])
+		turnOffGroups(lifxClient, lifxConfig)([groupName])
 	)
 )
 
 serverSettings.put(
 	'/turn-off-group',
 	({ body: { names } }, res) => res.send(
-		turnOffGroup(lifxClient, lifxConfig)(names)
+		turnOffGroups(lifxClient, lifxConfig)(names)
 	)
 )
 
