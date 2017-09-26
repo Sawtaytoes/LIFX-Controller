@@ -34,7 +34,10 @@ const setLightGroup = light => {
 	const { group = {} } = light
 	const { id, name } = group
 
-	const storedGroup = groups.get(id, group) || Object.assign({}, group, { lights: [] })
+	const storedGroup = (
+		groups.get(id, group)
+		|| Object.assign({}, group, { lights: [] })
+	)
 
 	storedGroup.lights.push(light)
 

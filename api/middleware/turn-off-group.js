@@ -9,27 +9,31 @@ const DURATION = 500
 const isLightOnline = Boolean
 const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
 
-const isLightOnInGroup = lightsInGroup => (
-	lightsInGroup.some(({ settings: { power } }) => power === POWERED_ON)
+const isLightOn = ({ settings: { power } }) => (
+	power === POWERED_ON
 )
 
 const changeLightPower = powerFuncName => light => (
-	Promise.promisify(light[powerFuncName], { context: light })(DURATION)
+	Promise.promisify(
+		light[powerFuncName],
+		{ context: light }
+	)(
+		DURATION
+	)
 )
 
 const turnOffLight = changeLightPower('off')
-const turnOnLight = changeLightPower('on')
 
-const toggleGroup = lightsInGroup => (
+const turnOffGroup = lightsInGroup => (
 	Promise.all(
-		isLightOnInGroup(lightsInGroup)
-		? lightsInGroup.map(turnOffLight)
-		: lightsInGroup.map(turnOnLight)
+		lightsInGroup
+		.filter(isLightOn)
+		.map(turnOffLight)
 	)
 )
 
 module.exports = (lifxClient, lifxConfig) => groupNames => {
-	logger.log(`Command: Toggle Group => ${groupNames.join(', ')}`)
+	logger.log(`Command: Turn Off Group => ${groupNames.join(', ')}`)
 
 	const groups = (
 		groupNames
@@ -51,7 +55,7 @@ module.exports = (lifxClient, lifxConfig) => groupNames => {
 	)
 
 	lifxClient.update(lightsInGroups)
-	.then(toggleGroup)
+	.then(turnOffGroup)
 	.then(lifxConfig.update)
 	.catch(logger.logError)
 }
