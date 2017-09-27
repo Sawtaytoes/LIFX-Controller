@@ -3,8 +3,8 @@ global.baseDir = `${__dirname}/`
 
 // Load Config settings
 const dir = require(`${global.baseDir}/global-dirs`)
-const lifxConfig = require(`${dir.services}setup-lifx-config`)
 const lifxClient = require(`${dir.services}setup-lifx-client`)
+const lifxConfig = require(`${dir.services}setup-lifx-config`)
 const setupServer = require(`${dir.server}setup-server`)
 const startServer = require(`${dir.server}start-server`)
 
@@ -28,78 +28,100 @@ serverSettings.get(
 
 serverSettings.get(
 	'/discover-devices',
-	(req, res) => res.send(
-		discoverDevices(lifxClient, lifxConfig)
+	(req, res) => (
+		res.send(
+			discoverDevices(lifxClient, lifxConfig)
+		)
 	)
 )
 
 serverSettings.get(
 	'/set-light-brightness/:lightName/:brightness',
-	({ params: { brightness, lightName } }, res) => res.send(
-		setLightsBrightness(lifxClient, lifxConfig)([{ brightness, lightName }])
+	({ params: { brightness, lightName } }, res) => (
+		res.send(
+			setLightsBrightness(lifxClient, lifxConfig)([{ brightness, lightName }])
+		)
 	)
 )
 
 serverSettings.put(
 	'/set-lights-brightness',
-	({ body: { lightConfigs } }, res) => res.send(
-		setLightsBrightness(lifxClient, lifxConfig)(lightConfigs)
+	({ body: { lightConfigs } }, res) => (
+		res.send(
+			setLightsBrightness(lifxClient, lifxConfig)(lightConfigs)
+		)
 	)
 )
 
 serverSettings.get(
 	'/toggle-group/:groupName',
-	({ params: { groupName } }, res) => res.send(
-		toggleGroups(lifxClient, lifxConfig)([groupName])
+	({ params: { groupName } }, res) => (
+		res.send(
+			toggleGroups(lifxClient, lifxConfig)([groupName])
+		)
 	)
 )
 
 serverSettings.put(
 	'/toggle-group',
-	({ body: { names } }, res) => res.send(
-		toggleGroups(lifxClient, lifxConfig)(names)
+	({ body: { names } }, res) => (
+		res.send(
+			toggleGroups(lifxClient, lifxConfig)(names)
+		)
 	)
 )
 
 serverSettings.get(
-	'/toggle-light/:lightName',
-	({ params: { lightName } }, res) => res.send(
-		toggleLights(lifxClient, lifxConfig)([lightName])
+	'/toggle-light/:name',
+	({ params: { name } }, res) => (
+		res.send(
+			toggleLights([name])
+		)
 	)
 )
 
 serverSettings.put(
 	'/toggle-light',
-	({ body: { names } }, res) => res.send(
-		toggleLights(lifxClient, lifxConfig)(names)
+	({ body: { names } }, res) => (
+		res.send(
+			toggleLights(lifxClient, lifxConfig)(names)
+		)
 	)
 )
 
 serverSettings.get(
 	'/toggle-scene/:sceneName',
-	({ params: { sceneName } }, res) => res.send(
-		toggleScenes(lifxClient, lifxConfig)([sceneName])
+	({ params: { sceneName } }, res) => (
+		res.send(
+			toggleScenes(lifxClient, lifxConfig)([sceneName])
+		)
 	)
 )
 
 serverSettings.put(
 	'/toggle-scene',
-	({ body: { names } }, res) => res.send(
-		toggleScenes(lifxClient, lifxConfig)(names)
+	({ body: { names } }, res) => (
+		res.send(
+			toggleScenes(lifxClient, lifxConfig)(names)
+		)
 	)
 )
 
 serverSettings.get(
 	'/turn-off-group/:groupName',
-	({ params: { groupName } }, res) => res.send(
-		turnOffGroups(lifxClient, lifxConfig)([groupName])
+	({ params: { groupName } }, res) => (
+		res.send(
+			turnOffGroups(lifxClient, lifxConfig)([groupName])
+		)
 	)
 )
 
 serverSettings.put(
 	'/turn-off-group',
-	({ body: { names } }, res) => res.send(
-		turnOffGroups(lifxClient, lifxConfig)(names)
+	({ body: { names } }, res) => (
+		res.send(
+			turnOffGroups(lifxClient, lifxConfig)(names)
+		)
 	)
 )
 
