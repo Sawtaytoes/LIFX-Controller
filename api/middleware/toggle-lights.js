@@ -1,6 +1,9 @@
 const Promise = require('bluebird')
+const Rx = require('rxjs/Rx')
 
 const dir = require(`${global.baseDir}/global-dirs`)
+const lifxClient = require(`${dir.services}setup-lifx-client`)
+const lifxConfig = require(`${dir.services}setup-lifx-config`)
 const logger = require(`${dir.utils}/logger`)
 
 const POWERED_ON = 1
@@ -28,19 +31,28 @@ const toggleLights = lights => (
 	)
 )
 
-module.exports = (lifxClient, lifxConfig) => lightNames => {
-	logger.log(`Command: Toggle Light => ${lightNames.join(', ')}`)
-
-	const lights = (
-		lightNames
-		.map(getLightByName(lifxClient))
-		.filter(isLightOnline)
+module.exports = lightNames => {
+	const lights$ = (
+		Rx.Observable
+		.of(lightNames)
+		.do(lightNames => (
+			logger.log(`Command: Toggle Light => ${lightNames.join(', ')}`)
+		))
+		.map(lightNames => (
+			lightNames
+			.map(getLightByName(lifxClient))
+			.filter(isLightOnline)
+		))
+		.do(lights => !lights.length && logger.logError("Lights do not exist"))
+		.filter(lights => lights.length > 0)
+		.map(lifxClient.update)
+		.map(toggleLights)
+		.map(lifxConfig.update)
 	)
 
-	if (!lights.length) return 'Lights do not exist.'
-
-	lifxClient.update(lights)
-	.then(toggleLights)
-	.then(lifxConfig.update)
-	.catch(logger.logError)
+	lights$
+	.subscribe(
+		logger.log,
+		logger.logError
+	)
 }
