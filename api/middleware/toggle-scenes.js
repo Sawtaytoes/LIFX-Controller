@@ -43,7 +43,7 @@ const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
 		saturation,
 		brightness,
 		kelvin,
-		DURATION
+		0
 	)
 )
 
