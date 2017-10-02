@@ -43,7 +43,7 @@ const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
 		saturation,
 		brightness,
 		kelvin,
-		0
+		DURATION
 	)
 )
 
@@ -68,10 +68,10 @@ const turnOnScene = sceneAndLightSettings => (
 			power,
 		},
 	}) => (
-		Promise.resolve(light)
-		.then(changeLightColor(hue, saturation * 100, brightness * 100, kelvin))
-		.then(() => light)
-		.then(changeLightPower(power))
+		Promise.all([
+			changeLightColor(hue, saturation * 100, brightness * 100, kelvin)(light),
+			changeLightPower(power)(light),
+		])
 	))
 )
 
