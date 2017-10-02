@@ -68,10 +68,10 @@ const turnOnScene = sceneAndLightSettings => (
 			power,
 		},
 	}) => (
-		Promise.all([
-			changeLightColor(hue, saturation * 100, brightness * 100, kelvin)(light),
-			changeLightPower(power)(light),
-		])
+		Promise.resolve(light)
+		.then(changeLightColor(hue, saturation * 100, brightness * 100, kelvin))
+		.then(() => light)
+		.then(changeLightPower(power))
 	))
 )
 
@@ -120,6 +120,8 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 		.map(sceneName => lifxConfig.scenes.get(sceneName))
 		.filter(Boolean)
 	)
+
+	console.log(scenes);
 
 	if (!scenes.length) return 'Scenes do not exist.'
 
