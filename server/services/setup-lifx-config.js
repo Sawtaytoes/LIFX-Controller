@@ -66,7 +66,7 @@ const headers = {
 	'Accept-Encoding': 'gzip, deflate',
 	Authorization: `Bearer ${config.getApiToken()}`,
 }
-const handleResponse = response => response.json()
+const getJsonFromResponse = response => response.json()
 
 const clearLightsInGroups = jsonData => {
 	Array.from(groups.values())
@@ -103,13 +103,13 @@ const clear = () => {
 
 const init = () => {
 	fetch(API_GET_LIGHTS, { headers })
-	.then(handleResponse)
+	.then(getJsonFromResponse)
 	.then(storeJsonDataInCache(CACHE_FILENAME.LIGHTS))
 	.then(clearLightsInGroups)
 	.then(storeJsonDataInMemory(setLight))
 
 	.then(() => fetch(API_GET_SCENES, { headers }))
-	.then(handleResponse)
+	.then(getJsonFromResponse)
 	.then(storeJsonDataInCache(CACHE_FILENAME.SCENES))
 	.then(storeJsonDataInMemory(setScene))
 
