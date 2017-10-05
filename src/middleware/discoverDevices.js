@@ -1,7 +1,7 @@
 const Promise = require('bluebird')
 
 const dir = require(`${global.baseDir}directories`)
-const logger = require(`${dir.utils}/logger`)
+const logger = require(`${dir.utils}logger`)
 
 const DURATION = 30000
 

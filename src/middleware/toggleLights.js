@@ -1,10 +1,10 @@
 const Rx = require('rxjs/Rx')
 
 const dir = require(`${global.baseDir}directories`)
-const createObserverCallback = require(`${dir.utils}create-observer-callback`)
-const lifxClient = require(`${dir.services}setup-lifx-client`)
-const lifxConfig = require(`${dir.services}setup-lifx-config`)
-const logger = require(`${dir.utils}/logger`)
+const createObserverCallback = require(`${dir.utils}createObserverCallback`)
+const lifxClient = require(`${dir.services}setupLifxClient`)
+const lifxConfig = require(`${dir.services}setupLifxConfig`)
+const logger = require(`${dir.utils}logger`)
 
 const { addObserver, triggerObservable } = createObserverCallback()
 

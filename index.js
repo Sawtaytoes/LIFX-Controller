@@ -3,18 +3,18 @@ global.baseDir = `${__dirname}/`
 
 // Load Config settings
 const dir = require(`${global.baseDir}directories`)
-const lifxClient = require(`${dir.services}setup-lifx-client`)
-const lifxConfig = require(`${dir.services}setup-lifx-config`)
-const setupServer = require(`${dir.server}setup-server`)
-const startServer = require(`${dir.server}start-server`)
+const lifxClient = require(`${dir.services}setupLifxClient`)
+const lifxConfig = require(`${dir.services}setupLifxConfig`)
+const setupServer = require(`${dir.server}setupServer`)
+const startServer = require(`${dir.server}startServer`)
 
 // Load Middleware
-const discoverDevices = require(`${dir.middleware}discover-devices`)
-const setLightsBrightness = require(`${dir.middleware}set-lights-brightness`)
-const toggleGroups = require(`${dir.middleware}toggle-groups`)
-const toggleLights = require(`${dir.middleware}toggle-lights`)
-const toggleScenes = require(`${dir.middleware}toggle-scenes`)
-const turnOffGroups = require(`${dir.middleware}turn-off-groups`)
+const discoverDevices = require(`${dir.middleware}discoverDevices`)
+const setLightsBrightness = require(`${dir.middleware}setLightsBrightness`)
+const toggleGroups = require(`${dir.middleware}toggleGroups`)
+const toggleLights = require(`${dir.middleware}toggleLights`)
+const toggleScenes = require(`${dir.middleware}toggleScenes`)
+const turnOffGroups = require(`${dir.middleware}turnOffGroups`)
 
 lifxClient.init()
 lifxConfig.init()

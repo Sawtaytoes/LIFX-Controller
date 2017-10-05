@@ -5,7 +5,7 @@ const express = require('express')
 const helmet = require('helmet')
 
 const dir = require(`${global.baseDir}directories`)
-const config = require(`${dir.configs}config-settings`)
+const config = require(`${dir.configs}configSettings`)
 
 
 // --------------------------------------------------------
