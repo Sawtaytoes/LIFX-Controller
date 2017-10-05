@@ -66,7 +66,7 @@ const headers = {
 	'Accept-Encoding': 'gzip, deflate',
 	Authorization: `Bearer ${config.getApiToken()}`,
 }
-const handleResponse = response => response.json()
+const getJsonFromResponse = response => response.json()
 
 const clearLightsInGroups = jsonData => {
 	Array.from(groups.values())
@@ -83,7 +83,7 @@ const storeJsonDataInCache = fileName => jsonData => {
 		fileName,
 		JSON.stringify(jsonData),
 		FILE_ENCODING_SCHEME,
-		err => err && console.error(err)
+		logger.logError
 	)
 
 	return jsonData
@@ -91,7 +91,7 @@ const storeJsonDataInCache = fileName => jsonData => {
 
 const storeJsonDataInMemory = action => jsonData => (
 	jsonData.error
-	? console.error('Error: LIFX HTTP API =>', jsonData.error)
+	? logger.logError('Error: LIFX HTTP API =>', jsonData.error)
 	: jsonData.forEach(action)
 )
 
@@ -103,13 +103,13 @@ const clear = () => {
 
 const init = () => {
 	fetch(API_GET_LIGHTS, { headers })
-	.then(handleResponse)
+	.then(getJsonFromResponse)
 	.then(storeJsonDataInCache(CACHE_FILENAME.LIGHTS))
 	.then(clearLightsInGroups)
 	.then(storeJsonDataInMemory(setLight))
 
 	.then(() => fetch(API_GET_SCENES, { headers }))
-	.then(handleResponse)
+	.then(getJsonFromResponse)
 	.then(storeJsonDataInCache(CACHE_FILENAME.SCENES))
 	.then(storeJsonDataInMemory(setScene))
 
@@ -119,7 +119,7 @@ const init = () => {
 const update = init
 
 if (!fs.existsSync(dir.cache)) {
-	fs.mkdirSync(dir.cache);
+	fs.mkdirSync(dir.cache)
 }
 
 const loadJsonDataFromCache = fileName => action => (

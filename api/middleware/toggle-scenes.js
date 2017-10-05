@@ -121,6 +121,8 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 		.filter(Boolean)
 	)
 
+	console.log(scenes);
+
 	if (!scenes.length) return 'Scenes do not exist.'
 
 	Promise.all(
