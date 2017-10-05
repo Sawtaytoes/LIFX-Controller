@@ -83,7 +83,7 @@ const storeJsonDataInCache = fileName => jsonData => {
 		fileName,
 		JSON.stringify(jsonData),
 		FILE_ENCODING_SCHEME,
-		logger.logError
+		err => err && logger.logError(err)
 	)
 
 	return jsonData
