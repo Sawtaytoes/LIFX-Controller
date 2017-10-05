@@ -100,7 +100,8 @@ const getSceneAndLightsSettings = scene => lights => (
 )
 
 const combineLightsInScenes = lightsInScenes => (
-	lightsInScenes.reduce(
+	lightsInScenes
+	.reduce(
 		(combined, lightsInScene) => combined.concat(lightsInScene),
 		[]
 	)
@@ -120,8 +121,6 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 		.map(sceneName => lifxConfig.scenes.get(sceneName))
 		.filter(Boolean)
 	)
-
-	console.log(scenes);
 
 	if (!scenes.length) return 'Scenes do not exist.'
 
