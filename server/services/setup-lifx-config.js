@@ -83,7 +83,7 @@ const storeJsonDataInCache = fileName => jsonData => {
 		fileName,
 		JSON.stringify(jsonData),
 		FILE_ENCODING_SCHEME,
-		err => err && console.error(err)
+		logger.logError
 	)
 
 	return jsonData
@@ -91,7 +91,7 @@ const storeJsonDataInCache = fileName => jsonData => {
 
 const storeJsonDataInMemory = action => jsonData => (
 	jsonData.error
-	? console.error('Error: LIFX HTTP API =>', jsonData.error)
+	? logger.logError('Error: LIFX HTTP API =>', jsonData.error)
 	: jsonData.forEach(action)
 )
 
@@ -119,7 +119,7 @@ const init = () => {
 const update = init
 
 if (!fs.existsSync(dir.cache)) {
-	fs.mkdirSync(dir.cache);
+	fs.mkdirSync(dir.cache)
 }
 
 const loadJsonDataFromCache = fileName => action => (
