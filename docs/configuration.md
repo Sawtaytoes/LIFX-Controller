@@ -1,7 +1,7 @@
 # Configuration
 Default config values are found in [server/configs/configSettings.js](server/configs/configSettings.js).
 
-Create a custom `config.js` in `server/configs/` to change 
+Create a custom `config.js` in `configs/` to change 
 
 
 ## Example

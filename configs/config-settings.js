@@ -1,4 +1,4 @@
-const dir = require(`${global.baseDir}/global-dirs`)
+const dir = require(`${global.baseDir}directories`)
 let configCustom = {}
 try {
 	configCustom = require(`${dir.configs}config`)

@@ -1,6 +1,6 @@
 const Rx = require('rxjs/Rx')
 
-const dir = require(`${global.baseDir}/global-dirs`)
+const dir = require(`${global.baseDir}directories`)
 const createObserverCallback = require(`${dir.utils}create-observer-callback`)
 const lifxClient = require(`${dir.services}setup-lifx-client`)
 const lifxConfig = require(`${dir.services}setup-lifx-config`)

@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const fs = require('fs')
 const Rx = require('rxjs/Rx')
 
-const dir = require(`${global.baseDir}/global-dirs`)
+const dir = require(`${global.baseDir}directories`)
 const config = require(`${dir.configs}config-settings`)
 const createObserverCallback = require(`${dir.utils}create-observer-callback`)
 const logger = require(`${dir.utils}/logger`)
