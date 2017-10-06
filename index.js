@@ -19,14 +19,14 @@ const turnOffGroups = require(`${dir.middleware}turnOffGroups`)
 lifxClient.init()
 lifxConfig.init()
 
-const serverSettings = setupServer()
+const server = setupServer()
 
-serverSettings.get(
+server.get(
 	'/',
 	(req, res) => res.end('You no be hearz.')
 )
 
-serverSettings.get(
+server.get(
 	'/discover-devices',
 	(req, res) => (
 		res.send(
@@ -35,7 +35,7 @@ serverSettings.get(
 	)
 )
 
-serverSettings.get(
+server.get(
 	'/set-light-brightness/:lightName/:brightness',
 	({ params: { brightness, lightName } }, res) => (
 		res.send(
@@ -44,7 +44,7 @@ serverSettings.get(
 	)
 )
 
-serverSettings.put(
+server.put(
 	'/set-lights-brightness',
 	({ body: { lightConfigs } }, res) => (
 		res.send(
@@ -53,7 +53,7 @@ serverSettings.put(
 	)
 )
 
-serverSettings.get(
+server.get(
 	'/toggle-group/:groupName',
 	({ params: { groupName } }, res) => (
 		res.send(
@@ -62,7 +62,7 @@ serverSettings.get(
 	)
 )
 
-serverSettings.put(
+server.put(
 	'/toggle-group',
 	({ body: { names } }, res) => (
 		res.send(
@@ -71,7 +71,7 @@ serverSettings.put(
 	)
 )
 
-serverSettings.get(
+server.get(
 	'/toggle-light/:name',
 	({ params: { name } }, res) => (
 		res.send(
@@ -80,7 +80,7 @@ serverSettings.get(
 	)
 )
 
-serverSettings.put(
+server.put(
 	'/toggle-light',
 	({ body: { names } }, res) => (
 		res.send(
@@ -89,7 +89,7 @@ serverSettings.put(
 	)
 )
 
-serverSettings.get(
+server.get(
 	'/toggle-scene/:sceneName',
 	({ params: { sceneName } }, res) => (
 		res.send(
@@ -98,7 +98,7 @@ serverSettings.get(
 	)
 )
 
-serverSettings.put(
+server.put(
 	'/toggle-scene',
 	({ body: { names } }, res) => (
 		res.send(
@@ -107,7 +107,7 @@ serverSettings.put(
 	)
 )
 
-serverSettings.get(
+server.get(
 	'/turn-off-group/:groupName',
 	({ params: { groupName } }, res) => (
 		res.send(
@@ -116,7 +116,7 @@ serverSettings.get(
 	)
 )
 
-serverSettings.put(
+server.put(
 	'/turn-off-group',
 	({ body: { names } }, res) => (
 		res.send(
@@ -125,7 +125,7 @@ serverSettings.put(
 	)
 )
 
-startServer(serverSettings)
+startServer(server)
 
 const DEVICE_DISCOVERY_INTERVAL = 600000 // 10 minutes
 
