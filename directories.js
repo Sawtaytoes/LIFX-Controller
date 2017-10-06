@@ -1,4 +1,3 @@
-// Setup directories
 const base = global.baseDir
 
 const cache = `${base}.cache/`
