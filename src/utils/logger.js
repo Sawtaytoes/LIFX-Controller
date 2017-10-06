@@ -1,5 +1,5 @@
 const dir = require(`${global.baseDir}directories`)
-const config = require(`${dir.configs}configSettings`)
+const config = require(`${dir.configs}config`)
 
 const noop = () => {}
 

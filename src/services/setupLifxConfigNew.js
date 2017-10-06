@@ -3,7 +3,7 @@ const fs = require('fs')
 const Rx = require('rxjs/Rx')
 
 const dir = require(`${global.baseDir}directories`)
-const config = require(`${dir.configs}configSettings`)
+const config = require(`${dir.configs}config`)
 const createObserverCallback = require(`${dir.utils}create-observer-callback`)
 const logger = require(`${dir.utils}logger`)
 
