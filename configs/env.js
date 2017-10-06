@@ -12,8 +12,8 @@ const createConfigObject = (acc, { key, value }) => ({
 })
 
 const getProcessEnvValue = key => ({
-	key,
-	value: process.env[processEnvConfigValues[key]],
+	key: processEnvConfigValues[key],
+	value: process.env[key],
 })
 
 const hasValue = ({ value }) => typeof value !== 'undefined'
