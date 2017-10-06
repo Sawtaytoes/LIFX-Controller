@@ -6,7 +6,6 @@ const logger = require(`${dir.utils}logger`)
 const POWERED_ON = 1
 const DURATION = 500
 
-const isLightOnline = Boolean
 const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
 
 const isLightOnInGroup = lightsInGroup => (
@@ -40,14 +39,10 @@ module.exports = (lifxClient, lifxConfig) => groupNames => {
 
 	const lightsInGroups = (
 		groups
-		.map(group => (
-			group.lights
-			.map(getLightById(lifxClient))
-			.filter(isLightOnline)
-		))
-		.reduce((acc, lightsInGroup) => (
-			acc.concat(lightsInGroup)
-		))
+		.map(group => group.lights)
+		.reduce((acc, lights) => acc.concat(lights), [])
+		.map(getLightById(lifxClient))
+		.filter(Boolean)
 	)
 
 	lifxClient.update(lightsInGroups)
