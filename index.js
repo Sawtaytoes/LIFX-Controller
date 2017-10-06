@@ -3,8 +3,8 @@ global.baseDir = `${__dirname}/`
 
 // Load Config settings
 const dir = require(`${global.baseDir}directories`)
-const lifxClient = require(`${dir.services}setupLifxClient`)
-const lifxConfig = require(`${dir.services}setupLifxConfig`)
+const lifxClient = require(`${dir.services}lifxClient`)
+const lifxConfig = require(`${dir.services}lifxConfig`)
 const setupServer = require(`${dir.server}setupServer`)
 const startServer = require(`${dir.server}startServer`)
 
