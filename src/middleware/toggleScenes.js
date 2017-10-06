@@ -53,26 +53,28 @@ const changeLightPower = powerFuncName => light => (
 
 const turnOffLight = changeLightPower('off')
 
+const changeLightToMatchScene = ({
+	light,
+	sceneLightSettings: {
+		brightness,
+		color: {
+			hue = 0,
+			saturation = 0,
+			kelvin
+		},
+		power,
+	},
+}) => (
+	Promise.all([
+		changeLightColor(hue, saturation * 100, brightness * 100, kelvin)(light),
+		changeLightPower(power)(light),
+	])
+)
+
 const turnOnScene = sceneAndLightSettings => (
 	sceneAndLightSettings
 	.filter(lightDoesNotMatchScene)
-	.map(({
-		light,
-		sceneLightSettings: {
-			brightness,
-			color: {
-				hue = 0,
-				saturation = 0,
-				kelvin
-			},
-			power,
-		},
-	}) => (
-		Promise.all([
-			changeLightColor(hue, saturation * 100, brightness * 100, kelvin)(light),
-			changeLightPower(power)(light),
-		])
-	))
+	.map(changeLightToMatchScene)
 )
 
 const turnOffScene = sceneAndLightSettings => (
