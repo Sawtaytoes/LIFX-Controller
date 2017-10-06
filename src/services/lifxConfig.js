@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const fs = require('fs')
 
 const dir = require(`${global.baseDir}directories`)
-const config = require(`${dir.configs}config`)
+const config = require(`${dir.configs}`)
 const logger = require(`${dir.utils}logger`)
 
 const LIFX_API_ADDRESS = 'https://api.lifx.com/v1/'
