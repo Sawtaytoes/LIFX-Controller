@@ -1,11 +1,13 @@
-const { ignoreElements, tap } = require('rxjs/operators')
+const { map } = require('rxjs/operators')
+
+const getLifxLights = require('./utils/getLifxLights')
+const { addLight } = require('./actions')
 
 const networkDiscoveryEpic = (
-	action$ => (
-		action$
+	() => (
+		getLifxLights()
 		.pipe(
-			tap(console.log),
-			ignoreElements(),
+			map(addLight),
 		)
 	)
 )
