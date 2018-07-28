@@ -2,11 +2,7 @@ const fs = require('fs')
 
 const dir = require(`${global.baseDir}directories`)
 const config = require(`${dir.configs}`)
-
-
-// --------------------------------------------------------
-// Server Listener
-// --------------------------------------------------------
+const logger = require(`${dir.utils}logger`)
 
 const secureServer = serverSettings => {
 	const https = require('https')
@@ -21,10 +17,20 @@ const secureServer = serverSettings => {
 	}, serverSettings)
 }
 
-module.exports = serverSettings => {
-	const server = config.isSecure() ? secureServer(serverSettings) : serverSettings
-	server.listen(config.getPort(), err => {
-		if (err) { console.error(err) }
-		console.info('Web Server running as', config.getServerUrl())
+module.exports = server => (
+	(
+		config.isSecure()
+		? secureServer(server)
+		: server
+	)
+	.listen(config.getPort(), err => {
+		err
+		? logger.logError(err)
+		: (
+			logger.log(
+				'Web Server running as',
+				config.getServerUrl()
+			)
+		)
 	})
-}
+)
