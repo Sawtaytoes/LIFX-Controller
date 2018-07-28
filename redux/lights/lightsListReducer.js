@@ -1,4 +1,5 @@
 const createReducer = require('@ghadyani-framework/node/redux/utils/createReducer')
+const namespaceReducer = require('@ghadyani-framework/node/redux/utils/namespaceReducer')
 const { ADD_LIGHT } = require('./actions')
 
 const initialState = []
@@ -12,9 +13,11 @@ const reducerActions = {
 }
 
 const lightsListReducer = (
-	createReducer(
-		reducerActions,
-		initialState,
+	namespaceReducer(
+		createReducer(
+			reducerActions,
+			initialState,
+		)
 	)
 )
 
