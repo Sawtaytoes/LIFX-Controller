@@ -8,16 +8,16 @@ const addGroup = ({
 }) => ({
 	lightIds,
 	namespace,
-	type: ADD_LIGHT,
-})
-
-const addLight = ({
-	light,
-}) => ({
-	light,
-	namespace: light.id,
 	type: ADD_GROUP,
 })
+
+const addLight = (
+	light => ({
+		light,
+		namespace: light.id,
+		type: ADD_LIGHT,
+	})
+)
 
 const addScene = ({
 	namespace,
