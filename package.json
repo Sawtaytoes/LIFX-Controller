@@ -1,33 +1,43 @@
 {
-  "private": true,
+  "name": "lifx-controller",
+  "version": "0.0.0",
+  "description": "Utilities for creating applications using WebSockets.",
+  "license": "MITNFA",
   "scripts": {
-    "api": "node index.js",
-    "api:debug": "node --inspect --debug-brk index.js",
-    "api:watch": "nodemon index.js",
-    "api:watch:debug": "nodemon --inspect index.js",
+    "debug": "nodemon --inspect app.js",
+    "lint": "node app.js lint",
+    "lint:watch": "nodemon app.js lint",
+    "start": "yarn && nodemon app.js",
     "test": "ava",
-    "test:watch": "ava --watch",
-    "start": "npm run api:watch"
+    "test:watch": "ava --watch"
   },
   "engines": {
-    "node": "^8.5.0",
-    "npm": "^5.4.1"
+    "node": "^10.7.0",
+    "yarn": "^1.7.0"
+  },
+  "_moduleAliases": {
+    "$redux": "./redux",
+    "$utils": "./utils"
+  },
+  "ava": {
+    "babel": {
+      "testOptions": {
+        "babelrc": false
+      }
+    },
+    "concurrency": 5,
+    "files": [
+      "redux/**/*.test.js",
+      "utils/**/*.test.js"
+    ],
+    "sources": [
+      "**/*.js"
+    ]
   },
   "dependencies": {
-    "bluebird": "^3.5.0",
-    "body-parser": "^1.18.2",
-    "compression": "^1.7.0",
-    "cors": "^2.8.4",
-    "express": "^4.15.4",
-    "express-sslify": "^1.2.0",
-    "helmet": "^3.8.1",
-    "isomorphic-fetch": "^2.2.1",
-    "node-fetch": "^1.7.3",
-    "node-lifx": "^0.8.0"
-  },
-  "devDependencies": {
-    "ava": "^0.22.0",
-    "eslint": "^4.7.2",
-    "nodemon": "^1.12.1"
+    "@ghadyani-framework/node": "^1.1.2",
+    "@ghadyani-framework/websocket": "^1.1.0",
+    "node-lifx": "^0.8.0",
+    "node-lifx-lan": "^0.2.1"
   }
 }
