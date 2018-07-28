@@ -1,6 +1,6 @@
-const ADD_GROUP = 'CHANNELS::ADD_GROUP'
-const ADD_LIGHT = 'CHANNELS::ADD_LIGHT'
-const ADD_SCENE = 'CHANNELS::ADD_SCENE'
+const ADD_GROUP = 'LIGHTS::ADD_GROUP'
+const ADD_LIGHT = 'LIGHTS::ADD_LIGHT'
+const ADD_SCENE = 'LIGHTS::ADD_SCENE'
 
 const addGroup = ({
 	lightIds,
