@@ -6,9 +6,22 @@ const initialState = []
 
 const reducerActions = {
 	[ADD_LIGHT]: (
-		(prevState, { light }) => (
-			light
-		)
+		(prevState, { httpApi, network }) => ({
+			httpApi: (
+				httpApi
+				|| (
+					prevState
+					.httpApi
+				)
+			),
+			network: (
+				network
+				|| (
+					prevState
+					.network
+				)
+			),
+		})
 	),
 }
 

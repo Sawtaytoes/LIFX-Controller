@@ -21,7 +21,7 @@ const lightsCountEpic = (
 					state$,
 				})
 			)),
-			map(t => t.size),
+			map(lightsList => lightsList.size),
 			tap(console.log),
 			ignoreElements(),
 		)

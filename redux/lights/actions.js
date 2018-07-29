@@ -11,13 +11,22 @@ const addGroup = ({
 	type: ADD_GROUP,
 })
 
-const addLight = (
-	light => ({
-		light,
-		namespace: light.id,
-		type: ADD_LIGHT,
-	})
-)
+const addLight = ({
+	httpApi,
+	network,
+}) => ({
+	httpApi,
+	namespace: (
+		httpApi
+		.id
+		|| (
+			network
+			.id
+		)
+	),
+	network,
+	type: ADD_LIGHT,
+})
 
 const addScene = ({
 	namespace,

@@ -7,6 +7,9 @@ const networkDiscoveryEpic = (
 	() => (
 		getLifxLights()
 		.pipe(
+			map(light => ({
+				network: light,
+			})),
 			map(addLight),
 		)
 	)
