@@ -311,6 +311,18 @@
   dependencies:
     arrify "^1.0.1"
 
+"@ghadyani-framework/base@^0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/base/-/base-0.0.0.tgz#e6223c8aaa8908a3e0603cb6ebe7bbdecb2cff33"
+  dependencies:
+    "@ghadyani-framework/eslint-config-base" "^0.0.3"
+    "@ghadyani-framework/eslint-config-node" "^0.0.3"
+    "@ghadyani-framework/setup-module-aliases" "^0.0.0"
+    ava "^1.0.0-beta.6"
+    chalk "^2.4.1"
+    nodemon "^1.18.3"
+    rxjs "^6.2.2"
+
 "@ghadyani-framework/eslint-config-base@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/eslint-config-base/-/eslint-config-base-0.0.3.tgz#299c13a2dbbaaa92dd8d431cfcae068ab2814a96"
@@ -323,21 +335,23 @@
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/eslint-config-node/-/eslint-config-node-0.0.3.tgz#b68c3e01a46816f14eb51f6c8dedd93bd99c3f67"
 
-"@ghadyani-framework/node@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/node/-/node-1.1.3.tgz#0eaf3acfdbfcfa8cdcc907e772de95da400a8848"
+"@ghadyani-framework/node@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/node/-/node-2.1.0.tgz#c3d78d138dc07310224f98034bad6e43d299612e"
   dependencies:
-    "@ghadyani-framework/eslint-config-base" "^0.0.3"
-    "@ghadyani-framework/eslint-config-node" "^0.0.3"
-    "@ghadyani-framework/setup-module-aliases" "^0.0.0"
-    ava "^1.0.0-beta.6"
-    chalk "^2.4.1"
+    "@ghadyani-framework/base" "^0.0.0"
     is-equal "^1.5.5"
-    module-alias "^2.1.0"
-    nodemon "^1.18.3"
     redux "^4.0.0"
     redux-mock-store "^1.5.3"
     redux-observable "^1.0.0"
+    uuid "^3.3.2"
+    yargs "^12.0.1"
+
+"@ghadyani-framework/redux-utils@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/redux-utils/-/redux-utils-0.0.1.tgz#e688dbbe54ff435988a7116683cef729bd15a0dc"
+  dependencies:
+    is-equal "^1.5.5"
     rxjs "^6.2.2"
     uuid "^3.3.2"
     yargs "^12.0.1"
@@ -346,9 +360,9 @@
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/setup-module-aliases/-/setup-module-aliases-0.0.0.tgz#9f4a77824df2b07f0d369a23e927c7fbec291d44"
 
-"@ghadyani-framework/websocket@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/websocket/-/websocket-1.1.0.tgz#87c438388ec1a448b2911ac94ceb0706748555ac"
+"@ghadyani-framework/websocket@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/websocket/-/websocket-2.0.0.tgz#b9a954444374687844ecb9dd443463db887259ac"
   dependencies:
     ws "^6.0.0"
   optionalDependencies:
@@ -2341,10 +2355,6 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
-
-module-alias@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/module-alias/-/module-alias-2.1.0.tgz#c36d4fd15f7f9d7112f62fa015385e7b65a286c1"
 
 ms@2.0.0:
   version "2.0.0"

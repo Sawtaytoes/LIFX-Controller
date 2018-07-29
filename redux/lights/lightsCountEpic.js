@@ -1,7 +1,7 @@
 const { ignoreElements, map, switchMap, auditTime, tap } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
+const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
-const stateSelector = require('@ghadyani-framework/node/redux/utils/rxjs/stateSelector')
 const { ADD_LIGHT } = require('./actions')
 
 const lightsCountEpic = (

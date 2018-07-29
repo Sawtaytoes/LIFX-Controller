@@ -1,4 +1,5 @@
 const { combineEpics } = require('redux-observable')
+const { combineReducers } = require('redux')
 
 const { groupsEpic, groupsReducer } = require('./groups')
 const { lightsEpic, lightsReducer } = require('./lights')
@@ -18,7 +19,14 @@ const rootReducers = {
 	lights: lightsReducer,
 }
 
+const rootReducer = (
+	combineReducers(
+		rootReducers,
+	)
+)
+
 module.exports = {
 	rootEpic,
 	rootReducers,
+	rootReducer,
 }

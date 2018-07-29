@@ -1,6 +1,5 @@
-const createReducer = require('@ghadyani-framework/node/redux/utils/createReducer')
-const namespaceReducer = require('@ghadyani-framework/node/redux/utils/namespaceReducer')
 const { ADD_GROUP } = require('./actions')
+const { createReducer, namespaceReducer } = require('@ghadyani-framework/redux-utils')
 
 const initialState = {}
 

@@ -1,13 +1,12 @@
+// Include this import before other local imports.
+require('@ghadyani-framework/setup-module-aliases')(__dirname)
+
+const { applyMiddleware, createStore } = require('redux')
+const { createActionLoggerMiddleware } = require('@ghadyani-framework/redux-utils')
+const { createConfigurationSet, runTasks } = require('@ghadyani-framework/node')
+const { createEpicMiddleware } = require('redux-observable')
 const { of } = require('rxjs')
 const { tap } = require('rxjs/operators')
-
-require('./')
-
-const {
-	createConfigurationSet,
-	createReduxStore,
-	runTasks,
-} = require('@ghadyani-framework/node')
 
 const {
 	createHttpServers,
@@ -16,15 +15,33 @@ const {
 
 const {
 	rootEpic,
-	rootReducers,
+	rootReducer,
 } = require('$redux')
 
-of(
-	createReduxStore({
-		additionalEpics: rootEpic,
-		additionalReducers: rootReducers,
-	})
+const actionLoggerMiddleware = (
+	createActionLoggerMiddleware()
 )
+
+const epicMiddleware = createEpicMiddleware()
+
+const middleware = (
+	applyMiddleware(
+		actionLoggerMiddleware,
+		epicMiddleware
+	)
+)
+
+const store = (
+	createStore(
+		rootReducer,
+		middleware,
+	)
+)
+
+epicMiddleware
+.run(rootEpic)
+
+of(store)
 .pipe(
 	tap(createConfigurationSet({})),
 	tap(createHttpServers()),
