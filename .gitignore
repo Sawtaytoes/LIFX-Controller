@@ -2,6 +2,7 @@
 localConfig.js
 
 # Generated
+.cache
 .eslintcache
 public/bundles
 
