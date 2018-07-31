@@ -1,4 +1,4 @@
-const { createReducer, namespaceReducer } = require('@ghadyani-framework/redux-utils')
+const { createNamespaceReducer, createReducer } = require('@ghadyani-framework/redux-utils')
 const { ADD_GROUP } = require('./actions')
 
 const initialState = new Set()
@@ -13,7 +13,7 @@ const reducerActions = {
 }
 
 const lightGroupsListReducer = (
-	namespaceReducer(
+	createNamespaceReducer(
 		createReducer(
 			reducerActions,
 			initialState,
