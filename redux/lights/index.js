@@ -1,28 +1,24 @@
 const { combineEpics } = require('redux-observable')
 const { combineReducers } = require('redux')
 
-// const groupsListReducer = require('./groupsListReducer')
-// const httpApiDiscoveryEpic = require('./httpApiDiscoveryEpic')
-const lightsCountEpic = require('./lightsCountEpic')
-const lightsListReducer = require('./lightsListReducer')
-// const networkDiscoveryEpic = require('./networkDiscoveryEpic')
-// const scenesListReducer = require('./scenesListReducer')
+const httpApiDiscoveryEpic = require('./httpApiDiscoveryEpic')
+const httpApiLightsListReducer = require('./httpApiLightsListReducer')
+const networkDiscoveryEpic = require('./networkDiscoveryEpic')
+const networkLightsListReducer = require('./networkLightsListReducer')
 // const updateHttpApiEpic = require('./updateHttpApiEpic')
 
 const lightsEpic = (
 	combineEpics(
-		lightsCountEpic,
-		// httpApiDiscoveryEpic,
-		// networkDiscoveryEpic,
+		httpApiDiscoveryEpic,
+		networkDiscoveryEpic,
 		// updateHttpApiEpic,
 	)
 )
 
 const lightsReducer = (
 	combineReducers({
-		// groupsList: groupsListReducer,
-		lightsList: lightsListReducer,
-		// scenesList: scenesListReducer,
+		httpApiLightsList: httpApiLightsListReducer,
+		networkLightsList: networkLightsListReducer,
 	})
 )
 

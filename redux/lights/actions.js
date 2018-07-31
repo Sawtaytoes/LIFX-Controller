@@ -1,22 +1,20 @@
-const ADD_LIGHT = 'LIGHTS::ADD_LIGHT'
+const ADD_HTTP_API_LIGHTS = 'LIGHTS::ADD_HTTP_API_LIGHTS'
+const ADD_NETWORK_LIGHTS = 'LIGHTS::ADD_NETWORK_LIGHTS'
 const ADD_SCENE = 'LIGHTS::ADD_SCENE'
 
-const addLight = ({
-	httpApi,
-	network,
-}) => ({
-	httpApi,
-	namespace: (
-		httpApi
-		.id
-		|| (
-			network
-			.id
-		)
-	),
-	network,
-	type: ADD_LIGHT,
-})
+const addHttpApiLights = (
+	lights => ({
+		lights,
+		type: ADD_HTTP_API_LIGHTS,
+	})
+)
+
+const addNetworkLights = (
+	lights => ({
+		lights,
+		type: ADD_NETWORK_LIGHTS,
+	})
+)
 
 const addScene = ({
 	namespace,
@@ -28,8 +26,10 @@ const addScene = ({
 })
 
 module.exports = {
-	ADD_LIGHT,
+	ADD_HTTP_API_LIGHTS,
+	ADD_NETWORK_LIGHTS,
 	ADD_SCENE,
-	addLight,
+	addHttpApiLights,
+	addNetworkLights,
 	addScene,
 }

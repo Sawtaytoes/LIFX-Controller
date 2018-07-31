@@ -1,16 +1,34 @@
-const { map } = require('rxjs/operators')
+const chalk = require('chalk')
+const { buffer, debounceTime, map, tap } = require('rxjs/operators')
 
-const getLifxLights = require('./utils/getLifxLights')
-const { addLight } = require('./actions')
+const createNetworkLifxListener = require('./utils/createNetworkLifxListener')
+const { addNetworkLights } = require('./actions')
+
+const networkLifxListener$ = (
+	createNetworkLifxListener()
+)
 
 const networkDiscoveryEpic = (
 	() => (
-		getLifxLights()
+		networkLifxListener$
 		.pipe(
-			map(light => ({
-				network: light,
-			})),
-			map(addLight),
+			buffer(
+				networkLifxListener$
+				.pipe(
+					debounceTime(500),
+				)
+			),
+			tap(lights => {
+				console
+				.info(
+					chalk
+					.yellow(
+						lights
+						.length
+					)
+				)
+			}),
+			map(addNetworkLights),
 		)
 	)
 )

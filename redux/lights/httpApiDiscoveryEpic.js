@@ -5,7 +5,7 @@ const { getConfigurationSet } = require('@ghadyani-framework/node/redux/configur
 const { ofType } = require('redux-observable')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
-const { addLight } = require('./actions')
+const { addHttpApiLights } = require('./actions')
 
 const httpApiDiscoveryEpic = (
 	(action$, state$) => (
@@ -46,13 +46,10 @@ const httpApiDiscoveryEpic = (
 				response
 				.json()
 			)),
-			switchMap(lightsList => (
-				lightsList
-			)),
-			map(light => ({
-				httpApi: light,
-			})),
-			map(addLight),
+			// switchMap(() => (
+			// 	require('$cache/lights.json')
+			// )),
+			map(addHttpApiLights),
 		)
 	)
 )
