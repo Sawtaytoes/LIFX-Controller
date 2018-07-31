@@ -323,6 +323,18 @@
     nodemon "^1.18.3"
     rxjs "^6.2.2"
 
+"@ghadyani-framework/base@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/base/-/base-0.1.0.tgz#3d321c6708484aab639ab145e68a2962ad58c3dd"
+  dependencies:
+    "@ghadyani-framework/eslint-config-base" "^0.0.3"
+    "@ghadyani-framework/eslint-config-node" "^0.0.3"
+    "@ghadyani-framework/setup-module-aliases" "^0.0.0"
+    ava "^1.0.0-beta.6"
+    chalk "^2.4.1"
+    nodemon "^1.18.3"
+    rxjs "^6.2.2"
+
 "@ghadyani-framework/eslint-config-base@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/eslint-config-base/-/eslint-config-base-0.0.3.tgz#299c13a2dbbaaa92dd8d431cfcae068ab2814a96"
@@ -347,9 +359,9 @@
     uuid "^3.3.2"
     yargs "^12.0.1"
 
-"@ghadyani-framework/redux-utils@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/redux-utils/-/redux-utils-0.0.1.tgz#e688dbbe54ff435988a7116683cef729bd15a0dc"
+"@ghadyani-framework/redux-utils@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/redux-utils/-/redux-utils-0.1.1.tgz#2bdedcf49acbeaa649bff6bf58b584e02788394c"
   dependencies:
     is-equal "^1.5.5"
     rxjs "^6.2.2"
