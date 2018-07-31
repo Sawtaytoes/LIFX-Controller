@@ -1,4 +1,4 @@
-const { ADD_LIGHT } = require('./actions')
+const { ADD_HTTP_API_LIGHTS } = require('./actions')
 const { createMergeById, createReducer } = require('@ghadyani-framework/redux-utils')
 
 const mergeById = (
@@ -8,7 +8,7 @@ const mergeById = (
 const initialState = []
 
 const reducerActions = {
-	[ADD_LIGHT]: (
+	[ADD_HTTP_API_LIGHTS]: (
 		(prevState, { lights }) => (
 			mergeById(
 				prevState,
