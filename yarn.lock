@@ -335,9 +335,9 @@
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/eslint-config-node/-/eslint-config-node-0.0.3.tgz#b68c3e01a46816f14eb51f6c8dedd93bd99c3f67"
 
-"@ghadyani-framework/node@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/node/-/node-2.2.0.tgz#55098eed3ba01830c87bcd7a37fe00138024cd92"
+"@ghadyani-framework/node@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/node/-/node-2.3.1.tgz#300977e177d26d75ae1d70c9b4d24b74106153fa"
   dependencies:
     "@ghadyani-framework/base" "^0.1.0"
     redux "^4.0.0"
@@ -356,9 +356,9 @@
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/setup-module-aliases/-/setup-module-aliases-0.0.0.tgz#9f4a77824df2b07f0d369a23e927c7fbec291d44"
 
-"@ghadyani-framework/websocket@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/websocket/-/websocket-2.0.1.tgz#68a9d7307852d40e5cefdbbf27565747dd76efa1"
+"@ghadyani-framework/websocket@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/websocket/-/websocket-2.1.0.tgz#c0316a3a9b04ef61221072053987d000c5bc3e8b"
   dependencies:
     ws "^6.0.0"
   optionalDependencies:
