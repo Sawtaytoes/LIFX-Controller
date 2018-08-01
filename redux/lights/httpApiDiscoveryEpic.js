@@ -1,7 +1,7 @@
 const nodeFetch = require('node-fetch')
 const { ADD_CONFIGURATION_SET } = require('@ghadyani-framework/node/redux/configurations/actions')
 const { buffer, debounceTime, map, switchMap } = require('rxjs/operators')
-const { getConfigurationSet } = require('@ghadyani-framework/node/redux/configurations/selectors')
+const { configurationSetSelector } = require('@ghadyani-framework/node/redux/configurations/selectors')
 const { ofType } = require('redux-observable')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
@@ -21,7 +21,7 @@ const httpApiDiscoveryEpic = (
 			),
 			switchMap(() => (
 				stateSelector({
-					selector: getConfigurationSet,
+					selector: configurationSetSelector,
 					state$,
 				})
 			)),
