@@ -1,5 +1,6 @@
 {
   "ignore": [
+    ".cache",
     ".git",
     "app/",
     "docs/",
