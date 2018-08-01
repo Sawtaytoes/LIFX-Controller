@@ -46,9 +46,6 @@ const httpApiDiscoveryEpic = (
 				response
 				.json()
 			)),
-			// switchMap(() => (
-			// 	require('$cache/lights.json')
-			// )),
 			map(addHttpApiLights),
 		)
 	)
