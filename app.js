@@ -8,6 +8,8 @@ const { createEpicMiddleware } = require('redux-observable')
 const { of } = require('rxjs')
 const { tap } = require('rxjs/operators')
 
+require('./')
+
 const {
 	createHttpServers,
 	createWebSocketServers,
