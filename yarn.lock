@@ -356,9 +356,9 @@
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/setup-module-aliases/-/setup-module-aliases-0.0.0.tgz#9f4a77824df2b07f0d369a23e927c7fbec291d44"
 
-"@ghadyani-framework/websocket@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/websocket/-/websocket-2.1.0.tgz#c0316a3a9b04ef61221072053987d000c5bc3e8b"
+"@ghadyani-framework/websocket@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/websocket/-/websocket-2.1.1.tgz#3933a37f1b1ec570dffe745b8d49ec1980958808"
   dependencies:
     ws "^6.0.0"
   optionalDependencies:
