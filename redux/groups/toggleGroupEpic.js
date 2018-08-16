@@ -1,6 +1,6 @@
 const chalk = require('chalk')
-const { filter, ignoreElements, map, mergeMap, switchMap, tap, zip } = require('rxjs/operators')
-const { bindNodeCallback, forkJoin, from } = require('rxjs')
+const { bindNodeCallback, forkJoin } = require('rxjs')
+const { filter, ignoreElements, map, mergeMap, switchMap, takeUntil, tap } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
 const { lightIdsSelector } = require('./selectors')
@@ -47,6 +47,15 @@ const toggleGroupEpic = (
 					state$,
 				})
 				.pipe(
+					takeUntil(
+						action$
+						.pipe(
+							ofType(TOGGLE_GROUP),
+							filter(action => (
+								action.groupName === groupName
+							))
+						)
+					),
 					tap(lightIds => (
 						(
 							!lightIds
@@ -132,12 +141,9 @@ const toggleGroupEpic = (
 					.map(turnOnLight)
 				)
 			)),
-			tap(console.log),
-			// mergeMap(lights => (
-			// 	lights
-			// )),
-			mergeMap(light => (
-				light
+			// tap(console.log),
+			mergeMap(light$ => (
+				light$
 			)),
 			// LOG WHEN FINISHED
 			// tap(console.log),
