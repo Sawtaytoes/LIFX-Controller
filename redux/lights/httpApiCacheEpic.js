@@ -24,7 +24,7 @@ const tryCatch = (
 		console
 		.error(
 			chalk
-			.red(exception)
+			.redBright(exception)
 		)
 
 		return defaultValue
