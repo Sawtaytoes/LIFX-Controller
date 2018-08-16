@@ -39,7 +39,6 @@ const toggleGroupEpic = (
 		action$
 		.pipe(
 			ofType(TOGGLE_GROUP),
-			tap(console.info),
 			mergeMap(({ groupName }) => (
 				stateSelector({
 					props: { groupName },
@@ -47,21 +46,12 @@ const toggleGroupEpic = (
 					state$,
 				})
 				.pipe(
-					takeUntil(
-						action$
-						.pipe(
-							ofType(TOGGLE_GROUP),
-							filter(action => (
-								action.groupName === groupName
-							))
-						)
-					),
 					tap(lightIds => (
 						(
 							!lightIds
-							|| !lightIds.length
+							|| !lightIds.size
 						)
-						&& (
+						? (
 							console
 							.warn(
 								chalk
@@ -77,7 +67,32 @@ const toggleGroupEpic = (
 								)
 							)
 						)
+						: (
+							console
+							.info(
+								chalk
+								.greenBright(
+									'[TOGGLE GROUP]'
+								)
+								.concat(' ')
+								.concat(
+									chalk
+									.bgGreen(
+										groupName
+									)
+								)
+							)
+						)
 					)),
+					takeUntil(
+						action$
+						.pipe(
+							ofType(TOGGLE_GROUP),
+							filter(action => (
+								action.groupName === groupName
+							))
+						)
+					),
 				)
 			)),
 			filter(Boolean),
@@ -107,7 +122,7 @@ const toggleGroupEpic = (
 										.bind(light)
 									)()
 									.pipe(
-										map(power => (console.log({power})||{
+										map(power => ({
 											light,
 											power,
 										}))
