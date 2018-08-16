@@ -1,11 +1,18 @@
 const chalk = require('chalk')
 const { buffer, debounceTime, map, tap } = require('rxjs/operators')
-const { ofType } = require('redux-observable')
+const { combineEpics, ofType } = require('redux-observable')
 
-const { ADD_LIFX_NETWORK_LIGHT } = require('$redux/lifxNetwork/actions')
-const { addNetworkLights } = require('./actions')
+const {
+	ADD_LIFX_NETWORK_LIGHT,
+	REMOVE_LIFX_NETWORK_LIGHT,
+} = require('$redux/lifxNetwork/actions')
 
-const networkDiscoveryEpic = (
+const {
+	addNetworkLights,
+	removeNetworkLight,
+} = require('./actions')
+
+const addLightsEpic = (
 	action$ => (
 		action$
 		.pipe(
@@ -29,6 +36,23 @@ const networkDiscoveryEpic = (
 			}),
 			map(addNetworkLights),
 		)
+	)
+)
+
+const removeLightEpic = (
+	action$ => (
+		action$
+		.pipe(
+			ofType(REMOVE_LIFX_NETWORK_LIGHT),
+			map(removeNetworkLight),
+		)
+	)
+)
+
+const networkDiscoveryEpic = (
+	combineEpics(
+		addLightsEpic,
+		removeLightEpic,
 	)
 )
 

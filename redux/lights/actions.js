@@ -1,6 +1,7 @@
 const ADD_HTTP_API_LIGHTS = 'LIGHTS::ADD_HTTP_API_LIGHTS'
 const ADD_NETWORK_LIGHTS = 'LIGHTS::ADD_NETWORK_LIGHTS'
 const ADD_SCENE = 'LIGHTS::ADD_SCENE'
+const REMOVE_NETWORK_LIGHT = 'LIGHTS::REMOVE_NETWORK_LIGHT'
 
 const addHttpApiLights = (
 	lights => ({
@@ -13,6 +14,12 @@ const addNetworkLights = (
 	lights => ({
 		lights,
 		type: ADD_NETWORK_LIGHTS,
+	})
+)
+const removeNetworkLight = (
+	light => ({
+		light,
+		type: REMOVE_NETWORK_LIGHT,
 	})
 )
 
@@ -32,4 +39,6 @@ module.exports = {
 	addHttpApiLights,
 	addNetworkLights,
 	addScene,
+	REMOVE_NETWORK_LIGHT,
+	removeNetworkLight,
 }
