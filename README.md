@@ -14,3 +14,15 @@ npm i
 ```sh
 yarn
 ```
+
+## Custom Options to node-lifx
+In `./projectConfig.js` or `./localConfig.js`, add a property `nodeLifxClient` as an object and its options as properties on that object.
+
+```js
+module.exports = {
+	nodeLifxClient: {
+		debug: true,
+		resendMaxTimes: 5,
+	},
+}
+```
