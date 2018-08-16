@@ -2,4 +2,6 @@
 require('@ghadyani-framework/setup-module-aliases')(__dirname)
 require('$utils/createCacheDirectory')
 
-module.exports = {}
+module.exports = {
+	actionsBlacklist: require('$redux/actionsBlacklist'),
+}

@@ -5,23 +5,21 @@ const { applyMiddleware, createStore } = require('redux')
 const { createActionLoggerMiddleware } = require('@ghadyani-framework/redux-utils')
 const { createConfigurationSet, runTasks } = require('@ghadyani-framework/node')
 const { createEpicMiddleware } = require('redux-observable')
+const { createHttpServers, createWebSocketServers } = require('@ghadyani-framework/websocket')
 const { of } = require('rxjs')
 const { tap } = require('rxjs/operators')
-
-require('./')
-
-const {
-	createHttpServers,
-	createWebSocketServers,
-} = require('@ghadyani-framework/websocket')
 
 const {
 	rootEpic,
 	rootReducer,
 } = require('$redux')
 
+const { actionsBlacklist } = require('./')
+
 const actionLoggerMiddleware = (
-	createActionLoggerMiddleware()
+	createActionLoggerMiddleware({
+		actionsBlacklist,
+	})
 )
 
 const epicMiddleware = createEpicMiddleware()
