@@ -3,7 +3,7 @@ const { combineReducers } = require('redux')
 
 const addGroupsEpic = require('./addGroupsEpic')
 const groupsListReducer = require('./groupsListReducer')
-const lightGroupsListReducer = require('./lightGroupsListReducer')
+const lightIdsGroupListReducer = require('./lightIdsGroupListReducer')
 const requestsEpic = require('./requestsEpic')
 const toggleGroupEpic = require('./toggleGroupEpic')
 
@@ -18,7 +18,7 @@ const groupsEpic = (
 const groupsReducer = (
 	combineReducers({
 		groupsList: groupsListReducer,
-		lightGroupsList: lightGroupsListReducer,
+		lightIdsGroupList: lightIdsGroupListReducer,
 	})
 )
 

@@ -6,13 +6,13 @@ const initialState = new Set()
 const reducerActions = {
 	[ADD_GROUP]: (
 		(prevState, { lightId }) => (
-			prevState
+			new Set(prevState)
 			.add(lightId)
 		)
 	),
 }
 
-const lightGroupsListReducer = (
+const lightIdsGroupListReducer = (
 	createNamespaceReducer(
 		createReducer(
 			reducerActions,
@@ -21,4 +21,4 @@ const lightGroupsListReducer = (
 	)
 )
 
-module.exports = lightGroupsListReducer
+module.exports = lightIdsGroupListReducer

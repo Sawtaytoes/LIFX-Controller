@@ -1,24 +1,21 @@
-const { filter, map } = require('rxjs/operators')
+const { map, mergeMap } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
-const { ADD_LIGHT } = require('$redux/lights/actions')
+const { ADD_HTTP_API_LIGHTS } = require('$redux/lights/actions')
 const { addGroup } = require('./actions')
 
 const addGroupsEpic = (
 	action$ => (
 		action$
 		.pipe(
-			ofType(ADD_LIGHT),
-			filter(({ httpApi }) => (
-				httpApi
+			ofType(ADD_HTTP_API_LIGHTS),
+			mergeMap(({ lights }) => (
+				lights
 			)),
-			map(({
-				httpApi,
-				namespace,
-			}) => ({
-				group: httpApi.group,
-				lightId: namespace,
-				namespace: httpApi.group.name,
+			map(({ group, id }) => ({
+				group: group,
+				lightId: id,
+				namespace: group.name,
 			})),
 			map(addGroup),
 		)

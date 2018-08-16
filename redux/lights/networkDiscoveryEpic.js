@@ -1,5 +1,5 @@
 const chalk = require('chalk')
-const { buffer, debounceTime, map, tap } = require('rxjs/operators')
+const { buffer, debounceTime, map, pluck, tap } = require('rxjs/operators')
 const { combineEpics, ofType } = require('redux-observable')
 
 const {
@@ -17,6 +17,7 @@ const addLightsEpic = (
 		action$
 		.pipe(
 			ofType(ADD_LIFX_NETWORK_LIGHT),
+			pluck('light'),
 			buffer(
 				action$
 				.pipe(
