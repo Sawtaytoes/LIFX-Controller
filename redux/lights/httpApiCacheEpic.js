@@ -1,3 +1,4 @@
+const chalk = require('chalk')
 const fs = require('fs')
 const { bindNodeCallback, of } = require('rxjs')
 const { combineEpics, ofType } = require('redux-observable')
@@ -12,6 +13,24 @@ const {
 	addHttpApiLights,
 } = require('./actions')
 
+const tryCatch = (
+	tryOperation,
+	defaultValue,
+) => {
+	try {
+		return tryOperation()
+	}
+	catch(exception) {
+		console
+		.error(
+			chalk
+			.red(exception)
+		)
+
+		return defaultValue
+	}
+}
+
 const safeImport = (
 	(filePath, defaultValue) => (
 		fs
@@ -22,7 +41,12 @@ const safeImport = (
 				'.',
 			)
 		)
-		? require(filePath)
+		? (
+			tryCatch(
+				() => require(filePath),
+				defaultValue,
+			)
+		)
 		: defaultValue
 	)
 )
