@@ -105,7 +105,7 @@ const toggleGroupEpic = (
 					...(
 						lightIds
 						.map(lightId => (
-							// NEED TO HANDLE ERRORS IN HERE
+							// TODO: NEED TO HANDLE ERRORS IN HERE
 							// OTHERWISE ONE ERROR WILL KILL THE ENTIRE FORKJOIN
 							stateSelector({
 								props: { lightId },
@@ -115,7 +115,6 @@ const toggleGroupEpic = (
 							.pipe(
 								filter(Boolean),
 								switchMap(light => (
-									// console.log(light.client.light(light.id))||
 									bindNodeCallback(
 										light
 										.getPower
@@ -160,7 +159,7 @@ const toggleGroupEpic = (
 			mergeMap(light$ => (
 				light$
 			)),
-			// LOG WHEN FINISHED
+			// TODO: LOG WHEN FINISHED WITH ALL
 			// tap(console.log),
 			ignoreElements(),
 		)
