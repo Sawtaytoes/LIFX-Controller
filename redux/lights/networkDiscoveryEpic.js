@@ -1,20 +1,19 @@
 const chalk = require('chalk')
 const { buffer, debounceTime, map, tap } = require('rxjs/operators')
+const { ofType } = require('redux-observable')
 
-const createNetworkLifxListener = require('./utils/createNetworkLifxListener')
+const { ADD_LIFX_NETWORK_LIGHT } = require('$redux/lifxNetwork/actions')
 const { addNetworkLights } = require('./actions')
 
-const networkLifxListener$ = (
-	createNetworkLifxListener()
-)
-
 const networkDiscoveryEpic = (
-	() => (
-		networkLifxListener$
+	action$ => (
+		action$
 		.pipe(
+			ofType(ADD_LIFX_NETWORK_LIGHT),
 			buffer(
-				networkLifxListener$
+				action$
 				.pipe(
+					ofType(ADD_LIFX_NETWORK_LIGHT),
 					debounceTime(500),
 				)
 			),
@@ -22,7 +21,7 @@ const networkDiscoveryEpic = (
 				console
 				.info(
 					chalk
-					.yellow(
+					.yellowBright(
 						lights
 						.length
 					)
