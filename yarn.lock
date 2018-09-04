@@ -311,9 +311,9 @@
   dependencies:
     arrify "^1.0.1"
 
-"@ghadyani-framework/base@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/base/-/base-0.1.0.tgz#3d321c6708484aab639ab145e68a2962ad58c3dd"
+"@ghadyani-framework/base@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/base/-/base-0.2.0.tgz#f39e38ecb867387c4ca91eb7ba3e4f0772728f5e"
   dependencies:
     "@ghadyani-framework/eslint-config-base" "^0.0.3"
     "@ghadyani-framework/eslint-config-node" "^0.0.3"
@@ -335,20 +335,20 @@
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/eslint-config-node/-/eslint-config-node-0.0.3.tgz#b68c3e01a46816f14eb51f6c8dedd93bd99c3f67"
 
-"@ghadyani-framework/node@^2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/node/-/node-2.3.1.tgz#300977e177d26d75ae1d70c9b4d24b74106153fa"
+"@ghadyani-framework/node@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/node/-/node-2.4.0.tgz#425912b9b1c8d36675e848d38fe4f64959245362"
   dependencies:
-    "@ghadyani-framework/base" "^0.1.0"
+    "@ghadyani-framework/base" "^0.2.0"
     redux "^4.0.0"
     redux-mock-store "^1.5.3"
     redux-observable "^1.0.0"
     uuid "^3.3.2"
     yargs "^12.0.1"
 
-"@ghadyani-framework/redux-utils@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/redux-utils/-/redux-utils-0.1.2.tgz#effcc0a18d97d9f477588c1e1de7842df1338d4a"
+"@ghadyani-framework/redux-utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/redux-utils/-/redux-utils-0.2.0.tgz#ab416ed7b8b8faeccff695c54e5c2ff3510a229e"
   dependencies:
     is-equal "^1.5.5"
 
@@ -356,9 +356,9 @@
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/setup-module-aliases/-/setup-module-aliases-0.0.0.tgz#9f4a77824df2b07f0d369a23e927c7fbec291d44"
 
-"@ghadyani-framework/websocket@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/websocket/-/websocket-2.1.3.tgz#51ccacddc4b3339c1c06c31539159e674dab7a43"
+"@ghadyani-framework/websocket@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/websocket/-/websocket-2.2.0.tgz#9e9f7bf713b0b2005bf66093a88dbe20c91cf01d"
   dependencies:
     ws "^6.0.0"
   optionalDependencies:
