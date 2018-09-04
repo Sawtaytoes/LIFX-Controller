@@ -12,8 +12,8 @@
     "test:watch": "ava --watch"
   },
   "engines": {
-    "node": "^10.7.0",
-    "yarn": "^1.7.0"
+    "node": ">=8.11.4",
+    "yarn": ">=1.6.0"
   },
   "_moduleAliases": {
     "$cache": "./.cache",
