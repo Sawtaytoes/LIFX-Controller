@@ -4,24 +4,25 @@ const ADD_SCENE = 'LIGHTS::ADD_SCENE'
 const REMOVE_NETWORK_LIGHT = 'LIGHTS::REMOVE_NETWORK_LIGHT'
 
 const addHttpApiLights = (
-	lights => ({
-		lights,
-		type: ADD_HTTP_API_LIGHTS,
-	})
-)
+	lights,
+) => ({
+	lights,
+	type: ADD_HTTP_API_LIGHTS,
+})
 
 const addNetworkLights = (
-	lights => ({
-		lights,
-		type: ADD_NETWORK_LIGHTS,
-	})
-)
+	lights,
+) => ({
+	lights,
+	type: ADD_NETWORK_LIGHTS,
+})
+
 const removeNetworkLight = (
-	light => ({
-		light,
-		type: REMOVE_NETWORK_LIGHT,
-	})
-)
+	light,
+) => ({
+	light,
+	type: REMOVE_NETWORK_LIGHT,
+})
 
 const addScene = ({
 	namespace,
