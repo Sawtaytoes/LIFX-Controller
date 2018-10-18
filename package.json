@@ -1,7 +1,7 @@
 {
   "name": "lifx-controller",
   "version": "0.0.0",
-  "description": "Utilities for creating applications using WebSockets.",
+  "description": "LIFX controller software using WebSockets.",
   "license": "MITNFA",
   "scripts": {
     "debug": "nodemon --inspect app.js",
