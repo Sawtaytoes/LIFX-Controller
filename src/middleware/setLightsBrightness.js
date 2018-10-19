@@ -3,7 +3,7 @@ const Promise = require('bluebird')
 const dir = require(`${global.baseDir}directories`)
 const logger = require(`${dir.utils}logger`)
 
-const DURATION = 0
+const DURATION = 500
 
 const isLightOnline = Boolean
 const getLightByName = lifxClient => name => lifxClient.light(name)
