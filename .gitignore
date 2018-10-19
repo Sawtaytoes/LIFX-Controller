@@ -6,7 +6,7 @@
 
 ## Configs ##
 .env
-server/configs/config.js
+configs/custom.js
 
 ## Logs ##
 logs

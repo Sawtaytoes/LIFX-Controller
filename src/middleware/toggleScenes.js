@@ -1,7 +1,7 @@
 const Promise = require('bluebird')
 
-const dir = require(`${global.baseDir}/global-dirs`)
-const logger = require(`${dir.utils}/logger`)
+const dir = require(`${global.baseDir}directories`)
+const logger = require(`${dir.utils}logger`)
 
 const POWERED_ON = 1
 const POWERED_OFF = 0
@@ -53,26 +53,28 @@ const changeLightPower = powerFuncName => light => (
 
 const turnOffLight = changeLightPower('off')
 
+const changeLightToMatchScene = ({
+	light,
+	sceneLightSettings: {
+		brightness,
+		color: {
+			hue = 0,
+			saturation = 0,
+			kelvin
+		},
+		power,
+	},
+}) => (
+	Promise.all([
+		changeLightColor(hue, saturation * 100, brightness * 100, kelvin)(light),
+		changeLightPower(power)(light),
+	])
+)
+
 const turnOnScene = sceneAndLightSettings => (
 	sceneAndLightSettings
 	.filter(lightDoesNotMatchScene)
-	.map(({
-		light,
-		sceneLightSettings: {
-			brightness,
-			color: {
-				hue = 0,
-				saturation = 0,
-				kelvin
-			},
-			power,
-		},
-	}) => (
-		Promise.all([
-			changeLightColor(hue, saturation * 100, brightness * 100, kelvin)(light),
-			changeLightPower(power)(light),
-		])
-	))
+	.map(changeLightToMatchScene)
 )
 
 const turnOffScene = sceneAndLightSettings => (
@@ -100,7 +102,8 @@ const getSceneAndLightsSettings = scene => lights => (
 )
 
 const combineLightsInScenes = lightsInScenes => (
-	lightsInScenes.reduce(
+	lightsInScenes
+	.reduce(
 		(combined, lightsInScene) => combined.concat(lightsInScene),
 		[]
 	)
@@ -120,8 +123,6 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 		.map(sceneName => lifxConfig.scenes.get(sceneName))
 		.filter(Boolean)
 	)
-
-	console.log(scenes);
 
 	if (!scenes.length) return 'Scenes do not exist.'
 

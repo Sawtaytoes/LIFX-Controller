@@ -9,4 +9,4 @@ git reset --hard HEAD
 git pull
 yarn
 chown -R www-data:www-data .
-pm2 gracefulReload ${PWD##*/}
+pm2 reload ${PWD##*/}

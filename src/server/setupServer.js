@@ -4,17 +4,12 @@ const cors = require('cors')
 const express = require('express')
 const helmet = require('helmet')
 
-const dir = require(`${global.baseDir}/global-dirs`)
-const config = require(`${dir.configs}config-settings`)
+const dir = require(`${global.baseDir}directories`)
+const config = require(`${dir.configs}`)
 
+const server = express()
 
-// --------------------------------------------------------
-// Server Setup
-// --------------------------------------------------------
-
-const app = express()
-
-app
+server
 .use(compression())
 .use(helmet())
 .use(cors({ origin: config.getSafeUrl(config.getServerUrl), optionsSuccessStatus: 200 }))
@@ -23,4 +18,4 @@ app
 
 .disable('x-powered-by')
 
-module.exports = () => app
+module.exports = () => server
