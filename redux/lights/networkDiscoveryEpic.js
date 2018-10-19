@@ -28,10 +28,32 @@ const addLightsEpic = (
 			tap(lights => {
 				console
 				.info(
-					chalk
-					.yellowBright(
+					(
+						'Network Lights:'
+					),
+					(
+						chalk
+						.yellowBright(
+							lights
+							.length
+						)
+					)
+				)
+			}),
+			tap(lights => {
+				lights
+				.length < 5
+				&& (
+					console
+					.info(
 						lights
-						.length
+						.map(({
+							address,
+							id,
+						}) => ({
+							address,
+							id,
+						}))
 					)
 				)
 			}),
