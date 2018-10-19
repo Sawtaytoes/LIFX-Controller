@@ -14,20 +14,20 @@
     "npm": "^5.4.1"
   },
   "dependencies": {
-    "bluebird": "^3.5.0",
+    "bluebird": "^3.5.2",
     "body-parser": "^1.18.2",
     "compression": "^1.7.0",
     "cors": "^2.8.4",
     "express": "^4.15.4",
     "express-sslify": "^1.2.0",
     "helmet": "^3.8.1",
-    "node-fetch": "^1.7.3",
+    "node-fetch": "^2.2.0",
     "node-lifx": "^0.8.0",
     "rxjs": "^5.4.3"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
-    "eslint": "^4.7.2",
-    "nodemon": "^1.12.1"
+    "ava": "^0.25.0",
+    "eslint": "^5.7.0",
+    "nodemon": "^1.18.4"
   }
 }
