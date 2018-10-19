@@ -9,7 +9,7 @@ const logger = require(`${dir.utils}logger`)
 const { addObserver, triggerObservable } = createObserverCallback()
 
 const POWERED_ON = 1
-const DURATION = 500
+const DURATION = 0
 
 const getLightByName = lifxClient => name => lifxClient.light(name)
 

@@ -4,7 +4,7 @@ const dir = require(`${global.baseDir}directories`)
 const logger = require(`${dir.utils}logger`)
 
 const POWERED_ON = 1
-const DURATION = 500
+const DURATION = 0
 
 const getLightById = lifxClient => ({ id }) => lifxClient.light(id)
 

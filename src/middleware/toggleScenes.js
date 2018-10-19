@@ -5,7 +5,7 @@ const logger = require(`${dir.utils}logger`)
 
 const POWERED_ON = 1
 const POWERED_OFF = 0
-const DURATION = 1000
+const DURATION = 0
 const MARGIN_OF_ERROR = 2
 
 const isLightOnline = Boolean
@@ -126,7 +126,8 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 
 	if (!scenes.length) return 'Scenes do not exist.'
 
-	Promise.all(
+	Promise
+	.all(
 		scenes
 		.map(getLightsInScene(lifxClient))
 		.map(lifxClient.update)
