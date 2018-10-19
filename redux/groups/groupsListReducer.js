@@ -1,5 +1,5 @@
 const { ADD_GROUP } = require('./actions')
-const { createNamespaceReducer, createReducer } = require('@ghadyani-framework/redux-utils')
+const { createMappedNamespaceReducer, createReducer } = require('@ghadyani-framework/redux-utils')
 
 const initialState = {}
 
@@ -13,7 +13,7 @@ const reducerActions = {
 }
 
 const groupsListReducer = (
-	createNamespaceReducer(
+	createMappedNamespaceReducer(
 		createReducer(
 			reducerActions,
 			initialState,
