@@ -30,7 +30,8 @@ const addLightSettings = light => state => {
 }
 
 const updateLightConfig = light => (
-	Promise.promisify(light.getState, { context: light })()
+	Promise
+	.promisify(light.getState, { context: light })()
 	.then(addLightSettings(light))
 )
 
@@ -43,6 +44,8 @@ const update = lights => (
 )
 
 lifxClient.on('light-new', updateLightConfig)
+lifxClient.on('light-offline', updateLightConfig)
+lifxClient.on('light-online', updateLightConfig)
 lifxClient.update = update
 
 module.exports = lifxClient
