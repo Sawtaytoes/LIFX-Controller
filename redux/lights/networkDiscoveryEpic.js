@@ -37,7 +37,7 @@ const addLightsEpic = (
 							lights
 							.length
 						)
-					)
+					),
 				)
 			}),
 			tap(lights => {
