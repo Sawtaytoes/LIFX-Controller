@@ -1,6 +1,6 @@
 const chalk = require('chalk')
-const { bindNodeCallback, forkJoin } = require('rxjs')
-const { filter, ignoreElements, map, mergeMap, switchMap, takeUntil, tap } = require('rxjs/operators')
+const { bindNodeCallback, forkJoin, from, of } = require('rxjs')
+const { catchError, filter, ignoreElements, map, mergeMap, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
 const { lightIdsSelector } = require('./selectors')
@@ -9,7 +9,7 @@ const { POWERED_ON } = require('$redux/lifxNetwork/utils/constants')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 const { TOGGLE_GROUP } = require('./actions')
 
-const duration = 500
+const duration = 0
 
 const isLightOnInGroup = (
 	lightsInGroup => (
@@ -91,7 +91,8 @@ const toggleGroupEpic = (
 					.pipe(
 						ofType(TOGGLE_GROUP),
 						filter(action => (
-							action.groupName === groupName
+							action
+							.groupName === groupName
 						))
 					)
 				),
@@ -145,24 +146,63 @@ const toggleGroupEpic = (
 			)
 		)),
 		// tap(console.log),
-		tap(t => console.log(t.length)),
-		mergeMap(lightsInGroup => (
-			isLightOnInGroup(lightsInGroup)
-			? (
-				lightsInGroup
-				.map(turnOffLight)
+		tap(lightsInGroup => {
+			console
+			.info(
+				(
+					'Lights in Group:'
+				),
+				(
+					chalk
+					.yellowBright(
+						lightsInGroup
+						.length
+					)
+				)
 			)
-			: (
-				lightsInGroup
-				.map(turnOnLight)
+		}),
+		map(lightsInGroup => ({
+			changeLightPower: (
+				isLightOnInGroup(
+					lightsInGroup
+				)
+				? turnOffLight
+				: turnOnLight
+			),
+			lightsInGroup,
+		})),
+		mergeMap(({
+			changeLightPower,
+			lightsInGroup,
+		}) => (
+			from(lightsInGroup)
+			.pipe(
+				mergeMap(changeLightPower),
+				catchError(error => {
+					console
+					.error(
+						chalk
+						.redBright(
+							error
+						)
+					)
+
+					return of(null)
+				}),
+				toArray(),
 			)
 		)),
-		// tap(console.log),
-		mergeMap(light$ => (
-			light$
-		)),
-		// TODO: LOG WHEN FINISHED WITH ALL
-		// tap(console.log),
+		catchError(error => {
+			console
+			.error(
+				chalk
+				.redBright(
+					error
+				)
+			)
+
+			return of(null)
+		}),
 		ignoreElements(),
 	)
 )
