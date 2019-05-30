@@ -34,11 +34,13 @@ const lightMatchesScene = ({ light: { settings }, sceneLightSettings }) => (
 const lightDoesNotMatchScene = settings => !lightMatchesScene(settings)
 
 const isSceneActive = sceneAndLightSettings => (
-	sceneAndLightSettings.every(lightMatchesScene)
+	sceneAndLightSettings
+	.every(lightMatchesScene)
 )
 
 const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
-	Promise.promisify(light.color, { context: light })(
+	Promise
+	.promisify(light.color, { context: light })(
 		hue,
 		saturation,
 		brightness,
@@ -48,7 +50,8 @@ const changeLightColor = (hue, saturation, brightness, kelvin) => light => (
 )
 
 const changeLightPower = powerFuncName => light => (
-	Promise.promisify(light[powerFuncName], { context: light })(DURATION)
+	Promise
+	.promisify(light[powerFuncName], { context: light })(DURATION)
 )
 
 const turnOffLight = changeLightPower('off')
@@ -65,7 +68,8 @@ const changeLightToMatchScene = ({
 		power,
 	},
 }) => (
-	Promise.all([
+	Promise
+	.all([
 		changeLightColor(hue, saturation * 100, brightness * 100, kelvin)(light),
 		changeLightPower(power)(light),
 	])
@@ -85,7 +89,8 @@ const turnOffScene = sceneAndLightSettings => (
 )
 
 const toggleScene = sceneAndLightSettings => (
-	Promise.all(
+	Promise
+	.all(
 		isSceneActive(sceneAndLightSettings)
 		? turnOffScene(sceneAndLightSettings)
 		: turnOnScene(sceneAndLightSettings)
@@ -93,12 +98,21 @@ const toggleScene = sceneAndLightSettings => (
 )
 
 const getSceneAndLightsSettings = scene => lights => (
-	scene.states
+	scene
+	.states
 	.map(sceneLightSettings => ({
 		light: lights.find(({ id }) => id === sceneLightSettings.id),
 		sceneLightSettings,
 	}))
 	.filter(({ light }) => light)
+)
+
+const filterLightsWithErrors = lightsInScenes => (
+	lightsInScenes
+	.map(lightsInScene => (
+		lightsInScene
+		.filter(Boolean)
+	))
 )
 
 const combineLightsInScenes = lightsInScenes => (
@@ -110,7 +124,8 @@ const combineLightsInScenes = lightsInScenes => (
 )
 
 const getLightsInScene = lifxClient => scene => (
-	scene.lights
+	scene
+	.lights
 	.map(getLightById(lifxClient))
 	.filter(isLightOnline)
 )
@@ -126,14 +141,18 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 
 	if (!scenes.length) return 'Scenes do not exist.'
 
-	Promise.all(
+	Promise
+	.all(
 		scenes
 		.map(getLightsInScene(lifxClient))
 		.map(lifxClient.update)
 		.map((promise, index) => (
-			promise.then(getSceneAndLightsSettings(scenes[index]))
+			promise
+			.then(getSceneAndLightsSettings(scenes[index]))
+			.catch(logger.logError)
 		))
 	)
+	.then(filterLightsWithErrors)
 	.then(combineLightsInScenes)
 	.then(toggleScene)
 	.then(lifxConfig.update)
