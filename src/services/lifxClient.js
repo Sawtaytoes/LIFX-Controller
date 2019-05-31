@@ -33,14 +33,20 @@ const updateLightConfig = light => (
 	Promise
 	.promisify(light.getState, { context: light })()
 	.then(addLightSettings(light))
+	.catch(console.error)
 )
 
 const update = lights => (
-	Promise.all(
+	Promise
+	.all(
 		lights
 		.filter(isLightOnline)
 		.map(updateLightConfig)
 	)
+	.then(lights => (
+		lights
+		.filter(Boolean)
+	))
 )
 
 lifxClient.on('light-new', updateLightConfig)

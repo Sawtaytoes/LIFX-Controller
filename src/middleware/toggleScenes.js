@@ -137,6 +137,16 @@ module.exports = (lifxClient, lifxConfig) => sceneNames => {
 		sceneNames
 		.map(sceneName => lifxConfig.scenes.get(sceneName))
 		.filter(Boolean)
+		.map(({
+			lights,
+			...props
+		}) => ({
+			...props,
+			lights: (
+				lights
+				.filter(Boolean)
+			),
+		}))
 	)
 
 	if (!scenes.length) return 'Scenes do not exist.'
