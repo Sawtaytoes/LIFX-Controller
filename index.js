@@ -16,8 +16,11 @@ const toggleLights = require(`${dir.middleware}toggleLights`)
 const toggleScenes = require(`${dir.middleware}toggleScenes`)
 const turnOffGroups = require(`${dir.middleware}turnOffGroups`)
 
-lifxClient.init()
-lifxConfig.init()
+lifxClient
+.init({ messageHandlerTimeout: 2000 })
+
+lifxConfig
+.init()
 
 const server = setupServer()
 
