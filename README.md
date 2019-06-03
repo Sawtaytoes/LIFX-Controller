@@ -15,19 +15,42 @@ npm i
 yarn
 ```
 
-## Custom Options to node-lifx
+## Custom Configuration
+
+### WebSocket Server
+To configure the Webpack listener, you have 3 options available to modify in your `./localConfig.js`:
+
+module.exports = {
+	// ... other config options ...
+	hostname,
+	port,
+	protocol,
+}
+
+### LIFX HTTP API Token
+Go to [LIFX's cloud settings page](https://cloud.lifx.com/settings) and create a new token for your app. This will go in your `./localConfig.js` as:
+
+```js
+module.exports = {
+	// ... other config options ...
+	lifxApiToken: 'YOUR_LIFX_API_TOKEN',
+}
+```
+
+### Custom Options to node-lifx
 In `./projectConfig.js` or `./localConfig.js`, add a property `nodeLifxClient` as an object and its options as properties on that object.
 
 ```js
 module.exports = {
 	nodeLifxClient: {
 		debug: true,
-		resendMaxTimes: 5,
+		messageHandlerTimeout: 2000,
+		resendMaxTimes: 3,
 	},
 }
 ```
 
-## Sample
+## Testing
 
 ### Toggle Group
 To test toggling a group, load up a browser, and go to `about:blank`.
