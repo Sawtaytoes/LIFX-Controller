@@ -11,32 +11,32 @@ const {
 } = require('./actions')
 
 const joinChannelRequestEpic = (
-	action$ => (
-		action$
-		.pipe(
-			ofRequestType(JOIN_CHANNEL),
-			map(({ channelName, connection }) => (
-				joinChannel({
-					connection,
-					namespace: channelName,
-				})
-			)),
-		)
+	action$,
+) => (
+	action$
+	.pipe(
+		ofRequestType(JOIN_CHANNEL),
+		map(({ channelName, connection }) => (
+			joinChannel({
+				connection,
+				namespace: channelName,
+			})
+		)),
 	)
 )
 
 const leaveChannelRequestEpic = (
-	action$ => (
-		action$
-		.pipe(
-			ofRequestType(LEAVE_CHANNEL),
-			map(({ channelName, connection }) => (
-				leaveChannel({
-					connection,
-					namespace: channelName,
-				})
-			)),
-		)
+	action$,
+) => (
+	action$
+	.pipe(
+		ofRequestType(LEAVE_CHANNEL),
+		map(({ channelName, connection }) => (
+			leaveChannel({
+				connection,
+				namespace: channelName,
+			})
+		)),
 	)
 )
 

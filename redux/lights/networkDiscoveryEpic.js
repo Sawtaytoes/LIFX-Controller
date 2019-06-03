@@ -2,6 +2,8 @@ const chalk = require('chalk')
 const { buffer, debounceTime, map, pluck, tap } = require('rxjs/operators')
 const { combineEpics, ofType } = require('redux-observable')
 
+const catchEpicError = require('$redux/utils/catchEpicError')
+
 const {
 	ADD_LIFX_NETWORK_LIGHT,
 	REMOVE_LIFX_NETWORK_LIGHT,
@@ -59,6 +61,7 @@ const addLightsEpic = (
 			)
 		}),
 		map(addNetworkLights),
+		catchEpicError(),
 	)
 )
 
@@ -69,6 +72,7 @@ const removeLightEpic = (
 	.pipe(
 		ofType(REMOVE_LIFX_NETWORK_LIGHT),
 		map(removeNetworkLight),
+		catchEpicError(),
 	)
 )
 

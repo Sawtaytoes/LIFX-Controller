@@ -6,6 +6,7 @@ const { ignoreElements, map, switchMap } = require('rxjs/operators')
 // const { safeImport } = require('@ghadyani-framework/base')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
+const catchEpicError = require('$redux/utils/catchEpicError')
 const { httpApiLightsSelector } = require('./selectors')
 
 const {
@@ -61,6 +62,7 @@ const loadFromCacheEpic = () => (
 	)
 	.pipe(
 		map(addHttpApiLights),
+		catchEpicError(),
 	)
 )
 
@@ -87,10 +89,11 @@ const storeInCacheEpic = (
 		map(JSON.stringify),
 		switchMap(lightsJson => (
 			createWriteFileObservable(
-				'$cache/lights.json',
+				'.cache/lights.json',
 				lightsJson,
 			)
 		)),
+		catchEpicError(),
 		ignoreElements(),
 	)
 )

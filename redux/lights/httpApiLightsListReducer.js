@@ -9,11 +9,12 @@ const initialState = []
 
 const reducerActions = {
 	[ADD_HTTP_API_LIGHTS]: (
-		(prevState, { lights }) => (
-			mergeById(
-				prevState,
-				lights,
-			)
+		prevState,
+		{ lights },
+	) => (
+		mergeById(
+			prevState,
+			lights,
 		)
 	),
 }
