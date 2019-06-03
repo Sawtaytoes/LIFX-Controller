@@ -39,7 +39,7 @@
     "@ghadyani-framework/node": "^3.0.1",
     "@ghadyani-framework/redux-utils": "^1.1.2",
     "@ghadyani-framework/websocket": "^3.0.0",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "^2.6.0",
     "node-lifx": "^0.8.0",
     "node-lifx-lan": "^0.3.1"
   }
