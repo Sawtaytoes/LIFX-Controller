@@ -45,7 +45,7 @@ const addLightsEpic = (
 		}),
 		tap(lights => {
 			lights
-			.length < 5
+			.length <= 10
 			&& (
 				console
 				.info(
