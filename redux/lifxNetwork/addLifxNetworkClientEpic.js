@@ -7,23 +7,23 @@ const { START_TASK } = require('@ghadyani-framework/node/redux/tasks/actions')
 const { addLifxNetworkClient } = require('./actions')
 
 const addLifxNetworkClientEpic = (
-	action$ => (
-		action$
-		.pipe(
-			ofType(START_TASK),
-			ofTaskName(
-				'serve',
-				'undefined',
-			),
-			mapTo(
-				nodeLifx
-				.Client
-			),
-			map(LifxClient => (
-				new LifxClient()
-			)),
-			map(addLifxNetworkClient),
-		)
+	action$,
+) => (
+	action$
+	.pipe(
+		ofType(START_TASK),
+		ofTaskName(
+			'serve',
+			'undefined',
+		),
+		mapTo(
+			nodeLifx
+			.Client
+		),
+		map(LifxClient => (
+			new LifxClient()
+		)),
+		map(addLifxNetworkClient),
 	)
 )
 

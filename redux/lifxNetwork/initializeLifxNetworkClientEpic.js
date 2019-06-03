@@ -8,33 +8,34 @@ const { START_LIFX_NETWORK_LISTENERS } = require('./actions')
 const { lifxNetworkClientSelector } = require('./selectors')
 
 const initializeLifxNetworkClientEpic = (
-	(action$, state$) => (
-		action$
-		.pipe(
-			ofType(START_LIFX_NETWORK_LISTENERS),
-			switchMap(() => (
-				combineLatest(
-					stateSelector({
-						selector: configurationSetSelector,
-						state$,
-					}),
-					stateSelector({
-						selector: lifxNetworkClientSelector,
-						state$,
-					}),
-				)
-				.pipe(
-					tap(([
-						{ nodeLifxClient = {} },
-						lifxNetworkClient,
-					]) => {
-						lifxNetworkClient
-						.init(nodeLifxClient)
-					})
-				)
-			)),
-			ignoreElements(),
-		)
+	action$,
+	state$,
+) => (
+	action$
+	.pipe(
+		ofType(START_LIFX_NETWORK_LISTENERS),
+		switchMap(() => (
+			combineLatest(
+				stateSelector({
+					selector: configurationSetSelector,
+					state$,
+				}),
+				stateSelector({
+					selector: lifxNetworkClientSelector,
+					state$,
+				}),
+			)
+			.pipe(
+				tap(([
+					{ nodeLifxClient = {} },
+					lifxNetworkClient,
+				]) => {
+					lifxNetworkClient
+					.init(nodeLifxClient)
+				})
+			)
+		)),
+		ignoreElements(),
 	)
 )
 
