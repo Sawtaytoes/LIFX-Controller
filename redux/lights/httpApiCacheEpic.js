@@ -32,36 +32,35 @@ const tryCatch = (
 }
 
 const safeImport = (
-	(filePath, defaultValue) => (
-		fs
-		.existsSync(
-			filePath
-			.replace(
-				/^(\$)/,
-				'.',
-			)
+	filePath,
+	defaultValue,
+) => (
+	fs
+	.existsSync(
+		filePath
+		.replace(
+			/^(\$)/,
+			'.',
 		)
-		? (
-			tryCatch(
-				() => require(filePath),
-				defaultValue,
-			)
-		)
-		: defaultValue
 	)
+	? (
+		tryCatch(
+			() => require(filePath),
+			defaultValue,
+		)
+	)
+	: defaultValue
 )
 
-const loadFromCacheEpic = (
-	() => (
-		of(
-			safeImport(
-				'$cache/lights.json',
-				[],
-			)
+const loadFromCacheEpic = () => (
+	of(
+		safeImport(
+			'$cache/lights.json',
+			[],
 		)
-		.pipe(
-			map(addHttpApiLights),
-		)
+	)
+	.pipe(
+		map(addHttpApiLights),
 	)
 )
 
@@ -73,25 +72,26 @@ const createWriteFileObservable = (
 )
 
 const storeInCacheEpic = (
-	(action$, state$) => (
-		action$
-		.pipe(
-			ofType(ADD_HTTP_API_LIGHTS),
-			switchMap(() => (
-				stateSelector({
-					selector: httpApiLightsSelector,
-					state$,
-				})
-			)),
-			map(JSON.stringify),
-			switchMap(lightsJson => (
-				createWriteFileObservable(
-					'.cache/lights.json',
-					lightsJson,
-				)
-			)),
-			ignoreElements(),
-		)
+	action$,
+	state$,
+) => (
+	action$
+	.pipe(
+		ofType(ADD_HTTP_API_LIGHTS),
+		switchMap(() => (
+			stateSelector({
+				selector: httpApiLightsSelector,
+				state$,
+			})
+		)),
+		map(JSON.stringify),
+		switchMap(lightsJson => (
+			createWriteFileObservable(
+				'$cache/lights.json',
+				lightsJson,
+			)
+		)),
+		ignoreElements(),
 	)
 )
 
