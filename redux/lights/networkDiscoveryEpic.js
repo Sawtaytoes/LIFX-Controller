@@ -1,5 +1,4 @@
-const chalk = require('chalk')
-const { buffer, debounceTime, map, pluck, tap } = require('rxjs/operators')
+const { buffer, debounceTime, map, pluck } = require('rxjs/operators')
 const { combineEpics, ofType } = require('redux-observable')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
@@ -28,38 +27,6 @@ const addLightsEpic = (
 				debounceTime(500),
 			)
 		),
-		tap(lights => {
-			console
-			.info(
-				(
-					'Network Lights:'
-				),
-				(
-					chalk
-					.yellowBright(
-						lights
-						.length
-					)
-				),
-			)
-		}),
-		tap(lights => {
-			lights
-			.length <= 10
-			&& (
-				console
-				.info(
-					lights
-					.map(({
-						address,
-						id,
-					}) => ({
-						address,
-						id,
-					}))
-				)
-			)
-		}),
 		map(addNetworkLights),
 		catchEpicError(),
 	)
