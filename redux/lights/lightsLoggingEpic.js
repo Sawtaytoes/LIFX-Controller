@@ -1,6 +1,6 @@
 const chalk = require('chalk')
 const { combineEpics, ofType } = require('redux-observable')
-const { ignoreElements, tap } = require('rxjs/operators')
+const { ignoreElements, pluck, tap } = require('rxjs/operators')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
 
@@ -40,7 +40,9 @@ const addedLightsLoggingEpic = (
 			&& (
 				console
 				.info(
-					'[Added Lights]',
+					(
+						'[Added Lights]'
+					),
 					(
 						lights
 						.map(({
@@ -65,13 +67,14 @@ const removedLightLoggingEpic = (
 	action$
 	.pipe(
 		ofType(REMOVE_NETWORK_LIGHT),
+		pluck('light'),
 		tap(({
 			address,
 			id,
 		}) => {
 			console
 			.info(
-				'[Removed Lights]',
+				'[Removed Light]',
 				{
 					address,
 					id,
