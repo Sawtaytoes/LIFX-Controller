@@ -1,9 +1,10 @@
 const lightIdsSelector = (
-	({ groups }, { groupName }) => (
-		groups
-		.lightIdsGroupList
-		.get(groupName)
-	)
+	{ groups },
+	{ groupName },
+) => (
+	groups
+	.lightIdsGroupList
+	.get(groupName)
 )
 
 module.exports = {
