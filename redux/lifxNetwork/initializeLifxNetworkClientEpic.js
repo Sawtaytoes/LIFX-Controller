@@ -4,6 +4,7 @@ const { ignoreElements, switchMap, tap } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
+const catchEpicError = require('$redux/utils/catchEpicError')
 const { START_LIFX_NETWORK_LISTENERS } = require('./actions')
 const { lifxNetworkClientSelector } = require('./selectors')
 
@@ -35,6 +36,7 @@ const initializeLifxNetworkClientEpic = (
 				})
 			)
 		)),
+		catchEpicError(),
 		ignoreElements(),
 	)
 )

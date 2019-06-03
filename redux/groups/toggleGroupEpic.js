@@ -1,8 +1,9 @@
 const chalk = require('chalk')
 const { bindNodeCallback, forkJoin, from, of } = require('rxjs')
-const { catchError, filter, ignoreElements, map, mergeMap, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
+const { filter, ignoreElements, map, mergeMap, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
+const catchEpicError = require('$redux/utils/catchEpicError')
 const { lightIdsSelector } = require('./selectors')
 const { networkLightSelector } = require('$redux/lights/selectors')
 const { POWERED_ON } = require('$redux/lifxNetwork/utils/constants')
@@ -178,31 +179,15 @@ const toggleGroupEpic = (
 			from(lightsInGroup)
 			.pipe(
 				mergeMap(changeLightPower),
-				catchError(error => {
-					console
-					.error(
-						chalk
-						.redBright(
-							error
-						)
-					)
-
-					return of(null)
-				}),
+				catchEpicError(
+					of(null)
+				),
 				toArray(),
 			)
 		)),
-		catchError(error => {
-			console
-			.error(
-				chalk
-				.redBright(
-					error
-				)
-			)
-
-			return of(null)
-		}),
+		catchEpicError(
+			of(null)
+		),
 		ignoreElements(),
 	)
 )
