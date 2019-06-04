@@ -1,9 +1,9 @@
 const chalk = require('chalk')
 const { bindNodeCallback, from, merge, of } = require('rxjs')
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { every, filter, ignoreElements, map, mapTo, mergeAll, mergeMap, pluck, reduce, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
-const catchEpicError = require('$redux/utils/catchEpicError')
 const { networkLightSelector } = require('$redux/lights/selectors')
 const { sceneSelector } = require('./selectors')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')

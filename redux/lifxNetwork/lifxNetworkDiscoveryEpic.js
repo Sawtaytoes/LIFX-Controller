@@ -1,8 +1,7 @@
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { fromEvent, merge, of } = require('rxjs')
 const { map, switchMap } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
-
-const catchEpicError = require('$redux/utils/catchEpicError')
 
 const {
 	ADD_LIFX_NETWORK_CLIENT,

@@ -1,11 +1,11 @@
 const fs = require('fs')
 const { bindNodeCallback, of } = require('rxjs')
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { combineEpics, ofType } = require('redux-observable')
 const { ignoreElements, map, switchMap } = require('rxjs/operators')
 const { safeImport } = require('@ghadyani-framework/base')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
-const catchEpicError = require('$redux/utils/catchEpicError')
 const { httpApiLightsSelector } = require('./selectors')
 
 const {

@@ -1,10 +1,10 @@
 const nodeLifx = require('node-lifx')
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { map, mapTo } = require('rxjs/operators')
 const { ofTaskName } = require('@ghadyani-framework/node')
 const { ofType } = require('redux-observable')
 const { START_TASK } = require('@ghadyani-framework/node/redux/tasks/actions')
 
-const catchEpicError = require('$redux/utils/catchEpicError')
 const { addLifxNetworkClient } = require('./actions')
 
 const addLifxNetworkClientEpic = (

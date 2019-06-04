@@ -1,7 +1,7 @@
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { map, mergeMap } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
-const catchEpicError = require('$redux/utils/catchEpicError')
 const { ADD_HTTP_API_LIGHTS } = require('$redux/lights/actions')
 const { addGroup } = require('./actions')
 

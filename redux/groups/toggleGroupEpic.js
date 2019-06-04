@@ -1,7 +1,6 @@
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { map, pluck } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
-
-const catchEpicError = require('$redux/utils/catchEpicError')
 
 const {
 	TOGGLE_GROUP,

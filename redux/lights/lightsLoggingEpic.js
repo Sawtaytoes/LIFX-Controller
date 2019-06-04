@@ -1,8 +1,7 @@
 const chalk = require('chalk')
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { combineEpics, ofType } = require('redux-observable')
 const { ignoreElements, pluck, tap } = require('rxjs/operators')
-
-const catchEpicError = require('$redux/utils/catchEpicError')
 
 const {
 	ADD_NETWORK_LIGHTS,

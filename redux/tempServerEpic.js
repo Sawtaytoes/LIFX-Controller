@@ -9,9 +9,7 @@ const { ignoreElements, map, switchMap, tap } = require('rxjs/operators')
 const { ofTaskName } = require('@ghadyani-framework/node')
 const { ofType } = require('redux-observable')
 const { START_TASK } = require('@ghadyani-framework/node/redux/tasks/actions')
-const { stateSelector } = require('@ghadyani-framework/redux-utils')
-
-const catchEpicError = require('$redux/utils/catchEpicError')
+const { catchEpicError, stateSelector } = require('@ghadyani-framework/redux-utils')
 
 const {
 	toggleGroup,

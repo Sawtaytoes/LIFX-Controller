@@ -1,7 +1,6 @@
 const { buffer, debounceTime, map, pluck } = require('rxjs/operators')
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { combineEpics, ofType } = require('redux-observable')
-
-const catchEpicError = require('$redux/utils/catchEpicError')
 
 const {
 	ADD_LIFX_NETWORK_LIGHT,

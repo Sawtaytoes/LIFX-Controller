@@ -1,7 +1,6 @@
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { map, mergeAll, pluck } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
-
-const catchEpicError = require('$redux/utils/catchEpicError')
 
 const {
 	ADD_HTTP_API_SCENES,

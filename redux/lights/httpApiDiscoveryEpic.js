@@ -1,4 +1,5 @@
 const nodeFetch = require('node-fetch')
+const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { configurationSetSelector } = require('@ghadyani-framework/node/redux/configurations/selectors')
 const { filter, map, startWith, switchMap, tap } = require('rxjs/operators')
 const { interval } = require('rxjs')
@@ -7,7 +8,6 @@ const { ofType } = require('redux-observable')
 const { START_TASK } = require('@ghadyani-framework/node/redux/tasks/actions')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
-const catchEpicError = require('$redux/utils/catchEpicError')
 const { addHttpApiLights } = require('./actions')
 const { logError } = require('$utils/logging')
 
