@@ -6,7 +6,6 @@ const { ofType } = require('redux-observable')
 const catchEpicError = require('$redux/utils/catchEpicError')
 const { lightIdsSelector } = require('./selectors')
 const { networkLightSelector } = require('$redux/lights/selectors')
-const { POWERED_ON } = require('$redux/lifxNetwork/utils/constants')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 const { TURN_OFF_GROUPS } = require('./actions')
 
