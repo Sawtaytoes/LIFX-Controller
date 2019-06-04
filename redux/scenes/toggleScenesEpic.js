@@ -1,39 +1,24 @@
 const chalk = require('chalk')
-const { bindNodeCallback, forkJoin, from, of } = require('rxjs')
-const { filter, ignoreElements, map, mergeMap, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
+const { bindNodeCallback, forkJoin, from } = require('rxjs')
+const { every, filter, ignoreElements, map, mergeAll, mergeMap, pluck, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
-const { lightIdsSelector } = require('./selectors')
 const { networkLightSelector } = require('$redux/lights/selectors')
-const { POWERED_ON } = require('$redux/lifxNetwork/utils/constants')
+const { sceneSelector } = require('./selectors')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
-const { TOGGLE_GROUP } = require('./actions')
+const { TOGGLE_SCENE } = require('./actions')
 
-const duration = 0
+const changePowerStateDuration = 250
+const marginOfError = 2
 
-const isLightOnInGroup = (
-	lightsInGroup => (
-		lightsInGroup
-		.some(({ power }) => (
-			power === POWERED_ON
-		))
-	)
+const relativeEquals = (
+	value1 = 0,
+	value2 = 0,
+) => (
+	value1 - marginOfError <= value2
+	&& value1 + marginOfError >= value2
 )
-
-const changeLightPower = (
-	powerFuncName => ({ light }) => (
-		bindNodeCallback(
-			light[powerFuncName]
-			.bind(light)
-		)(
-			duration,
-		)
-	)
-)
-
-const turnOffLight = changeLightPower('off')
-const turnOnLight = changeLightPower('on')
 
 const toggleScenesEpic = (
 	action$,
@@ -41,47 +26,47 @@ const toggleScenesEpic = (
 ) => (
 	action$
 	.pipe(
-		ofType(TOGGLE_GROUP),
-		mergeMap(({ groupName }) => (
+		ofType(TOGGLE_SCENE),
+		tap(console.log),
+		mergeMap(({
+			sceneName,
+		}) => (
 			stateSelector({
-				props: { groupName },
-				selector: lightIdsSelector,
+				props: { sceneName },
+				selector: sceneSelector,
 				state$,
 			})
 			.pipe(
-				tap(lightIds => (
-					(
-						!lightIds
-						|| !lightIds.size
-					)
+				tap((
+					scene,
+				) => (
+					scene
 					? (
 						console
-						.warn(
+						.info(
 							chalk
-							.redBright(
-								'[MISSING GROUP]'
-							)
-							.concat(' ')
-							.concat(
+							.greenBright(
+								'[TOGGLE SCENE]'
+							),
+							(
 								chalk
-								.bgRed(
-									groupName
+								.bgGreen(
+									sceneName
 								)
 							)
 						)
 					)
 					: (
 						console
-						.info(
+						.warn(
 							chalk
-							.greenBright(
-								'[TOGGLE GROUP]'
-							)
-							.concat(' ')
-							.concat(
+							.redBright(
+								'[MISSING SCENE]'
+							),
+							(
 								chalk
-								.bgGreen(
-									groupName
+								.bgRed(
+									sceneName
 								)
 							)
 						)
@@ -90,104 +75,277 @@ const toggleScenesEpic = (
 				takeUntil(
 					action$
 					.pipe(
-						ofType(TOGGLE_GROUP),
-						filter(action => (
+						ofType(TOGGLE_SCENE),
+						filter((
+							action,
+						) => (
 							action
-							.groupName === groupName
+							.sceneName === sceneName
 						))
 					)
 				),
 			)
 		)),
 		filter(Boolean),
-		map(lightIds => (
-			Array
-			.from(lightIds)
-		)),
-		mergeMap(lightIds => (
-			forkJoin(
-				...(
-					lightIds
-					.map(lightId => (
-						// TODO: NEED TO HANDLE ERRORS IN HERE
-						// OTHERWISE ONE ERROR WILL KILL THE ENTIRE FORKJOIN
-						stateSelector({
-							props: { lightId },
-							selector: networkLightSelector,
-							state$,
-						})
-						.pipe(
-							filter(Boolean),
-							switchMap(light => (
-								bindNodeCallback(
-									light
-									.getPower
-									.bind(light)
-								)()
-								.pipe(
-									map(power => ({
-										light,
-										power,
-									}))
-								)
-							)),
-						)
-					))
-					// from(lightIds)
-					// .pipe(
-					// 	map(lightId => (
-					// 		stateSelector({
-					// 			props: { lightId },
-					// 			selector: networkLightSelector,
-					// 			state$,
-					// 		})
-					// 	)),
-					// )
-				)
-			)
-		)),
-		// tap(console.log),
-		tap(lightsInGroup => {
+		pluck('states'),
+		tap((
+			states,
+		) => {
 			console
 			.info(
 				(
-					'Lights in Group:'
+					'Lights in Scene:'
 				),
 				(
 					chalk
 					.yellowBright(
-						lightsInGroup
+						states
 						.length
 					)
 				)
 			)
 		}),
-		map(lightsInGroup => ({
-			changeLightPower: (
-				isLightOnInGroup(
-					lightsInGroup
-				)
-				? turnOffLight
-				: turnOnLight
-			),
-			lightsInGroup,
-		})),
-		mergeMap(({
-			changeLightPower,
-			lightsInGroup,
-		}) => (
-			from(lightsInGroup)
+		mergeMap((
+			states,
+		) => (
+			from(states)
 			.pipe(
-				mergeMap(changeLightPower),
-				catchEpicError(
-					of(null)
-				),
+				mergeMap(({
+					brightness: sceneLightBrightness,
+					color: sceneLightColor,
+					lightId,
+					power: sceneLightPower,
+				}) => (
+					stateSelector({
+						props: { lightId },
+						selector: networkLightSelector,
+						state$,
+					})
+					.pipe(
+						filter(Boolean),
+						switchMap((
+							light,
+						) => (
+							bindNodeCallback(
+								light
+								.getState
+								.bind(light)
+							)()
+							.pipe(
+								map(({
+									color: lightColor,
+									power: lightPower,
+								}) => ({
+									isLightPowered: (
+										Boolean(lightPower)
+									),
+									isSceneLightPowered: (
+										sceneLightPower === 'on'
+									),
+									light,
+									lightColor,
+									sceneLightColor: {
+										...sceneLightColor,
+										brightness: (
+											sceneLightBrightness * 100
+										),
+										saturation: (
+											sceneLightColor.saturation * 100
+											|| 0
+										),
+									},
+									sceneLightPower,
+								})),
+
+								// TEMP vv DEBUGGING
+								tap(({
+									isLightPowered,
+									isSceneLightPowered,
+									light,
+									lightColor,
+									sceneLightColor,
+								}) => {
+									console.log(
+										light.label,
+										{
+											isLightPowered,
+											isSceneLightPowered,
+											lightColor,
+											sceneLightColor,
+										}
+									)
+								}),
+								// TEMP ^^ DEBUGGING
+
+								map(({
+									isLightPowered,
+									isSceneLightPowered,
+									light,
+									lightColor,
+									sceneLightColor,
+								}) => ({
+									isLightMatchingSceneState: (
+										(
+											!isLightPowered
+											&& !isSceneLightPowered
+										)
+										|| (
+											(
+												isLightPowered
+												&& isSceneLightPowered
+											)
+											&& (
+												relativeEquals(
+													lightColor.brightness,
+													sceneLightColor.brightness,
+												)
+											)
+											&& (
+												relativeEquals(
+													lightColor.hue,
+													sceneLightColor.hue,
+												)
+											)
+											&& (
+												relativeEquals(
+													lightColor.kelvin,
+													sceneLightColor.kelvin,
+												)
+											)
+											&& (
+												relativeEquals(
+													lightColor.saturation,
+													sceneLightColor.saturation,
+												)
+											)
+										)
+									),
+									light,
+									sceneLightColor,
+									sceneLightPower,
+								})),
+							)
+						)),
+					)
+				)),
 				toArray(),
+				switchMap((
+					lightStates,
+				) => (
+					from(lightStates)
+					.pipe(
+						pluck('isLightMatchingSceneState'),
+						every(Boolean),
+						tap(t => console.log({isSceneActive: t})),
+						switchMap((
+							isSceneActive,
+						) => (
+							isSceneActive
+							? (
+								from(lightStates)
+								.pipe(
+									pluck('light'),
+									map((
+										light,
+									) => (
+										bindNodeCallback(
+											light
+											.off
+											.bind(light)
+										)(
+											changePowerStateDuration,
+										)
+									)),
+									mergeAll(),
+								)
+							)
+							: (
+								from(lightStates)
+								.pipe(
+									tap(({
+										isLightMatchingSceneState,
+										light,
+										sceneLightPower,
+									}) => {
+										console.log(light.label, {
+											isLightMatchingSceneState,
+											sceneLightPower,
+										})
+									}),
+									filter(({
+										isLightMatchingSceneState,
+									}) => (
+										!isLightMatchingSceneState
+									)),
+									map(({
+										light,
+										sceneLightColor,
+										sceneLightPower,
+									}) => ({
+										changeLightColor: (
+											bindNodeCallback(
+												light
+												.color
+												.bind(light)
+											)(
+												sceneLightColor.hue,
+												sceneLightColor.saturation,
+												sceneLightColor.brightness,
+												sceneLightColor.kelvin,
+												0,
+											)
+										),
+										changeLightPower: (
+											bindNodeCallback(
+												light[sceneLightPower]
+												.bind(light)
+											)(
+												changePowerStateDuration,
+											)
+										),
+										light: from([light]),
+									})),
+									mergeMap((
+										turnOnSceneObservables,
+									) => (
+										forkJoin(turnOnSceneObservables)
+									)),
+									tap(t => console.log(t.light.label)),
+									// tap(t => console.log(t.light.label, {
+									// 	changeLightColor: t.changeLightColor,
+									// 	changeLightPower: t.changeLightPower,
+									// })),
+								)
+							)
+						)),
+					)
+				)),
 			)
 		)),
-		catchEpicError(
-			of(null)
-		),
+		// tap(({
+		// 	numberOfLightsInScene,
+		// 	numberOfToggledLightsInScene,
+		// }) => (
+		// 	numberOfLightsInScene
+		// 	!== numberOfToggledLightsInScene
+		// 	&& (
+		// 		console
+		// 		.error(
+		// 			chalk
+		// 			.redBright(
+		// 				'[NOT ALL LIGHTS TOGGLED]'
+		// 			),
+		// 			(
+		// 				chalk
+		// 				.bgRed({
+		// 					actual: numberOfToggledLightsInScene,
+		// 					expected: numberOfLightsInScene,
+		// 				})
+		// 			)
+		// 		)
+		// 	)
+		// )),
+		catchEpicError(),
 		ignoreElements(),
 	)
 )
