@@ -16,9 +16,9 @@ const addNetworkLights = (
 	type: ADD_NETWORK_LIGHTS,
 })
 
-const removeNetworkLight = (
+const removeNetworkLight = ({
 	light,
-) => ({
+}) => ({
 	light,
 	type: REMOVE_NETWORK_LIGHT,
 })
