@@ -3,16 +3,16 @@ const { map } = require('rxjs/operators')
 const { ofRequestType } = require('@ghadyani-framework/websocket')
 
 const {
-	TOGGLE_GROUP,
-	toggleGroup,
+	TOGGLE_SCENE,
+	toggleScene,
 } = require('./actions')
 
 const toggleGroupRequestEpic = (
 	action$ => (
 		action$
 		.pipe(
-			ofRequestType(TOGGLE_GROUP),
-			map(toggleGroup),
+			ofRequestType(TOGGLE_SCENE),
+			map(toggleScene),
 		)
 	)
 )
