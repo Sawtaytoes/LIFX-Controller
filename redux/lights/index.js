@@ -7,7 +7,6 @@ const httpApiLightsListReducer = require('./httpApiLightsListReducer')
 const lightsLoggingEpic = require('./lightsLoggingEpic')
 const networkDiscoveryEpic = require('./networkDiscoveryEpic')
 const networkLightsListReducer = require('./networkLightsListReducer')
-// const updateHttpApiEpic = require('./updateHttpApiEpic')
 
 const lightsEpic = (
 	combineEpics(
@@ -15,7 +14,6 @@ const lightsEpic = (
 		httpApiDiscoveryEpic,
 		lightsLoggingEpic,
 		networkDiscoveryEpic,
-		// updateHttpApiEpic,
 	)
 )
 
