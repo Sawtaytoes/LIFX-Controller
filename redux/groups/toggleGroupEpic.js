@@ -105,8 +105,6 @@ const toggleGroupEpic = (
 		mergeMap(lightIds => (
 			lightIds
 			.map(lightId => (
-				// TODO: NEED TO HANDLE ERRORS IN HERE
-				// OTHERWISE ONE ERROR WILL KILL THE ENTIRE FORKJOIN
 				stateSelector({
 					props: { lightId },
 					selector: networkLightSelector,
