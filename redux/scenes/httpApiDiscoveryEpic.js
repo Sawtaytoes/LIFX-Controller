@@ -1,8 +1,10 @@
 const nodeFetch = require('node-fetch')
-const { ADD_CONFIGURATION_SET } = require('@ghadyani-framework/node/redux/configurations/actions')
-const { buffer, debounceTime, filter, map, switchMap, tap } = require('rxjs/operators')
 const { configurationSetSelector } = require('@ghadyani-framework/node/redux/configurations/selectors')
+const { filter, map, startWith, switchMap, tap } = require('rxjs/operators')
+const { interval } = require('rxjs')
+const { ofTaskName } = require('@ghadyani-framework/node')
 const { ofType } = require('redux-observable')
+const { START_TASK } = require('@ghadyani-framework/node/redux/tasks/actions')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
@@ -15,13 +17,10 @@ const httpApiDiscoveryEpic = (
 ) => (
 	action$
 	.pipe(
-		ofType(ADD_CONFIGURATION_SET),
-		buffer(
-			action$
-			.pipe(
-				ofType(ADD_CONFIGURATION_SET),
-				debounceTime(300),
-			)
+		ofType(START_TASK),
+		ofTaskName(
+			'serve',
+			'undefined',
 		),
 		switchMap(() => (
 			stateSelector({
@@ -33,17 +32,23 @@ const httpApiDiscoveryEpic = (
 			lifxApiAddress,
 			lifxApiToken,
 		}) => (
-			nodeFetch(
-				(
-					lifxApiAddress
-					.concat('/scenes')
-				),
-				{
-					headers: {
-						'Accept-Encoding': 'gzip, deflate',
-						'Authorization': `Bearer ${lifxApiToken}`,
-					},
-				},
+			interval(60000) // 10 minutes
+			.pipe(
+				startWith(null),
+				switchMap(() => (
+					nodeFetch(
+						(
+							lifxApiAddress
+							.concat('/scenes')
+						),
+						{
+							headers: {
+								'Accept-Encoding': 'gzip, deflate',
+								'Authorization': `Bearer ${lifxApiToken}`,
+							},
+						},
+					)
+				))
 			)
 		)),
 		switchMap(response => (
