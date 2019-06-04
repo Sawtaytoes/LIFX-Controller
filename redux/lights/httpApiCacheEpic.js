@@ -1,9 +1,8 @@
-const chalk = require('chalk')
 const fs = require('fs')
 const { bindNodeCallback, of } = require('rxjs')
 const { combineEpics, ofType } = require('redux-observable')
 const { ignoreElements, map, switchMap } = require('rxjs/operators')
-// const { safeImport } = require('@ghadyani-framework/base')
+const { safeImport } = require('@ghadyani-framework/base')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
@@ -14,62 +13,16 @@ const {
 	addHttpApiLights,
 } = require('./actions')
 
-const tryCatch = (
-	tryOperation,
-	defaultValue,
-) => {
-	try {
-		return tryOperation()
-	}
-	catch(exception) {
-		console
-		.error(
-			chalk
-			.redBright(exception)
-		)
-
-		return defaultValue
-	}
-}
-
-const safeImport = (
-	filePath,
-	defaultValue,
-) => (
-	fs
-	.existsSync(
-		filePath
-		.replace(
-			/^(\$)/,
-			'.',
-		)
-	)
-	? (
-		tryCatch(
-			() => require(filePath),
-			defaultValue,
-		)
-	)
-	: defaultValue
-)
-
 const loadFromCacheEpic = () => (
 	of(
-		safeImport(
-			'$cache/lights.json',
-			[],
-		)
+		safeImport({
+			defaultValue: [],
+			filePath: '$cache/lights.json',
+		})
 	)
 	.pipe(
 		map(addHttpApiLights),
 		catchEpicError(),
-	)
-)
-
-const createWriteFileObservable = (
-	bindNodeCallback(
-		fs
-		.writeFile
 	)
 )
 
@@ -88,7 +41,10 @@ const storeInCacheEpic = (
 		)),
 		map(JSON.stringify),
 		switchMap(lightsJson => (
-			createWriteFileObservable(
+			bindNodeCallback(
+				fs
+				.writeFile
+			)(
 				'.cache/lights.json',
 				lightsJson,
 			)
