@@ -1,6 +1,6 @@
 const chalk = require('chalk')
-const { bindNodeCallback, forkJoin, from } = require('rxjs')
-const { every, filter, ignoreElements, map, mergeAll, mergeMap, pluck, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
+const { bindNodeCallback, forkJoin, from, merge } = require('rxjs')
+const { every, filter, ignoreElements, map, mapTo, mergeAll, mergeMap, pluck, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
@@ -9,7 +9,8 @@ const { sceneSelector } = require('./selectors')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 const { TOGGLE_SCENE } = require('./actions')
 
-const changePowerStateDuration = 250
+const changeColorStateDuration = 500
+const changePowerStateDuration = 0
 const marginOfError = 2
 
 const relativeEquals = (
@@ -184,6 +185,10 @@ const toggleScenesEpic = (
 									lightColor,
 									sceneLightColor,
 								}) => ({
+									isLightMatchingPoweredState: (
+										isLightPowered
+										&& isSceneLightPowered
+									),
 									isLightMatchingSceneState: (
 										(
 											!isLightPowered
@@ -236,7 +241,9 @@ const toggleScenesEpic = (
 					.pipe(
 						pluck('isLightMatchingSceneState'),
 						every(Boolean),
-						tap(t => console.log({isSceneActive: t})),
+						tap(isSceneActive => {
+							console.log({isSceneActive})
+						}),
 						switchMap((
 							isSceneActive,
 						) => (
@@ -260,61 +267,89 @@ const toggleScenesEpic = (
 								)
 							)
 							: (
-								from(lightStates)
-								.pipe(
-									tap(({
-										isLightMatchingSceneState,
-										light,
-										sceneLightPower,
-									}) => {
-										console.log(light.label, {
-											isLightMatchingSceneState,
-											sceneLightPower,
-										})
-									}),
-									filter(({
-										isLightMatchingSceneState,
-									}) => (
-										!isLightMatchingSceneState
-									)),
-									map(({
-										light,
-										sceneLightColor,
-										sceneLightPower,
-									}) => ({
-										changeLightColor: (
-											bindNodeCallback(
-												light
-												.color
-												.bind(light)
-											)(
-												sceneLightColor.hue,
-												sceneLightColor.saturation,
-												sceneLightColor.brightness,
-												sceneLightColor.kelvin,
-												0,
-											)
-										),
-										changeLightPower: (
-											bindNodeCallback(
-												light[sceneLightPower]
-												.bind(light)
-											)(
-												changePowerStateDuration,
-											)
-										),
-										light: from([light]),
-									})),
-									mergeMap((
-										turnOnSceneObservables,
-									) => (
-										forkJoin(turnOnSceneObservables)
-									)),
-									tap(t => console.log(t.light.label)),
-									// tap(t => console.log(t.light.label, {
-									// 	changeLightColor: t.changeLightColor,
-									// 	changeLightPower: t.changeLightPower,
-									// })),
+								merge(
+									(
+										from(lightStates)
+										.pipe(
+											tap(({
+												isLightMatchingPoweredState,
+												isLightMatchingSceneState,
+												light,
+											}) => {
+												console.log(light.label, {
+													isLightMatchingPoweredState,
+													isLightMatchingSceneState,
+												})
+											}),
+										)
+									),
+									(
+										from(lightStates)
+										.pipe(
+											filter(({
+												isLightMatchingSceneState,
+											}) => (
+												!isLightMatchingSceneState
+											)),
+											mergeMap(({
+												light,
+												sceneLightColor,
+											}) => (
+												console.log(light.label, 'color')||
+												bindNodeCallback(
+													light
+													.color
+													.bind(light)
+												)(
+													sceneLightColor.hue,
+													sceneLightColor.saturation,
+													sceneLightColor.brightness,
+													sceneLightColor.kelvin,
+													changeColorStateDuration,
+												)
+												.pipe(
+													mapTo(light),
+												)
+											)),
+											tap(light => {
+												console.log(
+													light.label,
+													'SUCCESSFULLY CHANGED COLOR',
+												)
+											}),
+										)
+									),
+									(
+										from(lightStates)
+										.pipe(
+											filter(({
+												isLightMatchingPoweredState,
+											}) => (
+												!isLightMatchingPoweredState
+											)),
+											mergeMap(({
+												light,
+												sceneLightPower,
+											}) => (
+												console.log(light.label, 'power')||
+												bindNodeCallback(
+													light[sceneLightPower]
+													.bind(light)
+												)(
+													changePowerStateDuration,
+												)
+												.pipe(
+													mapTo(light),
+												)
+											)),
+											tap(light => {
+												console.log(
+													light.label,
+													'SUCCESSFULLY CHANGED POWER',
+												)
+											}),
+										)
+									)
 								)
 							)
 						)),
