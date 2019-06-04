@@ -32,6 +32,11 @@ const changeLightPower = (
 	)(
 		changePowerStateDuration,
 	)
+	.pipe(
+		catchEpicError(
+			of(null)
+		),
+	)
 )
 
 const turnOffLight = changeLightPower('off')
@@ -101,7 +106,7 @@ const toggleGroupsEpic = (
 								ofType(TOGGLE_GROUPS),
 								filter(action => (
 									action
-									.groupName === groupName
+									.groupNames === groupNames
 								))
 							)
 						),
@@ -147,11 +152,15 @@ const toggleGroupsEpic = (
 								map(power => ({
 									light,
 									power,
-								}))
+								})),
+								catchEpicError(
+									of(null)
+								),
 							)
 						)),
 					)
 				)),
+				filter(Boolean),
 				toArray(),
 			)
 		)),
@@ -188,9 +197,6 @@ const toggleGroupsEpic = (
 			.pipe(
 				pluck('light'),
 				mergeMap(changeLightPower),
-				catchEpicError(
-					of(null)
-				),
 				toArray(),
 			)
 		)),

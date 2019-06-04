@@ -1,13 +1,13 @@
 const chalk = require('chalk')
-const { bindNodeCallback, from, merge } = require('rxjs')
-const { every, filter, ignoreElements, map, mapTo, mergeAll, mergeMap, pluck, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
+const { bindNodeCallback, from, merge, of } = require('rxjs')
+const { every, filter, ignoreElements, map, mapTo, mergeAll, mergeMap, pluck, reduce, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
 const { networkLightSelector } = require('$redux/lights/selectors')
 const { sceneSelector } = require('./selectors')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
-const { TOGGLE_SCENE } = require('./actions')
+const { TOGGLE_SCENES } = require('./actions')
 
 const changeColorStateDuration = 500
 const changePowerStateDuration = 0
@@ -27,68 +27,85 @@ const toggleScenesEpic = (
 ) => (
 	action$
 	.pipe(
-		ofType(TOGGLE_SCENE),
-		tap(console.log),
-		mergeMap(({
-			sceneName,
-		}) => (
-			stateSelector({
-				props: { sceneName },
-				selector: sceneSelector,
-				state$,
-			})
+		ofType(TOGGLE_SCENES),
+		pluck('sceneNames'),
+		mergeMap((
+			sceneNames,
+		) => (
+			from(sceneNames)
 			.pipe(
-				tap((
-					scene,
+				mergeMap((
+					sceneName,
 				) => (
-					scene
-					? (
-						console
-						.info(
-							chalk
-							.greenBright(
-								'[TOGGLE SCENE]'
-							),
-							(
-								chalk
-								.bgGreen(
-									sceneName
+					stateSelector({
+						props: { sceneName },
+						selector: sceneSelector,
+						state$,
+					})
+					.pipe(
+						tap((
+							scene,
+						) => (
+							scene
+							? (
+								console
+								.info(
+									chalk
+									.greenBright(
+										'[TOGGLE SCENE]'
+									),
+									(
+										chalk
+										.bgGreen(
+											sceneName
+										)
+									)
 								)
 							)
-						)
-					)
-					: (
-						console
-						.warn(
-							chalk
-							.redBright(
-								'[MISSING SCENE]'
-							),
-							(
-								chalk
-								.bgRed(
-									sceneName
+							: (
+								console
+								.warn(
+									chalk
+									.redBright(
+										'[MISSING SCENE]'
+									),
+									(
+										chalk
+										.bgRed(
+											sceneName
+										)
+									)
 								)
 							)
-						)
+						)),
+						takeUntil(
+							action$
+							.pipe(
+								ofType(TOGGLE_SCENES),
+								filter((
+									action,
+								) => (
+									action
+									.sceneNames === sceneNames
+								))
+							)
+						),
 					)
 				)),
-				takeUntil(
-					action$
-					.pipe(
-						ofType(TOGGLE_SCENE),
-						filter((
-							action,
-						) => (
-							action
-							.sceneName === sceneName
-						))
-					)
+				pluck('states'),
+				filter(Boolean),
+				reduce(
+					(
+						combinedStates,
+						states,
+					) => (
+						combinedStates
+						.concat(states)
+					),
+					[],
 				),
 			)
 		)),
-		filter(Boolean),
-		pluck('states'),
 		tap((
 			states,
 		) => {
@@ -229,10 +246,14 @@ const toggleScenesEpic = (
 									sceneLightColor,
 									sceneLightPower,
 								})),
+								catchEpicError(
+									of(null)
+								),
 							)
 						)),
 					)
 				)),
+				filter(Boolean),
 				toArray(),
 				switchMap((
 					lightStates,

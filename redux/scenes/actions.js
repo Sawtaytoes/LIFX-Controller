@@ -1,6 +1,7 @@
 const ADD_HTTP_API_SCENES = 'SCENES::ADD_HTTP_API_SCENES'
 const ADD_SCENE = 'SCENES::ADD_SCENE'
 const TOGGLE_SCENE = 'SCENES::TOGGLE_SCENE'
+const TOGGLE_SCENES = 'SCENES::TOGGLE_SCENES'
 
 const addHttpApiScenes = (
 	scenes,
@@ -18,11 +19,18 @@ const addScene = ({
 	type: ADD_SCENE,
 })
 
-const toggleScene = ({
+const toggleScene = (
 	sceneName,
-}) => ({
+) => ({
 	sceneName,
 	type: TOGGLE_SCENE,
+})
+
+const toggleScenes = (
+	sceneNames,
+) => ({
+	sceneNames,
+	type: TOGGLE_SCENES,
 })
 
 module.exports = {
@@ -31,5 +39,7 @@ module.exports = {
 	addHttpApiScenes,
 	addScene,
 	TOGGLE_SCENE,
+	TOGGLE_SCENES,
 	toggleScene,
+	toggleScenes,
 }

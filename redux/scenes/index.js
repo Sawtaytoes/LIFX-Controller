@@ -5,6 +5,7 @@ const addScenesEpic = require('./addScenesEpic')
 const httpApiDiscoveryEpic = require('./httpApiDiscoveryEpic')
 const requestsEpic = require('./requestsEpic')
 const scenesListReducer = require('./scenesListReducer')
+const toggleSceneEpic = require('./toggleSceneEpic')
 const toggleScenesEpic = require('./toggleScenesEpic')
 
 const scenesEpic = (
@@ -12,6 +13,7 @@ const scenesEpic = (
 		addScenesEpic,
 		httpApiDiscoveryEpic,
 		requestsEpic,
+		toggleSceneEpic,
 		toggleScenesEpic,
 	)
 )

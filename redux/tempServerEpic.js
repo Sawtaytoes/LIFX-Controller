@@ -130,7 +130,7 @@ const tempServerEpic = (
 					),
 					(
 						createPutObservable(
-							'/toggle-group',
+							'/toggle-groups',
 						)
 						.pipe(
 							map(([{ body: { names } }, res]) => (
@@ -152,12 +152,12 @@ const tempServerEpic = (
 					),
 					(
 						createPutObservable(
-							'/toggle-scene',
+							'/toggle-scenes',
 						)
 						.pipe(
-							map(([{ body: { names } }, res]) => (
+							map(([{ body: { sceneNames } }, res]) => (
 								res.send('')
-								&& toggleScenes(names)
+								&& toggleScenes(sceneNames)
 							)),
 						)
 					),
