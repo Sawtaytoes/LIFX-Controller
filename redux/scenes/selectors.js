@@ -1,12 +1,12 @@
-const lightIdsSelector = (
-	{ groups },
-	{ groupName },
+const sceneSelector = (
+	{ scenes },
+	{ sceneName },
 ) => (
-	groups
-	.lightIdsGroupList
-	.get(groupName)
+	scenes
+	.scenesList
+	.get(sceneName)
 )
 
 module.exports = {
-	lightIdsSelector,
+	sceneSelector,
 }

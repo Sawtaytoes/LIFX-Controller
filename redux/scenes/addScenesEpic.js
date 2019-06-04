@@ -21,7 +21,7 @@ const addScenesEpic = (
 		) => ({
 			namespace: (
 				scene
-				.uuid
+				.name
 			),
 			scene,
 		})),
