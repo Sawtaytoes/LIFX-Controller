@@ -174,27 +174,6 @@ const toggleScenesEpic = (
 									},
 									sceneLightPower,
 								})),
-
-								// TEMP vv DEBUGGING
-								tap(({
-									isLightPowered,
-									isSceneLightPowered,
-									light,
-									lightColor,
-									sceneLightColor,
-								}) => {
-									console.log(
-										light.label,
-										{
-											isLightPowered,
-											isSceneLightPowered,
-											lightColor,
-											sceneLightColor,
-										}
-									)
-								}),
-								// TEMP ^^ DEBUGGING
-
 								map(({
 									isLightPowered,
 									isSceneLightPowered,
@@ -262,9 +241,6 @@ const toggleScenesEpic = (
 					.pipe(
 						pluck('isLightMatchingSceneState'),
 						every(Boolean),
-						tap(isSceneActive => {
-							console.log({isSceneActive})
-						}),
 						switchMap((
 							isSceneActive,
 						) => (
@@ -292,21 +268,6 @@ const toggleScenesEpic = (
 									(
 										from(lightStates)
 										.pipe(
-											tap(({
-												isLightMatchingPoweredState,
-												isLightMatchingSceneState,
-												light,
-											}) => {
-												console.log(light.label, {
-													isLightMatchingPoweredState,
-													isLightMatchingSceneState,
-												})
-											}),
-										)
-									),
-									(
-										from(lightStates)
-										.pipe(
 											filter(({
 												isLightMatchingSceneState,
 											}) => (
@@ -316,7 +277,6 @@ const toggleScenesEpic = (
 												light,
 												sceneLightColor,
 											}) => (
-												console.log(light.label, 'color')||
 												bindNodeCallback(
 													light
 													.color
@@ -332,12 +292,6 @@ const toggleScenesEpic = (
 													mapTo(light),
 												)
 											)),
-											tap(light => {
-												console.log(
-													light.label,
-													'SUCCESSFULLY CHANGED COLOR',
-												)
-											}),
 										)
 									),
 									(
@@ -352,7 +306,6 @@ const toggleScenesEpic = (
 												light,
 												sceneLightPower,
 											}) => (
-												console.log(light.label, 'power')||
 												bindNodeCallback(
 													light[sceneLightPower]
 													.bind(light)
@@ -363,12 +316,6 @@ const toggleScenesEpic = (
 													mapTo(light),
 												)
 											)),
-											tap(light => {
-												console.log(
-													light.label,
-													'SUCCESSFULLY CHANGED POWER',
-												)
-											}),
 										)
 									)
 								)
