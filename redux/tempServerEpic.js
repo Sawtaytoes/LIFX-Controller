@@ -12,7 +12,11 @@ const { START_TASK } = require('@ghadyani-framework/node/redux/tasks/actions')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
-const { toggleGroup } = require('$redux/groups/actions')
+
+const {
+	toggleGroup,
+	toggleGroups,
+} = require('$redux/groups/actions')
 
 const {
 	logError,
@@ -126,7 +130,7 @@ const tempServerEpic = (
 						.pipe(
 							map(([{ body: { names } }, res]) => (
 								res.send('')
-								&& toggleGroup(names[0])
+								&& toggleGroups(names)
 							)),
 						)
 					),
