@@ -3,23 +3,21 @@ const { combineReducers } = require('redux')
 
 const addScenesEpic = require('./addScenesEpic')
 const httpApiDiscoveryEpic = require('./httpApiDiscoveryEpic')
-const lightIdsSceneListReducer = require('./lightIdsSceneListReducer')
 const requestsEpic = require('./requestsEpic')
 const scenesListReducer = require('./scenesListReducer')
-// const toggleScenesEpic = require('./toggleScenesEpic')
+const toggleScenesEpic = require('./toggleScenesEpic')
 
 const scenesEpic = (
 	combineEpics(
 		addScenesEpic,
 		httpApiDiscoveryEpic,
 		requestsEpic,
-		// toggleScenesEpic,
+		toggleScenesEpic,
 	)
 )
 
 const scenesReducer = (
 	combineReducers({
-		lightIdsSceneList: lightIdsSceneListReducer,
 		scenesList: scenesListReducer,
 	})
 )
