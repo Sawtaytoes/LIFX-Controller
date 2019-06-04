@@ -1,6 +1,6 @@
 const chalk = require('chalk')
 const { bindNodeCallback, from, of } = require('rxjs')
-const { filter, ignoreElements, map, mergeMap, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
+const { filter, ignoreElements, map, mergeMap, pluck, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
 const catchEpicError = require('$redux/utils/catchEpicError')
@@ -10,25 +10,27 @@ const { POWERED_ON } = require('$redux/lifxNetwork/utils/constants')
 const { stateSelector } = require('@ghadyani-framework/redux-utils')
 const { TOGGLE_GROUP } = require('./actions')
 
-const duration = 0
+const changePowerStateDuration = 0
 
 const isLightOnInGroup = (
-	lightsInGroup => (
-		lightsInGroup
-		.some(({ power }) => (
-			power === POWERED_ON
-		))
-	)
+	lightsInGroup,
+) => (
+	lightsInGroup
+	.some(({ power }) => (
+		power === POWERED_ON
+	))
 )
 
 const changeLightPower = (
-	powerFuncName => ({ light }) => (
-		bindNodeCallback(
-			light[powerFuncName]
-			.bind(light)
-		)(
-			duration,
-		)
+	powerFuncName,
+) => (
+	light,
+) => (
+	bindNodeCallback(
+		light[powerFuncName]
+		.bind(light)
+	)(
+		changePowerStateDuration,
 	)
 )
 
@@ -103,30 +105,33 @@ const toggleGroupEpic = (
 			.from(lightIds)
 		)),
 		mergeMap(lightIds => (
-			lightIds
-			.map(lightId => (
-				stateSelector({
-					props: { lightId },
-					selector: networkLightSelector,
-					state$,
-				})
-				.pipe(
-					filter(Boolean),
-					switchMap(light => (
-						bindNodeCallback(
-							light
-							.getPower
-							.bind(light)
-						)()
-						.pipe(
-							map(power => ({
-								light,
-								power,
-							}))
-						)
-					)),
-				)
-			))
+			from(lightIds)
+			.pipe(
+				mergeMap(lightId => (
+					stateSelector({
+						props: { lightId },
+						selector: networkLightSelector,
+						state$,
+					})
+					.pipe(
+						filter(Boolean),
+						switchMap(light => (
+							bindNodeCallback(
+								light
+								.getPower
+								.bind(light)
+							)()
+							.pipe(
+								map(power => ({
+									light,
+									power,
+								}))
+							)
+						)),
+					)
+				)),
+				toArray(),
+			)
 		)),
 		tap(lightsInGroup => {
 			console
@@ -159,6 +164,7 @@ const toggleGroupEpic = (
 		}) => (
 			from(lightsInGroup)
 			.pipe(
+				pluck('light'),
 				mergeMap(changeLightPower),
 				catchEpicError(
 					of(null)
@@ -194,10 +200,17 @@ const toggleGroupEpic = (
 					),
 					(
 						chalk
-						.bgRed({
-							actual: numberOfToggledLightsInGroup,
-							expected: numberOfLightsInGroup,
-						})
+						.bgRed(
+							JSON
+							.stringify(
+								{
+									actual: numberOfToggledLightsInGroup,
+									expected: numberOfLightsInGroup,
+								},
+								true,
+								2,
+							)
+						)
 					)
 				)
 			)
