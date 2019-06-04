@@ -17,9 +17,9 @@ const toggleGroupEpic = (
 		pluck('groupName'),
 		map((
 			groupName,
-		) => (
-			[groupName]
-		)),
+		) => ([
+			groupName,
+		])),
 		map(toggleGroups),
 		catchEpicError(),
 	)

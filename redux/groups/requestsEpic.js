@@ -8,13 +8,13 @@ const {
 } = require('./actions')
 
 const toggleGroupRequestEpic = (
-	action$ => (
-		action$
-		.pipe(
-			ofRequestType(TOGGLE_GROUP),
-			pluck('groupName'),
-			map(toggleGroup),
-		)
+	action$,
+) => (
+	action$
+	.pipe(
+		ofRequestType(TOGGLE_GROUP),
+		pluck('groupName'),
+		map(toggleGroup),
 	)
 )
 

@@ -1,5 +1,5 @@
 const { combineEpics } = require('redux-observable')
-const { map } = require('rxjs/operators')
+const { map, pluck } = require('rxjs/operators')
 const { ofRequestType } = require('@ghadyani-framework/websocket')
 
 const {
@@ -8,12 +8,13 @@ const {
 } = require('./actions')
 
 const toggleGroupRequestEpic = (
-	action$ => (
-		action$
-		.pipe(
-			ofRequestType(TOGGLE_SCENE),
-			map(toggleScene),
-		)
+	action$,
+) => (
+	action$
+	.pipe(
+		ofRequestType(TOGGLE_SCENE),
+		pluck('sceneName'),
+		map(toggleScene),
 	)
 )
 
