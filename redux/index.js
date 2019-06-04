@@ -1,6 +1,9 @@
 const { combineEpics } = require('redux-observable')
 const { combineReducers } = require('redux')
-const { webSocketsEpic, webSocketsReducers } = require('@ghadyani-framework/websocket')
+const { nodeEpic, nodeReducers } = require('@ghadyani-framework/node')
+// const { webSocketsEpic, webSocketsReducers } = require('@ghadyani-framework/websocket')
+
+const tempServerEpic = require('./tempServerEpic')
 
 const {
 	groupsEpic,
@@ -28,12 +31,15 @@ const rootEpic = (
 		lifxNetworkEpic,
 		lightsEpic,
 		scenesEpic,
-		webSocketsEpic,
+		tempServerEpic,
+		nodeEpic, // TEMP until WebSockets is configured
+		// webSocketsEpic,
 	)
 )
 
 const rootReducers = {
-	...webSocketsReducers,
+	...nodeReducers, // TEMP until WebSockets is configured
+	// ...webSocketsReducers,
 	groups: groupsReducer,
 	lifxNetwork: lifxNetworkReducer,
 	lights: lightsReducer,
