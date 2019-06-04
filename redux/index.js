@@ -8,6 +8,11 @@ const {
 } = require('./groups')
 
 const {
+	scenesEpic,
+	scenesReducer,
+} = require('./scenes')
+
+const {
 	lifxNetworkEpic,
 	lifxNetworkReducer,
 } = require('./lifxNetwork')
@@ -22,6 +27,7 @@ const rootEpic = (
 		groupsEpic,
 		lifxNetworkEpic,
 		lightsEpic,
+		scenesEpic,
 		webSocketsEpic,
 	)
 )
@@ -31,6 +37,7 @@ const rootReducers = {
 	groups: groupsReducer,
 	lifxNetwork: lifxNetworkReducer,
 	lights: lightsReducer,
+	scenes: scenesReducer,
 }
 
 const rootReducer = (
