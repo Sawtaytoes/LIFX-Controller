@@ -10,6 +10,23 @@ const reducerActions = {
 	) => ({
 		...prevState,
 		...scene,
+		states: (
+			scene
+			.states
+			.map(({
+				selector,
+				...props
+			}) => ({
+				...props,
+				lightId: (
+					selector
+					.replace(
+						/^id:(.*)$/,
+						'$1',
+					)
+				),
+			}))
+		),
 	}),
 }
 
