@@ -1,6 +1,8 @@
 const ADD_GROUP = 'GROUPS::ADD_GROUP'
 const TOGGLE_GROUP = 'GROUPS::TOGGLE_GROUP'
 const TOGGLE_GROUPS = 'GROUPS::TOGGLE_GROUPS'
+const TURN_OFF_GROUP = 'GROUPS::TURN_OFF_GROUP'
+const TURN_OFF_GROUPS = 'GROUPS::TURN_OFF_GROUPS'
 
 const addGroup = ({
 	lightId,
@@ -27,6 +29,20 @@ const toggleGroups = (
 	type: TOGGLE_GROUPS,
 })
 
+const turnOffGroup = (
+	groupName,
+) => ({
+	groupName,
+	type: TURN_OFF_GROUP,
+})
+
+const turnOffGroups = (
+	groupNames,
+) => ({
+	groupNames,
+	type: TURN_OFF_GROUPS,
+})
+
 module.exports = {
 	ADD_GROUP,
 	addGroup,
@@ -34,4 +50,8 @@ module.exports = {
 	TOGGLE_GROUPS,
 	toggleGroup,
 	toggleGroups,
+	TURN_OFF_GROUP,
+	TURN_OFF_GROUPS,
+	turnOffGroup,
+	turnOffGroups,
 }

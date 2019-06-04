@@ -16,6 +16,8 @@ const catchEpicError = require('$redux/utils/catchEpicError')
 const {
 	toggleGroup,
 	toggleGroups,
+	turnOffGroup,
+	turnOffGroups,
 } = require('$redux/groups/actions')
 
 const {
@@ -162,6 +164,28 @@ const tempServerEpic = (
 						)
 					),
 					(
+						createGetObservable(
+							'/turn-off-group/:groupName',
+						)
+						.pipe(
+							map(([{ params: { groupName } }, res]) => (
+								res.send('')
+								&& turnOffGroup(groupName)
+							)),
+						)
+					),
+					(
+						createPutObservable(
+							'/turn-off-groups',
+						)
+						.pipe(
+							map(([{ body: { names } }, res]) => (
+								res.send('')
+								&& turnOffGroups(names)
+							)),
+						)
+					),
+					(
 						of(null)
 						.pipe(
 							tap(() => {
@@ -183,25 +207,6 @@ const tempServerEpic = (
 				)
 			)
 		}),
-
-			// .get(
-			// 	'/turn-off-group/:groupName',
-			// 	({ params: { groupName } }, res) => (
-			// 		res.send(
-			// 			turnOffGroups(lifxClient, lifxConfig)([groupName])
-			// 		)
-			// 	)
-			// )
-
-			// .put(
-			// 	'/turn-off-group',
-			// 	({ body: { names } }, res) => (
-			// 		res.send(
-			// 			turnOffGroups(lifxClient, lifxConfig)(names)
-			// 		)
-			// 	)
-			// )
-		tap(console.log),
 		catchEpicError(),
 	)
 )

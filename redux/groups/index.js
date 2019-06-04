@@ -7,6 +7,8 @@ const lightIdsGroupListReducer = require('./lightIdsGroupListReducer')
 const requestsEpic = require('./requestsEpic')
 const toggleGroupEpic = require('./toggleGroupEpic')
 const toggleGroupsEpic = require('./toggleGroupsEpic')
+const turnOffGroupEpic = require('./turnOffGroupEpic')
+const turnOffGroupsEpic = require('./turnOffGroupsEpic')
 
 const groupsEpic = (
 	combineEpics(
@@ -14,6 +16,8 @@ const groupsEpic = (
 		requestsEpic,
 		toggleGroupEpic,
 		toggleGroupsEpic,
+		turnOffGroupEpic,
+		turnOffGroupsEpic,
 	)
 )
 
