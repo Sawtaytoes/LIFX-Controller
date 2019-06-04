@@ -12,15 +12,6 @@ const { TURN_OFF_GROUPS } = require('./actions')
 
 const changePowerStateDuration = 0
 
-const isLightOnInGroup = (
-	lightsInGroup,
-) => (
-	lightsInGroup
-	.some(({ power }) => (
-		power === POWERED_ON
-	))
-)
-
 const changeLightPower = (
 	powerFuncName,
 ) => (
