@@ -1,5 +1,5 @@
 const chalk = require('chalk')
-const { bindNodeCallback, forkJoin, from, merge } = require('rxjs')
+const { bindNodeCallback, from, merge } = require('rxjs')
 const { every, filter, ignoreElements, map, mapTo, mergeAll, mergeMap, pluck, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
