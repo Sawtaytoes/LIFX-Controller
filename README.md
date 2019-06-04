@@ -3,6 +3,12 @@ WebSockets-based LIFX Controller software.
 
 For an example use case, look at [`./app.js`](app.js).
 
+## To Do
+
+- Add HTTP server from old version as a temporary alternative to WebSocket communication (dispatch actions).
+- Allow multiple groups combined as one.
+- Allow multiple scenes combined as one.
+
 ## Installation
 
 ### `npm`
@@ -63,7 +69,7 @@ webSocket.onerror = console.error
 webSocket.onclose = console.info
 webSocket.onopen = () => {
 	console.log('READY')
-	
+
 	webSocket
 	.send(
 		JSON
