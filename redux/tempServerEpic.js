@@ -19,6 +19,11 @@ const {
 } = require('$redux/groups/actions')
 
 const {
+	toggleScene,
+	toggleScenes,
+} = require('$redux/scenes/actions')
+
+const {
 	logError,
 	logInfo,
 } = require('$utils/logging')
@@ -135,6 +140,28 @@ const tempServerEpic = (
 						)
 					),
 					(
+						createGetObservable(
+							'/toggle-scene/:sceneName',
+						)
+						.pipe(
+							map(([{ params: { sceneName } }, res]) => (
+								res.send('')
+								&& toggleScene(sceneName)
+							)),
+						)
+					),
+					(
+						createPutObservable(
+							'/toggle-scene',
+						)
+						.pipe(
+							map(([{ body: { names } }, res]) => (
+								res.send('')
+								&& toggleScenes(names)
+							)),
+						)
+					),
+					(
 						of(null)
 						.pipe(
 							tap(() => {
@@ -156,42 +183,6 @@ const tempServerEpic = (
 				)
 			)
 		}),
-
-			// .get(
-			// 	'/toggle-light/:name',
-			// 	({ params: { name } }, res) => (
-			// 		res.send(
-			// 			toggleLights([name])
-			// 		)
-			// 	)
-			// )
-
-			// .put(
-			// 	'/toggle-light',
-			// 	({ body: { names } }, res) => (
-			// 		res.send(
-			// 			toggleLights(lifxClient, lifxConfig)(names)
-			// 		)
-			// 	)
-			// )
-
-			// .get(
-			// 	'/toggle-scene/:sceneName',
-			// 	({ params: { sceneName } }, res) => (
-			// 		res.send(
-			// 			toggleScenes(lifxClient, lifxConfig)([sceneName])
-			// 		)
-			// 	)
-			// )
-
-			// .put(
-			// 	'/toggle-scene',
-			// 	({ body: { names } }, res) => (
-			// 		res.send(
-			// 			toggleScenes(lifxClient, lifxConfig)(names)
-			// 		)
-			// 	)
-			// )
 
 			// .get(
 			// 	'/turn-off-group/:groupName',
