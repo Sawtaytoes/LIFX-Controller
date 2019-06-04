@@ -168,9 +168,43 @@ const toggleGroupEpic = (
 				toArray(),
 			)
 		)),
-		catchEpicError(
-			of(null)
-		),
+		map((
+			lights,
+		) => ({
+			numberOfLightsInGroup: (
+				lights
+				.length
+			),
+			numberOfToggledLightsInGroup: (
+				lights
+				.filter(Boolean)
+				.length
+			),
+		})),
+		tap(({
+			numberOfLightsInGroup,
+			numberOfToggledLightsInGroup,
+		}) => (
+			numberOfLightsInGroup
+			!== numberOfToggledLightsInGroup
+			&& (
+				console
+				.error(
+					chalk
+					.redBright(
+						'[NOT ALL LIGHTS TOGGLED]'
+					),
+					(
+						chalk
+						.bgRed({
+							actual: numberOfToggledLightsInGroup,
+							expected: numberOfLightsInGroup,
+						})
+					)
+				)
+			)
+		)),
+		catchEpicError(),
 		ignoreElements(),
 	)
 )
