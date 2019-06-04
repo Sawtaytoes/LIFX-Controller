@@ -272,10 +272,10 @@
   dependencies:
     arrify "^1.0.1"
 
-"@ghadyani-framework/base@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/base/-/base-0.4.0.tgz#51acb2b85320afe914c2bcd3e1e5790b59591c2d"
-  integrity sha512-W4SXg6dC3XUgqS/EVNLBVKkSLpMhjQAlR8i9HC+oqFxenK5lNHNcIoRBjkv3mjlLik5h5sKIInMkyLpujUoPZA==
+"@ghadyani-framework/base@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/base/-/base-0.4.1.tgz#b64787d6752cd9001bd341c99ac558c2bfbd0ce2"
+  integrity sha512-dKglwQ9avsPKgNq+VJrf7ludvGmNeBJsQHGjUFuEuCW1vvR2P7bxqyCOhB2fvjy5oQYATf7uwAx0tMs078Hb+g==
   dependencies:
     "@ghadyani-framework/eslint-config-base" "^0.0.3"
     "@ghadyani-framework/eslint-config-node" "^0.0.3"
@@ -299,12 +299,12 @@
   resolved "https://registry.yarnpkg.com/@ghadyani-framework/eslint-config-node/-/eslint-config-node-0.0.3.tgz#b68c3e01a46816f14eb51f6c8dedd93bd99c3f67"
   integrity sha1-tow+AaRoFvFOtR9sje3ZO9mcP2c=
 
-"@ghadyani-framework/node@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@ghadyani-framework/node/-/node-3.1.0.tgz#188f910ca51fd42d7e0ed6edef669f494708b5d3"
-  integrity sha512-wytSsnDwULqsXwjZazcOf8lIgzs0Ctgy3PF1rZLOqA57NaR6McR6rEscHeXTOH4iumrC4kMW/31A3woYayWrkQ==
+"@ghadyani-framework/node@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@ghadyani-framework/node/-/node-3.1.1.tgz#7730d8e3eb3f8ed5ff0b5d0c93eb859022518a51"
+  integrity sha512-Ba5hVsBy/DR+zaskO7PUrfh4e7NPNLL3oD7JaBEbTuvf/1mF6wN6TvOom5h+S4DynDT9XuF05bvytNlnvWJ3RQ==
   dependencies:
-    "@ghadyani-framework/base" "^0.4.0"
+    "@ghadyani-framework/base" "^0.4.1"
     redux "^4.0.1"
     redux-mock-store "^1.5.3"
     redux-observable "^1.1.0"
