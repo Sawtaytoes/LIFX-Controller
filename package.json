@@ -44,8 +44,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^3.18.0",
-    "node-fetch": "^2.6.0",
-    "node-lifx": "^0.8.0"
+    "lifx-lan-client": "^1.0.1",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"

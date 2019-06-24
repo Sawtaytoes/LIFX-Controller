@@ -37,12 +37,12 @@ module.exports = {
 }
 ```
 
-### Custom Options to node-lifx
-In `./projectConfig.js` or `./localConfig.js`, add a property `nodeLifxClient` as an object and its options as properties on that object.
+### Custom Options for lifx-lan-client
+In `./projectConfig.js` or `./localConfig.js`, add a property `lifxLanClient` as an object and its options as properties on that object.
 
 ```js
 module.exports = {
-	nodeLifxClient: {
+	lifxLanClient: {
 		debug: true,
 		messageHandlerTimeout: 2000,
 		resendMaxTimes: 3,

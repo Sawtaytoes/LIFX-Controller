@@ -28,11 +28,11 @@ const initializeLifxNetworkClientEpic = (
 			)
 			.pipe(
 				tap(([
-					{ nodeLifxClient = {} },
+					{ lifxLanClient = {} },
 					lifxNetworkClient,
 				]) => {
 					lifxNetworkClient
-					.init(nodeLifxClient)
+					.init(lifxLanClient)
 				})
 			)
 		)),

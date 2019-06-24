@@ -1,4 +1,4 @@
-const nodeLifx = require('node-lifx')
+const lifxLanClient = require('lifx-lan-client')
 const { catchEpicError } = require('@ghadyani-framework/redux-utils')
 const { map, mapTo } = require('rxjs/operators')
 const { ofTaskName } = require('@ghadyani-framework/node')
@@ -18,7 +18,7 @@ const addLifxNetworkClientEpic = (
 			'undefined',
 		),
 		mapTo(
-			nodeLifx
+			lifxLanClient
 			.Client
 		),
 		map(LifxClient => (
