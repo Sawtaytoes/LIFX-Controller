@@ -188,7 +188,7 @@ const tempServerEpic = (
 						.pipe(
 							tap(() => {
 								server
-								.listen(config.port, error => {
+								.listen(config.port + 1, error => {
 									error
 									? logError(error)
 									: (
