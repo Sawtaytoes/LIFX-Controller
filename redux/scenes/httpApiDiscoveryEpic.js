@@ -1,12 +1,11 @@
 const nodeFetch = require('node-fetch')
 const { catchEpicError } = require('@redux-observable-backend/redux-utils')
-const { configurationSetSelector } = require('@redux-observable-backend/node/redux/configurations/selectors')
+const { configurations } = require('@redux-observable-backend/node')
 const { filter, map, startWith, switchMap, tap } = require('rxjs/operators')
 const { interval } = require('rxjs')
 const { ofTaskName } = require('@redux-observable-backend/node')
 const { ofType } = require('redux-observable')
 const { START_TASK } = require('@redux-observable-backend/node/redux/tasks/actions')
-const { stateSelector } = require('@redux-observable-backend/redux-utils')
 
 const { addHttpApiScenes } = require('./actions')
 const { logError } = require('$utils/logging')
@@ -22,12 +21,12 @@ const httpApiDiscoveryEpic = (
 			'serve',
 			'undefined',
 		),
-		switchMap(() => (
-			stateSelector({
-				selector: configurationSetSelector,
-				state$,
-			})
-		)),
+		map(() => state$.value),
+		map(
+			configurations
+			.selectors
+			.selectConfigurationSet()
+		),
 		switchMap(({
 			lifxApiAddress,
 			lifxApiToken,
