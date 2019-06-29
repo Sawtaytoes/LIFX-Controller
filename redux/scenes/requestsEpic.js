@@ -7,7 +7,7 @@ const {
 	toggleScene,
 } = require('./actions')
 
-const toggleGroupRequestEpic = (
+const toggleSceneRequestEpic = (
 	action$,
 ) => (
 	action$
@@ -20,7 +20,7 @@ const toggleGroupRequestEpic = (
 
 const requestsEpic = (
 	combineEpics(
-		toggleGroupRequestEpic,
+		toggleSceneRequestEpic,
 	)
 )
 
