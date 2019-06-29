@@ -68,8 +68,8 @@ webSocket.onopen = () => {
 	.send(
 		JSON
 		.stringify({
-			groupName: 'Dining Room',
-			type: 'REQUEST::TOGGLE_GROUP',
+			sceneName: 'Late Night Computing',
+			type: 'REQUEST::TOGGLE_SCENE',
 		})
 	)
 }
