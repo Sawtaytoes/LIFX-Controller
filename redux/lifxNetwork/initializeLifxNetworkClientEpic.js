@@ -1,9 +1,9 @@
-const { catchEpicError } = require('@ghadyani-framework/redux-utils')
+const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { combineLatest } = require('rxjs')
-const { configurationSetSelector } = require('@ghadyani-framework/node/redux/configurations/selectors')
+const { configurationSetSelector } = require('@redux-observable-backend/node/redux/configurations/selectors')
 const { ignoreElements, switchMap, tap } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
-const { stateSelector } = require('@ghadyani-framework/redux-utils')
+const { stateSelector } = require('@redux-observable-backend/redux-utils')
 
 const { START_LIFX_NETWORK_LISTENERS } = require('./actions')
 const { lifxNetworkClientSelector } = require('./selectors')

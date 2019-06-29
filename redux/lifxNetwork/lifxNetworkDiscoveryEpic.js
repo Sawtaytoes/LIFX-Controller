@@ -1,4 +1,4 @@
-const { catchEpicError } = require('@ghadyani-framework/redux-utils')
+const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { fromEvent, merge, of } = require('rxjs')
 const { map, switchMap } = require('rxjs/operators')
 const { ofType } = require('redux-observable')

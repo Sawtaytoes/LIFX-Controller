@@ -1,12 +1,12 @@
 const chalk = require('chalk')
 const { bindNodeCallback, from, of } = require('rxjs')
-const { catchEpicError } = require('@ghadyani-framework/redux-utils')
+const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { filter, ignoreElements, map, mergeMap, pluck, reduce, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
 const { lightIdsSelector } = require('./selectors')
 const { networkLightSelector } = require('$redux/lights/selectors')
-const { stateSelector } = require('@ghadyani-framework/redux-utils')
+const { stateSelector } = require('@redux-observable-backend/redux-utils')
 const { TURN_OFF_GROUPS } = require('./actions')
 
 const changePowerStateDuration = 0

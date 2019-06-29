@@ -29,6 +29,10 @@ const groupsReducer = (
 )
 
 module.exports = {
+	groups: {
+		actions: require('./actions'),
+		selectors: require('./selectors'),
+	},
 	groupsEpic,
 	groupsReducer,
 }

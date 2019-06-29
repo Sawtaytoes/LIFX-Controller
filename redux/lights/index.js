@@ -25,6 +25,10 @@ const lightsReducer = (
 )
 
 module.exports = {
+	lights: {
+		actions: require('./actions'),
+		selectors: require('./selectors'),
+	},
 	lightsEpic,
 	lightsReducer,
 }

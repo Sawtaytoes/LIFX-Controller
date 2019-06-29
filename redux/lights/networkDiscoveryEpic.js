@@ -1,5 +1,5 @@
 const { buffer, debounceTime, map, pluck } = require('rxjs/operators')
-const { catchEpicError } = require('@ghadyani-framework/redux-utils')
+const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { combineEpics, ofType } = require('redux-observable')
 
 const {

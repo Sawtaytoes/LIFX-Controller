@@ -1,5 +1,5 @@
 const { ADD_HTTP_API_LIGHTS } = require('./actions')
-const { createMergeById, createReducer } = require('@ghadyani-framework/redux-utils')
+const { createMergeById, createReducer } = require('@redux-observable-backend/redux-utils')
 
 const mergeById = (
 	createMergeById('id')

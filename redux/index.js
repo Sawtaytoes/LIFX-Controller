@@ -1,7 +1,7 @@
 const { combineEpics } = require('redux-observable')
 const { combineReducers } = require('redux')
-const { nodeEpic, nodeReducers } = require('@ghadyani-framework/node')
-// const { webSocketsEpic, webSocketsReducers } = require('@ghadyani-framework/websocket')
+const { nodeEpic, nodeReducers } = require('@redux-observable-backend/node')
+// const { webSocketsEpic, webSocketsReducers } = require('@redux-observable-backend/websocket')
 
 const tempServerEpic = require('./tempServerEpic')
 

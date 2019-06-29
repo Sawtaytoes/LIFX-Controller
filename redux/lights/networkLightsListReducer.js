@@ -1,4 +1,4 @@
-const { createMergeById, createReducer } = require('@ghadyani-framework/redux-utils')
+const { createMergeById, createReducer } = require('@redux-observable-backend/redux-utils')
 
 const {
 	ADD_NETWORK_LIGHTS,

@@ -1,5 +1,5 @@
 const chalk = require('chalk')
-const { catchEpicError } = require('@ghadyani-framework/redux-utils')
+const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { combineEpics, ofType } = require('redux-observable')
 const { ignoreElements, pluck, tap } = require('rxjs/operators')
 

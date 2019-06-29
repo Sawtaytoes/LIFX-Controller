@@ -21,6 +21,10 @@ const lifxNetworkReducer = (
 )
 
 module.exports = {
+	lifxNetwork: {
+		actions: require('./actions'),
+		selectors: require('./selectors'),
+	},
 	lifxNetworkEpic,
 	lifxNetworkReducer,
 }

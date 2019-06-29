@@ -4,12 +4,12 @@ const cors = require('cors')
 const express = require('express')
 const helmet = require('helmet')
 const { merge, Observable, of } = require('rxjs')
-const { configurationSetSelector } = require('@ghadyani-framework/node/redux/configurations/selectors')
+const { configurationSetSelector } = require('@redux-observable-backend/node/redux/configurations/selectors')
 const { ignoreElements, map, switchMap, tap } = require('rxjs/operators')
-const { ofTaskName } = require('@ghadyani-framework/node')
+const { ofTaskName } = require('@redux-observable-backend/node')
 const { ofType } = require('redux-observable')
-const { START_TASK } = require('@ghadyani-framework/node/redux/tasks/actions')
-const { catchEpicError, stateSelector } = require('@ghadyani-framework/redux-utils')
+const { START_TASK } = require('@redux-observable-backend/node/redux/tasks/actions')
+const { catchEpicError, stateSelector } = require('@redux-observable-backend/redux-utils')
 
 const {
 	toggleGroup,

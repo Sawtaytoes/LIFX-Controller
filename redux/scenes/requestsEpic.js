@@ -1,6 +1,6 @@
 const { combineEpics } = require('redux-observable')
 const { map, pluck } = require('rxjs/operators')
-const { ofRequestType } = require('@ghadyani-framework/websocket')
+const { ofRequestType } = require('@redux-observable-backend/websocket')
 
 const {
 	TOGGLE_SCENE,

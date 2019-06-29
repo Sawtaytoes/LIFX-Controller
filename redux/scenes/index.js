@@ -25,6 +25,10 @@ const scenesReducer = (
 )
 
 module.exports = {
+	scenes: {
+		actions: require('./actions'),
+		selectors: require('./selectors'),
+	},
 	scenesEpic,
 	scenesReducer,
 }
