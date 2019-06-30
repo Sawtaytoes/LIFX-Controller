@@ -1,7 +1,8 @@
-const selectLightIds = (
-	{ groups },
-	{ groupName },
-) => (
+const selectLightIds = ({
+	groupName,
+}) => ({
+	groups,
+}) => (
 	groups
 	.lightIdsGroupList
 	.get(groupName)
