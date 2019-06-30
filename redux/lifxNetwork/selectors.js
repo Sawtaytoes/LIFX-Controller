@@ -1,10 +1,10 @@
-const lifxNetworkClientSelector = (
-	({ lifxNetwork }) => (
-		lifxNetwork
-		.lifxNetworkClient
-	)
+const selectLifxNetworkClient = () => ({
+	lifxNetwork,
+}) => (
+	lifxNetwork
+	.lifxNetworkClient
 )
 
 module.exports = {
-	lifxNetworkClientSelector,
+	selectLifxNetworkClient,
 }

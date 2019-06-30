@@ -1,26 +1,44 @@
+const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { combineEpics } = require('redux-observable')
-const { map, pluck } = require('rxjs/operators')
+const { map, pluck, tap } = require('rxjs/operators')
 const { ofRequestType } = require('@redux-observable-backend/websocket')
 
 const {
-	TOGGLE_GROUP,
-	toggleGroup,
+	TOGGLE_GROUPS,
+	toggleGroups,
+	TURN_OFF_GROUPS,
+	turnOffGroups,
 } = require('./actions')
 
-const toggleGroupRequestEpic = (
+const toggleGroupsRequestEpic = (
 	action$,
 ) => (
 	action$
 	.pipe(
-		ofRequestType(TOGGLE_GROUP),
-		pluck('groupName'),
-		map(toggleGroup),
+		ofRequestType(TOGGLE_GROUPS),
+		pluck('names'),
+		map(toggleGroups),
+		catchEpicError(),
+	)
+)
+
+const turnOffGroupsRequestEpic = (
+	action$,
+) => (
+	action$
+	.pipe(
+		ofRequestType(TURN_OFF_GROUPS),
+		pluck('names'),
+		tap(console.log),
+		map(turnOffGroups),
+		catchEpicError(),
 	)
 )
 
 const requestsEpic = (
 	combineEpics(
-		toggleGroupRequestEpic,
+		toggleGroupsRequestEpic,
+		turnOffGroupsRequestEpic,
 	)
 )
 

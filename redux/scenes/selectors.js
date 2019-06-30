@@ -1,12 +1,13 @@
-const sceneSelector = (
-	{ scenes },
-	{ sceneName },
-) => (
+const selectScene = ({
+	sceneName,
+}) => ({
+	scenes,
+}) => (
 	scenes
 	.scenesList
 	.get(sceneName)
 )
 
 module.exports = {
-	sceneSelector,
+	selectScene,
 }

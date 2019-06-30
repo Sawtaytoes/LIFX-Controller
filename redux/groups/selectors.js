@@ -1,4 +1,4 @@
-const lightIdsSelector = (
+const selectLightIds = (
 	{ groups },
 	{ groupName },
 ) => (
@@ -8,5 +8,5 @@ const lightIdsSelector = (
 )
 
 module.exports = {
-	lightIdsSelector,
+	selectLightIds,
 }

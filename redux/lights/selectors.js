@@ -1,14 +1,15 @@
-const httpApiLightsSelector = ({
+const selectHttpApiLights = () => ({
 	lights,
 }) => (
 	lights
 	.httpApiLightsList
 )
 
-const networkLightSelector = (
-	{ lights },
-	{ lightId },
-) => (
+const selectNetworkLight = ({
+	lightId,
+}) => ({
+	lights,
+}) => (
 	lights
 	.networkLightsList
 	.find(({ id }) => (
@@ -16,7 +17,7 @@ const networkLightSelector = (
 	))
 )
 
-const networkLightsSelector = ({
+const selectNetworkLights = () => ({
 	lights,
 }) => (
 	lights
@@ -24,7 +25,7 @@ const networkLightsSelector = ({
 )
 
 module.exports = {
-	httpApiLightsSelector,
-	networkLightSelector,
-	networkLightsSelector,
+	selectHttpApiLights,
+	selectNetworkLight,
+	selectNetworkLights,
 }

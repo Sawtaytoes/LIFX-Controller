@@ -4,9 +4,8 @@ const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { every, filter, ignoreElements, map, mapTo, mergeAll, mergeMap, pluck, reduce, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
-const { networkLightSelector } = require('$redux/lights/selectors')
-const { sceneSelector } = require('./selectors')
-const { stateSelector } = require('@redux-observable-backend/redux-utils')
+const { selectNetworkLight } = require('$redux/lights/selectors')
+const { selectScene } = require('./selectors')
 const { TOGGLE_SCENES } = require('./actions')
 
 const changeColorStateDuration = 500
@@ -37,12 +36,13 @@ const toggleScenesEpic = (
 				mergeMap((
 					sceneName,
 				) => (
-					stateSelector({
-						props: { sceneName },
-						selector: sceneSelector,
-						state$,
-					})
+					of(state$.value)
 					.pipe(
+						map(
+							selectScene({
+								sceneName,
+							})
+						),
 						tap((
 							scene,
 						) => (
@@ -134,12 +134,13 @@ const toggleScenesEpic = (
 					lightId,
 					power: sceneLightPower,
 				}) => (
-					stateSelector({
-						props: { lightId },
-						selector: networkLightSelector,
-						state$,
-					})
+					of(state$.value)
 					.pipe(
+						map(
+							selectNetworkLight({
+								lightId,
+							})
+						),
 						filter(Boolean),
 						switchMap((
 							light,

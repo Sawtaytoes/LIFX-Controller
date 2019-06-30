@@ -1,9 +1,8 @@
 const lifxLanClient = require('lifx-lan-client')
 const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { map, mapTo } = require('rxjs/operators')
-const { ofTaskName } = require('@redux-observable-backend/node')
+const { ofTaskName, tasks } = require('@redux-observable-backend/node')
 const { ofType } = require('redux-observable')
-const { START_TASK } = require('@redux-observable-backend/node/redux/tasks/actions')
 
 const { addLifxNetworkClient } = require('./actions')
 
@@ -12,7 +11,11 @@ const addLifxNetworkClientEpic = (
 ) => (
 	action$
 	.pipe(
-		ofType(START_TASK),
+		ofType(
+			tasks
+			.actions
+			.START_TASK
+		),
 		ofTaskName(
 			'serve',
 			'undefined',

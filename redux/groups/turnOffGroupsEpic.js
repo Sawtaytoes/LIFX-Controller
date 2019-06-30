@@ -4,9 +4,8 @@ const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { filter, ignoreElements, map, mergeMap, pluck, reduce, switchMap, takeUntil, tap, toArray } = require('rxjs/operators')
 const { ofType } = require('redux-observable')
 
-const { lightIdsSelector } = require('./selectors')
-const { networkLightSelector } = require('$redux/lights/selectors')
-const { stateSelector } = require('@redux-observable-backend/redux-utils')
+const { selectLightIds } = require('./selectors')
+const { selectNetworkLight } = require('$redux/lights/selectors')
 const { TURN_OFF_GROUPS } = require('./actions')
 
 const changePowerStateDuration = 0
@@ -47,12 +46,13 @@ const turnOffGroupsEpic = (
 				mergeMap((
 					groupName,
 				) => (
-					stateSelector({
-						props: { groupName },
-						selector: lightIdsSelector,
-						state$,
-					})
+					of(state$.value)
 					.pipe(
+						map(
+							selectLightIds({
+								groupName,
+							})
+						),
 						tap(lightIds => (
 							(
 								!lightIds
@@ -124,12 +124,13 @@ const turnOffGroupsEpic = (
 			from(lightIds)
 			.pipe(
 				mergeMap(lightId => (
-					stateSelector({
-						props: { lightId },
-						selector: networkLightSelector,
-						state$,
-					})
+					of(state$.value)
 					.pipe(
+						map(
+							selectNetworkLight({
+								lightId,
+							})
+						),
 						filter(Boolean),
 						switchMap(light => (
 							bindNodeCallback(
