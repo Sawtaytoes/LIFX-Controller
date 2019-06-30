@@ -1,6 +1,6 @@
 const { catchEpicError } = require('@redux-observable-backend/redux-utils')
 const { combineEpics } = require('redux-observable')
-const { map, pluck, tap } = require('rxjs/operators')
+const { map, pluck } = require('rxjs/operators')
 const { ofRequestType } = require('@redux-observable-backend/websocket')
 
 const {
@@ -29,7 +29,6 @@ const turnOffGroupsRequestEpic = (
 	.pipe(
 		ofRequestType(TURN_OFF_GROUPS),
 		pluck('names'),
-		tap(console.log),
 		map(turnOffGroups),
 		catchEpicError(),
 	)
