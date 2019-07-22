@@ -1,3 +1,5 @@
+**NOTE:** This repo has moved to https://github.com/Sawtaytoes/Smart-Home-Services
+
 # LIFX Controller
 WebSockets-based LIFX Controller software.
 
